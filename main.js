@@ -7,12 +7,14 @@ const os = require('os')
 const path = require('path')
 const config = require(path.join(__dirname, 'package.json'))
 const model = require(path.join(__dirname, 'app', 'model.js'))
+const controller = require(path.join(__dirname, 'app', 'controller.js'))
 const BrowserWindow = electron.BrowserWindow
 const dbPath = '//app/db';
 
 app.setName(config.productName)
 var mainWindow = null
 app.on('ready', function () {
+	controller.init('inittext')
   mainWindow = new BrowserWindow({
     backgroundColor: 'lightgray',
     title: config.productName,
@@ -34,7 +36,7 @@ app.on('ready', function () {
   )
   // Open the DevTools.
   mainWindow.webContents.openDevTools()
-  
+
   // Enable keyboard shortcuts for Developer Tools on various platforms.
   let platform = os.platform()
   if (platform === 'darwin') {

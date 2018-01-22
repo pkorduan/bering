@@ -188,23 +188,45 @@ module.exports.getTables = function () {
 }
 
 /*
-  Fetch a person's data from the database.
+  Populates the Tables List.
 */
-module.exports.getPerson = function (pid) {
+module.exports.getTables = function () {
   let db = SQL.dbOpen(window.model.db)
   if (db !== null) {
-    let query = 'SELECT * FROM `people` WHERE `person_id` IS ?'
-    let statement = db.prepare(query, [pid])
+    let query = "SELECT name FROM sqlite_master WHERE type='table'";
+    try {
+      let row = db.exec(query)
+      if (row !== undefined && row.length > 0) {
+        row = _rowsFromSqlDataObject(row[0])
+		console.log('getTables Ergebnis:', row)
+        view.showTables(row)
+      }
+    } catch (error) {
+      console.log('model.getTables', error.message)
+    } finally {
+      SQL.dbClose(db, window.model.db)
+    }
+  }
+}
+
+/*
+  Fetch a beringungen data from the database.
+*/
+module.exports.getBeringungen = function (ringnr) {
+  let db = SQL.dbOpen(window.model.db)
+  if (db !== null) {
+    let query = 'SELECT * FROM `Daten` WHERE `ringnr` = ?'
+    let statement = db.prepare(query, [ringnr])
     try {
       if (statement.step()) {
         let values = [statement.get()]
         let columns = statement.getColumnNames()
         return _rowsFromSqlDataObject({values: values, columns: columns})
       } else {
-        console.log('model.getPeople', 'No data found for person_id =', pid)
+        console.log('model.getBeringungen', 'No data found for ', ringnr)
       }
     } catch (error) {
-      console.log('model.getPeople', error.message)
+      console.log('model.getBeringungen', error.message)
     } finally {
       SQL.dbClose(db, window.model.db)
     }

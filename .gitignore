@@ -1,6 +1,9 @@
 # Content
 app/db/*
 
+# 3rdParties
+3rdparties/*
+
 # Logs
 logs
 *.log

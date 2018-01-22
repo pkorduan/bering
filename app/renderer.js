@@ -19,6 +19,7 @@ require(path.join(webRoot, 'bootstrap-datepicker.de.min.js'))
 
 window.view = require(path.join(webRoot, 'view.js'))
 window.model = require(path.join(webRoot, 'model.js'))
+window.controller = require(path.join(webRoot, 'controller.js'))
 // window.model.db = path.join(app.getPath('userData'), 'example.db')
 //siehe auch model.js module.exports.initDb
 window.model.db = path.join(app.getAppPath(), '//app//db//example.db')
@@ -31,6 +32,7 @@ let menu = fs.readFileSync(path.join(htmlPath, 'menu.html'), 'utf8')
 let people = fs.readFileSync(path.join(htmlPath, 'people.html'), 'utf8')
 //Hinzufügen Navbarelement: wichtig!
 let tables = fs.readFileSync(path.join(htmlPath, 'tables.html'), 'utf8')
+let beringungen_list = fs.readFileSync(path.join(htmlPath, 'beringungen/list.html'), 'utf8')
 let login = fs.readFileSync(path.join(htmlPath, 'login.html'), 'utf8')
 let nutzer = fs.readFileSync(path.join(htmlPath, 'nutzer.html'), 'utf8')
 let useNutzer = fs.readFileSync(path.join(htmlPath, 'use-nutzer.html'), 'utf8')
@@ -42,6 +44,7 @@ O('#menu').append(menu)
 O('#people').append(people)
 //Hinzufügen Navbarelement: wichtig!
 O('#tables').append(tables)
+O('#beringungen').append(beringungen_list)
 O('#login').append(login)
 O('#nutzer').append(nutzer)
 O('#use-nutzer').append(useNutzer)

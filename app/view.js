@@ -34,14 +34,14 @@ module.exports.showPeople = function (rowsObject) {
 }
 
 module.exports.showNutzer = function (rowsObject) {
-	console.log('Ergebnis in showNutzer:', rowsObject)
+  console.log('Ergebnis in showNutzer:', rowsObject)
   // $('#people-list h2').html('Tabellen')
   let markup = ''
   for (let rowId in rowsObject) {
     let row = rowsObject[rowId]
     markup += '<div class="row justify-content-start">' +
     '<div class="col-sm-3"><img id="use-pid_' + row.beringernr + '" class="icon edit" src="' + path.join(__dirname, 'img', 'edit-icon.png') + '"></div>' +
-	'<div class="col-sm-3 beringernr">' + row.beringernr + '</div>' +
+  '<div class="col-sm-3 beringernr">' + row.beringernr + '</div>' +
     '<div class="col-sm-3 name">' + row.name + '</div>' +
     '<div class="col-sm-3 vorname">' + row.vorname + '</div>' +
     '</div>'
@@ -51,9 +51,10 @@ module.exports.showNutzer = function (rowsObject) {
   $('a.nav-link').removeClass('active')
   $('a.nav-link.nutzer').addClass('active')
   $('#nutzer').show()
+	$('#beringungen').hide()
   $('#nutzer-list img.edit').each(function (idx, obj) {
     $(obj).on('click', function () {
-		//Rufe nach Klick auf Stift-Symbol die useNutzer()-Funktion auf!
+    //Rufe nach Klick auf Stift-Symbol die useNutzer()-Funktion auf!
       window.view.useNutzer(this.id)
     })
   })
@@ -68,6 +69,7 @@ module.exports.listPeople = function (e) {
   $('#people-list h2').html('Tabellen')
   $('a.nav-link').removeClass('active')
   $(e).addClass('active')
+	$('#beringungen').hide()
   $('#edit-person').hide()
   window.model.getPeople()
   $('#people').show()
@@ -80,9 +82,23 @@ module.exports.listNutzer = function (e) {
   $('#edit-person').hide()
   $('#people').hide()
   $('#tables').hide()
+	$('#beringungen').hide()
   $('#login').hide()
   window.model.getNutzer()
   $('#nutzer').show()
+}
+
+module.exports.showLogin = function(e) {
+  // $('#people-list h2').html('Tabellen')
+  $('a.nav-link').removeClass('active')
+  $('a.nav-item').removeClass('active')
+  $(e).addClass('active')
+  $('#edit-person').hide()
+  $('#people').hide()
+  $('#tables').hide()
+	$('beringungen').hide()
+  $('#nutzer').hide()
+  $('#login').show()
 }
 
 module.exports.showTables = function (rowsObject) {
@@ -92,7 +108,7 @@ module.exports.showTables = function (rowsObject) {
   let markup = ''
   for (let rowId in rowsObject) {
     let row = rowsObject[rowId]
-	console.log('row'+rowId + ": " + row.name)
+  console.log('row'+rowId + ": " + row.name)
     markup += '<div class="row justify-content-start">' +
     '<div class="col-sm-3 name">' + row.name + '</div>' +
     '</div>'
@@ -113,6 +129,15 @@ module.exports.listTables = function (e) {
   $('#people').hide()
   window.model.getTables()
   $('#tables').show()
+}
+
+module.exports.listBeringungen = function (e) {
+  $('a.nav-link').removeClass('active')
+  $(e).addClass('active')
+  $('#login').hide()
+  window.model.getBeringungen(1)
+	$('#nutzer').hide()
+  $('#beringungen').show()
 }
 
 module.exports.addPerson = function (e) {
@@ -152,7 +177,7 @@ module.exports.editPerson = function (pid) {
 }
 
 module.exports.useNutzer = function (pid) {
-	console.log("useNutzer");
+  console.log("useNutzer");
   //Überschrift
   $('#use-nutzer h2').html('Nehme Nutzer')
   //Button
@@ -190,7 +215,7 @@ module.exports.useNutzer = function (pid) {
 
 //TODO: Funktionen zusammenführen!
 module.exports.useNutzerBeringernr = function (beringernr) {
-	console.log("useNutzer");
+  console.log("useNutzer");
   //Überschrift
   $('#use-nutzer h2').html('Nehme Nutzer')
   //Button
