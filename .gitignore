@@ -1,3 +1,6 @@
+# Content
+app/db/*
+
 # Logs
 logs
 *.log
