@@ -12,7 +12,8 @@ const dbPath = '//app/db';
 
 global.sharedObject = {
 	session: {
-		username: ''
+		username: '',
+    id: ''
 	}
 }
 

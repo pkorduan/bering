@@ -19,40 +19,53 @@ require(path.join(webRoot, 'jquery.validate.min.js'))
 require(path.join(webRoot, 'bootstrap-datepicker.min.js'))
 require(path.join(webRoot, 'bootstrap-datepicker.de.min.js'))
 
+// load controllers
 let controllersPath = path.join(app.getAppPath(), 'app', 'controllers')
-window.login_controller = require(path.join(controllersPath, 'login_controller.js'))
-window.beringungen_controller = require(path.join(controllersPath, 'beringungen_controller.js'))
-window.start_controller = require(path.join(controllersPath, 'start_controller.js'))
+window.login_controller = require(path.join(controllersPath, 'login.js'))
+window.beringungen_controller = require(path.join(controllersPath, 'beringungen.js'))
+window.start_controller = require(path.join(controllersPath, 'start.js'))
 
 window.view = require(path.join(webRoot, 'view.js'))
 window.model = require(path.join(webRoot, 'model.js'))
 // window.model.db = path.join(app.getPath('userData'), 'example.db')
 //siehe auch model.js module.exports.initDb
-window.model.db = path.join(app.getAppPath(), '//app//db//example.db')
+window.model.db = path.join(app.getAppPath(), '//app//db//bering.db')
+
+// load models
+let modelsPath = path.join(app.getAppPath(), 'app', 'models')
+window.models = {};
+window.models.beringung = require(path.join(modelsPath, 'beringung.js'))
+window.models.dbMapper = require(path.join(modelsPath, 'db-mapper.js'))
 
 // Compose the DOM from separate HTML concerns; each from its own file.
 let htmlPath = path.join(app.getAppPath(), 'app', 'html')
 let body = fs.readFileSync(path.join(htmlPath, 'body.html'), 'utf8')
 let navBar = fs.readFileSync(path.join(htmlPath, 'nav-bar.html'), 'utf8')
-let menu = fs.readFileSync(path.join(htmlPath, 'menu.html'), 'utf8')
 let people = fs.readFileSync(path.join(htmlPath, 'people.html'), 'utf8')
 //Hinzufügen Navbarelement: wichtig!
 let tables = fs.readFileSync(path.join(htmlPath, 'tables.html'), 'utf8')
 
+// load views
 let viewsPath = path.join(app.getAppPath(), 'app', 'views')
-let login = fs.readFileSync(path.join(viewsPath, 'login/login.html'), 'utf8')
+let login =            fs.readFileSync(path.join(viewsPath, 'login/login.html'), 'utf8')
 let beringungen_list = fs.readFileSync(path.join(viewsPath, 'beringungen/list.html'), 'utf8')
+let beringungen_edit = fs.readFileSync(path.join(viewsPath, 'beringungen/edit.html'), 'utf8')
+let beringungen_menu = fs.readFileSync(path.join(viewsPath, 'beringungen/menu.html'), 'utf8')
+let nutzer_menu =      fs.readFileSync(path.join(viewsPath, 'nutzer/menu.html'), 'utf8')
+
 let nutzer = fs.readFileSync(path.join(htmlPath, 'nutzer.html'), 'utf8')
 let useNutzer = fs.readFileSync(path.join(htmlPath, 'use-nutzer.html'), 'utf8')
 let editPerson = fs.readFileSync(path.join(htmlPath, 'edit-person.html'), 'utf8')
 
 let O = cheerio.load(body)
 O('#nav-bar').append(navBar)
-O('#menu').append(menu)
+O('#nutzer_menu').append(nutzer_menu)
+O('#beringungen_menu').append(beringungen_menu)
 O('#people').append(people)
 //Hinzufügen Navbarelement: wichtig!
 O('#tables').append(tables)
-O('#beringungen').append(beringungen_list)
+O('#beringungen_list_section').append(beringungen_list)
+O('#beringungen_edit_section').append(beringungen_edit)
 O('#login').append(login)
 O('#nutzer').append(nutzer)
 O('#use-nutzer').append(useNutzer)

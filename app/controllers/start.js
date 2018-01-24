@@ -40,12 +40,15 @@ module.exports.start = function() {
 
   $('.row .placeholders').hide();
   if (angemeldet) {
-    console.log('Starte angemeldet');
+    $('#menu').show();
+    $('.nav-item').show();
     $('#login_link').hide();
     $('#logout_link').show();
-    $('#beringungen').show();
+    window.beringungen_controller.list();
   }
   else {
+    $('#menu').hide();
+    $('.nav-item').hide();
     $('#login_link').addClass('active').show();
     $('#logout_link').hide();
     $('#login').show();

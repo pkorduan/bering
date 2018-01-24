@@ -1,0 +1,201 @@
+<h2>Beringung</h2>
+<div id="beringung_edit" class="container">
+  <form id="use-nutzer-form" action="#" method="POST">
+    <div class="container-fluid">
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="beringernr">Beringernr</label>
+        <input class="col-sm-4 form-control" type="text" id="beringernr" aria-describedby="beringerInfo" readonly>
+        <!-- <small id="personIdHelpInline" class="col-sm-4 align-top form-text text-muted"> -->
+          <!-- The number assigned to the person below.</small> -->
+      <small id="beringerInfo"  class="col-sm-4 align-top form-text text-muted">(<span id="smallVorname">Vorname</span> <span id="smallName">Name</span>)</small>
+      </div>
+      <!-- 
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="vorname">Vorname: </label>
+      <label class="col-sm-3 col-form-label" id="vornameLabel">no value</label>
+      <input class="col-sm-4 form-control" type="text" id="vorname"
+          aria-describedby="firstNameHelpInline" readonly>
+        <small id="firstNameHelpInline" class="col-sm-4 align-top form-text text-muted">
+          A person's first name or given name (Christian name).</small>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="name">Name</label>
+        <input class="col-sm-4 form-control" type="text" id="name"
+          aria-describedby="lastNameHelpInline" readonly>
+        <small id="lastNameHelpInline" class="col-sm-4 align-top form-text text-muted">
+          A person's last name or surname (family name).</small>
+      </div>
+    -->
+    <!-- <div class="form-group row"> -->
+        <!-- <label class="col-sm-3 col-form-label" for="ringnr">Ringnr.</label> -->
+        <!-- <input class="col-sm-4 form-control" type="text" id="ringnr" -->
+          <!-- aria-describedby="ringnrHelpInline" readonly> -->
+        <!-- <small id="ringnrHelpInline" class="col-sm-4 align-top form-text text-muted"> -->
+          <!-- Ringnummer.</small> -->
+      <!-- </div> -->
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="bemerkung">Bemerkung</label>
+        <input class="col-sm-4 form-control" type="text" id="bemerkung" aria-describedby="bemerkungHelpInline">
+      <div class="form-control-feedback" id="bemerkungFB"></div>
+        <small id="bemerkungHelpInline" class="col-sm-4 align-top form-text text-muted">
+          Bemerkung.</small>
+      </div>
+    <!-- <small id="bemerkungFB" class="form-control-feedback"></small> -->
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="zentrale">Zentrale</label>
+        <input class="col-sm-4 form-control" type="text" id="zentrale" aria-describedby="zentraleHelpInline" value="test">
+      <div class="form-control-feedback" id="zentraleFB"></div>
+        <small id="zentraleHelpInline" class="col-sm-4 align-top form-text text-muted">
+          Zentrale.</small>
+      </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label" for="vogelart">Vogelart</label>
+      <select class="col-sm-4 form-control" class="autocomplete" id="vogelart" aria-describedby="vogelartHelpInline"/>
+      <div class="form-control-feedback" id="vogelartFB"></div>
+      <small id="vogelartHelpInline" class="col-sm-4 align-top form-text text-muted">Vogelart.</small>
+    </div>
+
+    <div class="form-group row"  id="datetimepicker1">
+      <label class="col-sm-3 col-form-label" for="datum">Datum</label>
+      <!-- <input type='text' class="form-control"  id="datum" -->
+      <input class="col-sm-4 form-control" type='text' id="datum" aria-describedby="datumHelpInline"/>
+      <span id="input_pick" class="input-group-addon" style="display:none">
+        <span class="glyphicon glyphicon-calendar"></span>
+      </span>
+      <small id="datumHelpInline" class="col-sm-4 align-top form-text text-muted">Datum.</small>
+    </div>
+
+    <!-- <div class="form-group row"> -->
+        <!-- <label class="col-sm-3 col-form-label" for="datum">Datum</label> -->
+        <!-- <input class="col-sm-4 form-control" type="text" id="datum" -->
+          <!-- aria-describedby="datumHelpInline"> -->
+        <!-- <small id="datumHelpInline" class="col-sm-4 align-top form-text text-muted"> -->
+          <!-- Datum.</small> -->
+      <!-- </div> -->
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="uhrzeit">Uhrzeit</label>
+        <input class="col-sm-4 form-control" type="text" id="uhrzeit"
+          aria-describedby="uhrzeitHelpInline">
+      <div class="form-control-feedback" id="uhrzeitFB"></div>
+        <small id="uhrzeitHelpInline" class="col-sm-4 align-top form-text text-muted">
+          Uhrzeit (volle Stunde).</small>
+      </div>
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="geschlecht">Geschlecht</label>
+        <input class="col-sm-4 form-control" type="text" id="geschlecht"
+          aria-describedby="geschlechtHelpInline">
+      <div class="form-control-feedback" id="geschlechtFB"></div>
+        <small id="geschlechtHelpInline" class="col-sm-4 align-top form-text text-muted">
+          Geschlecht.</small>
+      </div>
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="alter">Alter</label>
+        <input class="col-sm-4 form-control" type="text" id="alter"
+          aria-describedby="alterHelpInline">
+      <div class="form-control-feedback" id="alterFB"></div>
+        <small id="alterHelpInline" class="col-sm-4 align-top form-text text-muted">
+          Alter.</small>
+      </div>
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="fluegellaenge">Flügellänge</label>
+        <input class="col-sm-4 form-control" type="text" id="fluegellaenge"
+          aria-describedby="fluegellaengeHelpInline">
+      <div class="form-control-feedback" id="fluegellaengeFB"></div>
+        <small id="fluegellaengeHelpInline" class="col-sm-4 align-top form-text text-muted">
+          Flügellänge.</small>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="teilfederlaenge">Teilfederlänge</label>
+        <input class="col-sm-4 form-control" type="text" id="teilfederlaenge"
+          aria-describedby="teilfederlaengeHelpInline">
+      <div class="form-control-feedback" id="teilfederlaengeFB"></div>
+        <small id="teilfederlaengeHelpInline" class="col-sm-4 align-top form-text text-muted">
+          Teilfederlänge.</small>
+      </div>
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="schnabellaenge">Schnabellänge</label>
+        <input class="col-sm-4 form-control" type="text" id="schnabellaenge"
+          aria-describedby="schnabellaengeHelpInline">
+      <div class="form-control-feedback" id="schnabellaengeFB"></div>
+        <small id="schnabellaengeHelpInline" class="col-sm-4 align-top form-text text-muted">
+          Schnabellänge.</small>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="schnabel_kopflaenge">Schnabel+Kopflänge</label>
+        <input class="col-sm-4 form-control" type="text" id="schnabel_kopflaenge"
+          aria-describedby="schnabel_kopflaengeHelpInline">
+      <div class="form-control-feedback" id="schnabel_kopflaengeFB"></div>
+        <small id="schnabel_kopflaengeHelpInline" class="col-sm-4 align-top form-text text-muted">
+          Schnabel+Kopflänge.</small>
+      </div>
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="lauf">Lauf</label>
+        <input class="col-sm-4 form-control" type="text" id="lauf"
+          aria-describedby="laufHelpInline">
+      <div class="form-control-feedback" id="laufFB"></div>
+        <small id="laufHelpInline" class="col-sm-4 align-top form-text text-muted">
+          Lauf.</small>
+      </div>
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="gewicht">Gewicht</label>
+        <input class="col-sm-4 form-control" type="text" id="gewicht"
+          aria-describedby="gewichtHelpInline">
+      <div class="form-control-feedback" id="gewichtFB"></div>
+        <small id="gewichtHelpInline" class="col-sm-4 align-top form-text text-muted">
+          Gewicht.</small>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="brutstaus">Brutstaus</label>
+        <input class="col-sm-4 form-control" type="text" id="brutstaus"
+          aria-describedby="brutstausHelpInline">
+      <div class="form-control-feedback" id="brutstausFB"></div>
+        <small id="brutstausHelpInline" class="col-sm-4 align-top form-text text-muted">
+          Brutstaus.</small>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="beringungsort">Beringungsort</label>
+        <input class="col-sm-4 form-control" type="text" id="beringungsort"
+          aria-describedby="beringungsortHelpInline">
+      <div class="form-control-feedback" id="beringungsortFB"></div>
+        <small id="beringungsortHelpInline" class="col-sm-4 align-top form-text text-muted">
+          Beringungsort.</small>
+      </div>
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="koordinaten">Koordinaten</label>
+        <input class="col-sm-4 form-control" type="text" id="koordinaten"
+          aria-describedby="koordinatenHelpInline">
+      <div class="form-control-feedback" id="koordinatenFB"></div>
+        <small id="koordinatenHelpInline" class="col-sm-4 align-top form-text text-muted">
+          Koordinaten.</small>
+      </div>
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="skz_1">SKZ 1</label>
+        <input class="col-sm-4 form-control" type="text" id="skz_1"
+          aria-describedby="skz_1HelpInline">
+      <div class="form-control-feedback" id="skz_1FB"></div>
+        <small id="skz_1HelpInline" class="col-sm-4 align-top form-text text-muted">
+          SKZ 1.</small>
+      </div>
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="skz_2">SKZ 2</label>
+        <input class="col-sm-4 form-control" type="text" id="skz_2"
+          aria-describedby="skz_2HelpInline">
+      <div class="form-control-feedback" id="skz_2FB"></div>
+        <small id="skz_2HelpInline" class="col-sm-4 align-top form-text text-muted">
+          SKZ 2.</small>
+      </div>
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="farbring">Farbring</label>
+        <input class="col-sm-4 form-control" type="text" id="farbring"
+          aria-describedby="farbringHelpInline">
+      <div class="form-control-feedback" id="farbringFB"></div>
+        <small id="farbringHelpInline" class="col-sm-4 align-top form-text text-muted">
+          Farbring.</small>
+      </div>
+      <div class="form-group row offset-sm-1">
+        <button class="col-sm-auto m-1 btn btn-primary justify-content-start p-0.5"
+         id="use-nutzer-submit" type="submit">Speichern</button>
+      </div>
+    </div>
+  </form>
+</div>

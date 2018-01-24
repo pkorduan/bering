@@ -21,9 +21,9 @@ module.exports.init = function() {
 module.exports.login = function(username, passwort) {
   console.log('login_controller.login für Nutzer: ' + username);
   if (username == 'korduan' && passwort == 'peko') {
-    console.log()
     // login
     require('electron').remote.getGlobal('sharedObject').session.username = username;
+    require('electron').remote.getGlobal('sharedObject').session.id = 1;
     window.start_controller.start()
   }
 }

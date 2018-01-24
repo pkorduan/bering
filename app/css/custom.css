@@ -23,6 +23,12 @@ h2 {
 #people-list img {
   margin: 0 0.5em;
 }
- #date{
-   width : 107px;
- }
+#date{
+  width : 107px;
+}
+
+#list-table tr td{
+  /*width: 100%;*/
+  /*border: 1px solid gray;*/
+  padding: 2px;
+}
