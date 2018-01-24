@@ -4,9 +4,9 @@
   "version": "1.0.0",
   "description": "Database-driven Beringungsverwaltung mit Electron und einer lokalen SQLite Datenbank.",
   "main": "main.js",
-  "repository": "https://github.com/NA",
-  "author": "Ch. Seip",
-  "license": "MIT",
+  "repository": "https://github.com/pkorduan/bering",
+  "author": "P. Korduan & Ch. Seip",
+  "license": "GNU GENERAL PUBLIC LICENSE",
   "devDependencies": {},
   "scripts": {
     "start": "electron .",

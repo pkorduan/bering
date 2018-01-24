@@ -7,14 +7,19 @@ const os = require('os')
 const path = require('path')
 const config = require(path.join(__dirname, 'package.json'))
 const model = require(path.join(__dirname, 'app', 'model.js'))
-const controller = require(path.join(__dirname, 'app', 'controller.js'))
 const BrowserWindow = electron.BrowserWindow
 const dbPath = '//app/db';
+
+global.sharedObject = {
+	session: {
+		username: ''
+	}
+}
 
 app.setName(config.productName)
 var mainWindow = null
 app.on('ready', function () {
-	controller.init('inittext')
+	console.log('App is ready')
   mainWindow = new BrowserWindow({
     backgroundColor: 'lightgray',
     title: config.productName,
@@ -50,6 +55,7 @@ app.on('ready', function () {
   }
 
   mainWindow.once('ready-to-show', () => {
+		console.log('mainWindow is ready-to-show');
     mainWindow.setMenu(null)
     mainWindow.show()
   })

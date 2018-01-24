@@ -6,6 +6,8 @@ const app = require('electron').remote.app
 const cheerio = require('cheerio')
 const dbfParser = require('node-dbf')
 
+console.log('Start renderer');
+
 window.$ = window.jQuery = require('jquery')
 window.Tether = require('tether')
 window.Bootstrap = require('bootstrap')
@@ -17,9 +19,13 @@ require(path.join(webRoot, 'jquery.validate.min.js'))
 require(path.join(webRoot, 'bootstrap-datepicker.min.js'))
 require(path.join(webRoot, 'bootstrap-datepicker.de.min.js'))
 
+let controllersPath = path.join(app.getAppPath(), 'app', 'controllers')
+window.login_controller = require(path.join(controllersPath, 'login_controller.js'))
+window.beringungen_controller = require(path.join(controllersPath, 'beringungen_controller.js'))
+window.start_controller = require(path.join(controllersPath, 'start_controller.js'))
+
 window.view = require(path.join(webRoot, 'view.js'))
 window.model = require(path.join(webRoot, 'model.js'))
-window.controller = require(path.join(webRoot, 'controller.js'))
 // window.model.db = path.join(app.getPath('userData'), 'example.db')
 //siehe auch model.js module.exports.initDb
 window.model.db = path.join(app.getAppPath(), '//app//db//example.db')
@@ -32,8 +38,10 @@ let menu = fs.readFileSync(path.join(htmlPath, 'menu.html'), 'utf8')
 let people = fs.readFileSync(path.join(htmlPath, 'people.html'), 'utf8')
 //Hinzufügen Navbarelement: wichtig!
 let tables = fs.readFileSync(path.join(htmlPath, 'tables.html'), 'utf8')
-let beringungen_list = fs.readFileSync(path.join(htmlPath, 'beringungen/list.html'), 'utf8')
-let login = fs.readFileSync(path.join(htmlPath, 'login.html'), 'utf8')
+
+let viewsPath = path.join(app.getAppPath(), 'app', 'views')
+let login = fs.readFileSync(path.join(viewsPath, 'login/login.html'), 'utf8')
+let beringungen_list = fs.readFileSync(path.join(viewsPath, 'beringungen/list.html'), 'utf8')
 let nutzer = fs.readFileSync(path.join(htmlPath, 'nutzer.html'), 'utf8')
 let useNutzer = fs.readFileSync(path.join(htmlPath, 'use-nutzer.html'), 'utf8')
 let editPerson = fs.readFileSync(path.join(htmlPath, 'edit-person.html'), 'utf8')
@@ -55,73 +63,81 @@ let dom = O.html()
 $('body').html(dom)
 
 $('document').ready(function () {
-	$( "#use-nutzer-form" ).validate( {
-	rules: {
-		bemerkung: {
-			required: true,
-			minlength: 5
-		},
-		lastname: "required",
-		username: {
-			required: true,
-			minlength: 2
-		},
-		password: {
-			required: true,
-			minlength: 5
-		},
-		confirm_password: {
-			required: true,
-			minlength: 5,
-			equalTo: "#password"
-		},
-		email: {
-			required: true,
-			email: true
-		},
-		agree: "required"
-	},
-	messages: {
-		bemerkung: {
-			required: "Please enter a username",
-			minlength: "Your username must consist of at least 2 characters"
-		},
-		lastname: "Please enter your lastname",
-		username: {
-			required: "Please enter a username",
-			minlength: "Your username must consist of at least 2 characters"
-		},
-		password: {
-			required: "Please provide a password",
-			minlength: "Your password must be at least 5 characters long"
-		},
-		confirm_password: {
-			required: "Please provide a password",
-			minlength: "Your password must be at least 5 characters long",
-			equalTo: "Please enter the same password as above"
-		},
-		email: "Please enter a valid email address",
-		agree: "Please accept our policy"
-	},
-	errorElement: "em",
-	errorPlacement: function ( error, element ) {
-		// Add the `help-block` class to the error element
-		error.addClass( "help-block" );
-		if ( element.prop( "type" ) === "checkbox" ) {
-			error.insertAfter( element.parent( "label" ) );
-		} else {
-			error.insertAfter( element );
-		}
-	},
-	highlight: function ( element, errorClass, validClass ) {
-		$('#bemerkungFB').html("Testxxx");
-		$( element ).parents( ".col-sm-5" ).addClass( "has-danger" ).removeClass( "has-success" );
-	},
-	unhighlight: function (element, errorClass, validClass) {
-		$( element ).parents( ".col-sm-5" ).addClass( "has-success" ).removeClass( "has-danger" );
-	}
+  console.log('document is ready');
+  console.log((require('electron').remote.getGlobal('sharedObject').session.username == '' ? 'Kein Nutzer angemeldet' : 'angemeldet als ' + require('electron').remote.getGlobal('sharedObject').session.username));
+  window.login_controller.init();
+  window.beringungen_controller.init();
+  window.start_controller.init();
+
+  window.start_controller.start();
+/*
+  $( "#use-nutzer-form" ).validate( {
+  rules: {
+    bemerkung: {
+      required: true,
+      minlength: 5
+    },
+    lastname: "required",
+    username: {
+      required: true,
+      minlength: 2
+    },
+    password: {
+      required: true,
+      minlength: 5
+    },
+    confirm_password: {
+      required: true,
+      minlength: 5,
+      equalTo: "#password"
+    },
+    email: {
+      required: true,
+      email: true
+    },
+    agree: "required"
+  },
+  messages: {
+    bemerkung: {
+      required: "Please enter a username",
+      minlength: "Your username must consist of at least 2 characters"
+    },
+    lastname: "Please enter your lastname",
+    username: {
+      required: "Please enter a username",
+      minlength: "Your username must consist of at least 2 characters"
+    },
+    password: {
+      required: "Please provide a password",
+      minlength: "Your password must be at least 5 characters long"
+    },
+    confirm_password: {
+      required: "Please provide a password",
+      minlength: "Your password must be at least 5 characters long",
+      equalTo: "Please enter the same password as above"
+    },
+    email: "Please enter a valid email address",
+    agree: "Please accept our policy"
+  },
+  errorElement: "em",
+  errorPlacement: function ( error, element ) {
+    // Add the `help-block` class to the error element
+    error.addClass( "help-block" );
+    if ( element.prop( "type" ) === "checkbox" ) {
+      error.insertAfter( element.parent( "label" ) );
+    } else {
+      error.insertAfter( element );
+    }
+  },
+  highlight: function ( element, errorClass, validClass ) {
+    $('#bemerkungFB').html("Testxxx");
+    $( element ).parents( ".col-sm-5" ).addClass( "has-danger" ).removeClass( "has-success" );
+  },
+  unhighlight: function (element, errorClass, validClass) {
+    $( element ).parents( ".col-sm-5" ).addClass( "has-success" ).removeClass( "has-danger" );
+  }
 } );
-	//Einstiegspunkt in die App.
+  //Einstiegspunkt in die App.
   // window.model.getPeople()
   window.model.getNutzer();
   window.model.parseDBF("ARTEN.DBF");
@@ -151,22 +167,22 @@ $('document').ready(function () {
     e.preventDefault()
     let ok = true
     $('#bemerkung, #zentrale, #vogelart, #datum, #uhrzeit, #alter, #geschlecht, #fluegellaenge, #teilfederlaenge, #schnabellaenge, #schnabel_kopflaenge, #lauf, #gewicht, #brutstaus, #beringungsort, #koordinaten, #skz_1, #skz_2, #farbring').each(function (idx, obj) {
-		// if (jQuery("#use-nutzer-form").valid()) {
-			//$(obj).parent().removeClass('has-success').addClass('has-error')
-			// ok = false
+    // if (jQuery("#use-nutzer-form").valid()) {
+      //$(obj).parent().removeClass('has-success').addClass('has-error')
+      // ok = false
       // if ($(obj).val() === 'x') {
       if ($(obj).val().length < 4) {
-		  //Leere alles? TODO
-		  //Alternative: Helptexte nicht vergewaltigen
-		  // $("#use-nutzer" ).load("use-nutzer.html" );
-		  //console.log("Valid?: "+JSON.stringify(jQuery("#use-nutzer-form").validate()));
-		  // console.log("Problem: "+$(obj).parent().attr('id')+"???");
+      //Leere alles? TODO
+      //Alternative: Helptexte nicht vergewaltigen
+      // $("#use-nutzer" ).load("use-nutzer.html" );
+      //console.log("Valid?: "+JSON.stringify(jQuery("#use-nutzer-form").validate()));
+      // console.log("Problem: "+$(obj).parent().attr('id')+"???");
         $(obj).parent().removeClass('has-success').addClass('has-danger')
-		// $(obj).parent().next().removeClass('has-success').addClass('has-danger')
-		$(obj).next().html("&nbsp;&nbsp;&nbsp; Bitte mehr als 3 Buchstaben eingeben");
-		$(obj).next().next().html("");
-		// $(obj).parent().prev().html("Test");
-		// $('#bemerkungFB').html("Test");
+    // $(obj).parent().next().removeClass('has-success').addClass('has-danger')
+    $(obj).next().html("&nbsp;&nbsp;&nbsp; Bitte mehr als 3 Buchstaben eingeben");
+    $(obj).next().next().html("");
+    // $(obj).parent().prev().html("Test");
+    // $('#bemerkungFB').html("Test");
         ok = false
       } else {
         $(obj).parent().addClass('has-success').removeClass('has-danger')
@@ -176,22 +192,23 @@ $('document').ready(function () {
       let formId = $(e.target).parents('form').attr('id')
       let keyValue = window.view.getFormFieldValues(formId)
       window.model.saveFormData('Daten', keyValue, function () {
-		  //keyValue.values[0] = Beringernr
-		  console.log(keyValue.values[0]);
-		  window.view.useNutzerBeringernr(keyValue.values[0]);
-		  // window.view.useNutzer(keyValue.values[0]);
+      //keyValue.values[0] = Beringernr
+      console.log(keyValue.values[0]);
+      window.view.useNutzerBeringernr(keyValue.values[0]);
+      // window.view.useNutzer(keyValue.values[0]);
         //window.model.getNutzer()
       })
     }
   });
-	$(function () {
-		// $('#datetimepicker1').datetimepicker();
-		// $('#datetimepicker1').datepicker();
-		$('#datetimepicker1').datepicker({
-			language: 'de'
-		});
-		console.log("datepicker");
-	});
+  $(function () {
+    // $('#datetimepicker1').datetimepicker();
+    // $('#datetimepicker1').datepicker();
+    $('#datetimepicker1').datepicker({
+      language: 'de'
+    });
+    console.log("datepicker");
+  });
+*/
 })
 
 // Set jQuery.validate settings for bootstrap integration
