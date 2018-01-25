@@ -1,7 +1,14 @@
-<h2>Beringung</h2>
+<h2><span id="beringung_edit_title">Beringung Ändern</span></h2>
 <div id="beringung_edit" class="container">
-  <form id="use-nutzer-form" action="#" method="POST">
+  <form id="beringung_edit_form">
     <div class="container-fluid">
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="id">Id</label>
+        <input class="col-sm-4 form-control" type="text" id="id" aria-describedby="idHelpInline">
+        <div class="form-control-feedback" id="idFB"></div>
+        <small id="idHelpInline" class="col-sm-4 align-top form-text text-muted">Id.</small>
+      </div>
+
       <div class="form-group row">
         <label class="col-sm-3 col-form-label" for="beringernr">Beringernr</label>
         <input class="col-sm-4 form-control" type="text" id="beringernr" aria-describedby="beringerInfo" readonly>
@@ -26,13 +33,14 @@
           A person's last name or surname (family name).</small>
       </div>
     -->
-    <!-- <div class="form-group row"> -->
-        <!-- <label class="col-sm-3 col-form-label" for="ringnr">Ringnr.</label> -->
-        <!-- <input class="col-sm-4 form-control" type="text" id="ringnr" -->
-          <!-- aria-describedby="ringnrHelpInline" readonly> -->
-        <!-- <small id="ringnrHelpInline" class="col-sm-4 align-top form-text text-muted"> -->
-          <!-- Ringnummer.</small> -->
-      <!-- </div> -->
+
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label" for="ringnr">Ringnummer</label>
+      <input class="col-sm-4 form-control" type="text" id="ringnr" aria-describedby="ringnrHelpInline">
+      <div class="form-control-feedback" id="ringnrFB"></div>
+      <small id="ringnrHelpInline" class="col-sm-4 align-top form-text text-muted">Ringnummer.</small>
+    </div>
+
     <div class="form-group row">
         <label class="col-sm-3 col-form-label" for="bemerkung">Bemerkung</label>
         <input class="col-sm-4 form-control" type="text" id="bemerkung" aria-describedby="bemerkungHelpInline">
@@ -88,14 +96,14 @@
         <small id="geschlechtHelpInline" class="col-sm-4 align-top form-text text-muted">
           Geschlecht.</small>
       </div>
+
     <div class="form-group row">
-        <label class="col-sm-3 col-form-label" for="alter">Alter</label>
-        <input class="col-sm-4 form-control" type="text" id="alter"
-          aria-describedby="alterHelpInline">
+      <label class="col-sm-3 col-form-label" for="alter">Alter</label>
+      <input class="col-sm-4 form-control" type="text" id="alter" aria-describedby="alterHelpInline">
       <div class="form-control-feedback" id="alterFB"></div>
-        <small id="alterHelpInline" class="col-sm-4 align-top form-text text-muted">
-          Alter.</small>
-      </div>
+      <small id="alterHelpInline" class="col-sm-4 align-top form-text text-muted">Alter.</small>
+    </div>
+
     <div class="form-group row">
         <label class="col-sm-3 col-form-label" for="fluegellaenge">Flügellänge</label>
         <input class="col-sm-4 form-control" type="text" id="fluegellaenge"
@@ -130,8 +138,7 @@
       </div>
     <div class="form-group row">
         <label class="col-sm-3 col-form-label" for="lauf">Lauf</label>
-        <input class="col-sm-4 form-control" type="text" id="lauf"
-          aria-describedby="laufHelpInline">
+        <input class="col-sm-4 form-control" type="text" id="lauf" aria-describedby="laufHelpInline">
       <div class="form-control-feedback" id="laufFB"></div>
         <small id="laufHelpInline" class="col-sm-4 align-top form-text text-muted">
           Lauf.</small>
@@ -194,7 +201,7 @@
       </div>
       <div class="form-group row offset-sm-1">
         <button class="col-sm-auto m-1 btn btn-primary justify-content-start p-0.5"
-         id="use-nutzer-submit" type="submit">Speichern</button>
+         id="beringung_speichern_button" type="button" value="Update">Speichern</button>
       </div>
     </div>
   </form>

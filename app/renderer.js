@@ -51,6 +51,7 @@ let login =            fs.readFileSync(path.join(viewsPath, 'login/login.html'),
 let beringungen_list = fs.readFileSync(path.join(viewsPath, 'beringungen/list.html'), 'utf8')
 let beringungen_edit = fs.readFileSync(path.join(viewsPath, 'beringungen/edit.html'), 'utf8')
 let beringungen_menu = fs.readFileSync(path.join(viewsPath, 'beringungen/menu.html'), 'utf8')
+let beringungen_search = fs.readFileSync(path.join(viewsPath, 'beringungen/search.html'), 'utf8')
 let nutzer_menu =      fs.readFileSync(path.join(viewsPath, 'nutzer/menu.html'), 'utf8')
 
 let nutzer = fs.readFileSync(path.join(htmlPath, 'nutzer.html'), 'utf8')
@@ -66,6 +67,7 @@ O('#people').append(people)
 O('#tables').append(tables)
 O('#beringungen_list_section').append(beringungen_list)
 O('#beringungen_edit_section').append(beringungen_edit)
+O('#beringungen_search_section').append(beringungen_search)
 O('#login').append(login)
 O('#nutzer').append(nutzer)
 O('#use-nutzer').append(useNutzer)
@@ -176,43 +178,7 @@ $('document').ready(function () {
       })
     }
   })
-  $('#use-nutzer-submit').click(function (e) {
-    e.preventDefault()
-    let ok = true
-    $('#bemerkung, #zentrale, #vogelart, #datum, #uhrzeit, #alter, #geschlecht, #fluegellaenge, #teilfederlaenge, #schnabellaenge, #schnabel_kopflaenge, #lauf, #gewicht, #brutstaus, #beringungsort, #koordinaten, #skz_1, #skz_2, #farbring').each(function (idx, obj) {
-    // if (jQuery("#use-nutzer-form").valid()) {
-      //$(obj).parent().removeClass('has-success').addClass('has-error')
-      // ok = false
-      // if ($(obj).val() === 'x') {
-      if ($(obj).val().length < 4) {
-      //Leere alles? TODO
-      //Alternative: Helptexte nicht vergewaltigen
-      // $("#use-nutzer" ).load("use-nutzer.html" );
-      //console.log("Valid?: "+JSON.stringify(jQuery("#use-nutzer-form").validate()));
-      // console.log("Problem: "+$(obj).parent().attr('id')+"???");
-        $(obj).parent().removeClass('has-success').addClass('has-danger')
-    // $(obj).parent().next().removeClass('has-success').addClass('has-danger')
-    $(obj).next().html("&nbsp;&nbsp;&nbsp; Bitte mehr als 3 Buchstaben eingeben");
-    $(obj).next().next().html("");
-    // $(obj).parent().prev().html("Test");
-    // $('#bemerkungFB').html("Test");
-        ok = false
-      } else {
-        $(obj).parent().addClass('has-success').removeClass('has-danger')
-      }
-    })
-    if (ok) {
-      let formId = $(e.target).parents('form').attr('id')
-      let keyValue = window.view.getFormFieldValues(formId)
-      window.model.saveFormData('Daten', keyValue, function () {
-      //keyValue.values[0] = Beringernr
-      console.log(keyValue.values[0]);
-      window.view.useNutzerBeringernr(keyValue.values[0]);
-      // window.view.useNutzer(keyValue.values[0]);
-        //window.model.getNutzer()
-      })
-    }
-  });
+
   $(function () {
     // $('#datetimepicker1').datetimepicker();
     // $('#datetimepicker1').datepicker();

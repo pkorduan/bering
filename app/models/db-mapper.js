@@ -16,3 +16,32 @@ module.exports.rowsFromSqlDataObject = function (dataObject) {
   }
   return rows
 }
+
+module.exports.getFormFieldValues = function (formId) {
+  let keyValue = {columns: [], values: []}
+  $('#' + formId).find('input:visible, textarea:visible').each(function (idx, obj) {
+    keyValue.columns.push($(obj).attr('id'))
+    keyValue.values.push($(obj).val())
+  })
+  return keyValue
+}
+
+module.exports.getFormFieldKVPs = function (formId) {
+  console.log('Model dbMapper.getFormFieldKVPs');
+  let kvps = {}
+  $('#' + formId).find('input:visible, textarea:visible').each(
+    function (idx, field) {
+      kvps[field.id] = field.value
+    }
+  )
+  console.log('kvps', kvps)
+  return kvps
+}
+
+module.exports.placeHoldersString = function (length) {
+  let places = ''
+  for (let i = 1; i <= length; i++) {
+    places += '?, '
+  }
+  return /(.*),/.exec(places)[1]
+}
