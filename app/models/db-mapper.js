@@ -31,7 +31,8 @@ module.exports.getFormFieldKVPs = function (formId) {
   let kvps = {}
   $('#' + formId).find('input:visible, textarea:visible').each(
     function (idx, field) {
-      kvps[field.id] = field.value
+      if (!(field.id == 'id' && field.value == ''))
+        kvps[field.id] = field.value
     }
   )
   console.log('kvps', kvps)

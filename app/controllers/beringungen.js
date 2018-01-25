@@ -74,18 +74,26 @@ module.exports.searchForm = function() {
 
 module.exports.search = function(evt) {
   console.log('beringungen_controller.search');
-  let ringnr = $('#beringung_search_form :input[id=ringnr]').val()
-
-  let beringungen = window.models.beringung.findWhere('ringnr = ' + ringnr)
-
-  window.debug_b = beringungen;
+  let ringnr = $('#beringung_search_form :input[id=ringnr]').val(),
+      beringungen = window.models.beringung.findWhere('ringnr = ' + ringnr),
+      beringung = {},
+      d = new Date()
 
   if (Object.keys(beringungen).length > 0) {
-    this.new(beringungen[0])
+    // wiederfund
+    beringung = beringungen[0]
   }
   else {
-    this.new({ ringnr: ringnr})
+    // neu fund
+    beringung = {
+      ringnr: ringnr
+    }
   }
+
+  beringung.beringernr = require('electron').remote.getGlobal('sharedObject').session.id
+  beringung.datum = d.toLocaleDateString();
+  beringung.uhrzeit = d.toLocaleTimeString();
+  this.new(beringung)
 }
 
 module.exports.list = function(filter = '') {
@@ -93,12 +101,13 @@ module.exports.list = function(filter = '') {
   let beringungen = window.models.beringung.findWhere(filter),
       t = $('<table id="list-table">');
 
-  t.append('<tr><th width="20%">Ringnr</th><th width="20%">Datum</th><th width="20%">Zeit</th><th width="20%">Art</th><th width="20%">Alter</th><th>Notiz</th></tr>');
+  t.append('<tr><th width="15%">Ringnr</th><th width="5%">Beringernr</th><th width="15%">Datum</th><th width="15%">Zeit</th><th width="15%">Art</th><th width="15%">Alter</th><th>Notiz</th></tr>');
   $.each(
     beringungen,
     function(index, v) {
       t.append('<tr>\
         <td width="20%">' + v.ringnr + '</td>\
+        <td width="20%">' + v.beringernr + '</td>\
         <td width="20%">' + v.datum + '</td>\
         <td width="20%">' + v.uhrzeit+ '</td>\
         <td width="20%">' + v.vogelart + '</td>\
@@ -124,6 +133,8 @@ module.exports.edit = function(id) {
   let beringung = window.models.beringung.findById(id)
   this.setValuesToForm(beringung);
 
+  $('#beringung_edit_title').html('Änderung Beringungsdaten')
+  $('#beringung_speichern_button').val('Update')
   $('section').hide();
   $('#beringungen_edit_section').show();
 }
@@ -132,25 +143,25 @@ module.exports.new = function(beringung) {
   console.log('controller beringungen.edit id: %o', beringung);
 
   if (beringung.id === undefined) {
-    // empty all form fields despite ringnr
     $('form#beringung_edit_form :input').each(
       function(i, field) {
         $(field).val('')
       }
     )
     $('#beringung_edit_title').html('Neufund')
-    $('form#beringung_edit_form :input[id=ringnr]').val(beringung.ringnr)
-    $('#beringung_speichern_button').val('Insert')
   }
   else {
+    beringung.id = ''
     $('#beringung_edit_title').html('Wiederfund')
-    $('#beringung_speichern_button').val('Insert')
-    this.setValuesToForm(beringung);
+
     // ToDo Set Wiederfund
     // Set values in form to identify it as wiederfund
     // ohne id, nicht als edit, sondern als new aber
     // werte übernommen.
   }
+
+  this.setValuesToForm(beringung);
+  $('#beringung_speichern_button').val('Insert')
 
   $('section').hide();
   $('#beringungen_edit_section').show();
@@ -166,10 +177,16 @@ module.exports.setValuesToForm = function(beringung) {
   $.each(
     beringung,
     function(index, value) {
-      //console.log('index: ' + index + ' value: ' + value);
-      $('#' + index).val(value)
+      console.log('index: ' + index + ' value: ' + value);
+      $('form#beringung_edit_form :input[id=' + index + ']').val(value)
     }
   )
+}
+
+module.exports.setDateAndTimeToForm = function(d) {
+  console.log('setDateAndTimeToForm d: ', d.toLocaleDateString(), d.toLocaleTimeString())
+  $('form#beringung_edit_form :input[id=datum]').val(d.toLocaleDateString())
+  $('form#beringung_edit_form :input[id=uhrzeit]').val(d.toLocaleTimeString())
 }
 
 module.exports.save = function(evt) {

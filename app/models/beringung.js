@@ -17,7 +17,6 @@ module.exports.findWhere = function (where = '', order = '`datum`, `uhrzeit`') {
       console.log('query result: %o', result);
       if (result !== undefined && result.length > 0) {
         rows = window.models.dbMapper.rowsFromSqlDataObject(result[0])
-        console.log('rows: %o', rows)
       }
     } catch (error) {
       console.log('Fehler: ', error.message)
