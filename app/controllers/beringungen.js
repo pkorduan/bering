@@ -148,11 +148,11 @@ module.exports.new = function(beringung) {
         $(field).val('')
       }
     )
-    $('#beringung_edit_title').html('Neufund')
+    $('#beringung_edit_title').html('Fremdfund')
   }
   else {
     beringung.id = ''
-    $('#beringung_edit_title').html('Wiederfund')
+    $('#beringung_edit_title').html('Eigener Wiederfund')
 
     // ToDo Set Wiederfund
     // Set values in form to identify it as wiederfund

@@ -1,7 +1,7 @@
 // model Beringung
 'use strict'
 
-module.exports.findWhere = function (where = '', order = '`datum`, `uhrzeit`') {
+module.exports.findWhere = function (where = '', order = '`datum`, `uhrzeit` DESC') {
   console.log('Model Beringung.findWhere')
   let db = SQL.dbOpen(window.model.db),
       rows = {};
