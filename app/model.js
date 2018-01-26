@@ -144,28 +144,6 @@ module.exports.getPeople = function () {
 }
 
 /*
-  Populates the Nutzer List.
-*/
-module.exports.getNutzer = function () {
-  let db = SQL.dbOpen(window.model.db)
-  if (db !== null) {
-    let query = 'SELECT * FROM `nutzer` ORDER BY `name` ASC'
-    try {
-      let row = db.exec(query)
-      if (row !== undefined && row.length > 0) {
-        row = _rowsFromSqlDataObject(row[0])
-		console.log('getNutzer Ergebnis:', row)
-        view.showNutzer(row)
-      }
-    } catch (error) {
-      console.log('model.getNutzer', error.message)
-    } finally {
-      SQL.dbClose(db, window.model.db)
-    }
-  }
-}
-
-/*
   Populates the Tables List.
 */
 module.exports.getTables = function () {

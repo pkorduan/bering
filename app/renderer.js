@@ -21,6 +21,9 @@ require(path.join(webRoot, 'bootstrap-datepicker.de.min.js'))
 
 // load controllers
 let controllersPath = path.join(app.getAppPath(), 'app', 'controllers')
+window.controllers = {}
+window.controllers.settings = require(path.join(controllersPath, 'settings.js'))
+window.controllers.users = require(path.join(controllersPath, 'users.js'))
 window.login_controller = require(path.join(controllersPath, 'login.js'))
 window.beringungen_controller = require(path.join(controllersPath, 'beringungen.js'))
 window.start_controller = require(path.join(controllersPath, 'start.js'))
@@ -36,6 +39,7 @@ let modelsPath = path.join(app.getAppPath(), 'app', 'models')
 window.models = {};
 window.models.beringung = require(path.join(modelsPath, 'beringung.js'))
 window.models.dbMapper = require(path.join(modelsPath, 'db-mapper.js'))
+window.models.user = require(path.join(modelsPath, 'user.js'))
 
 // Compose the DOM from separate HTML concerns; each from its own file.
 let htmlPath = path.join(app.getAppPath(), 'app', 'html')
@@ -53,8 +57,9 @@ let beringungen_edit = fs.readFileSync(path.join(viewsPath, 'beringungen/edit.ht
 let beringungen_menu = fs.readFileSync(path.join(viewsPath, 'beringungen/menu.html'), 'utf8')
 let beringungen_search = fs.readFileSync(path.join(viewsPath, 'beringungen/search.html'), 'utf8')
 let nutzer_menu =      fs.readFileSync(path.join(viewsPath, 'nutzer/menu.html'), 'utf8')
+let settings_edit =      fs.readFileSync(path.join(viewsPath, 'settings/edit.html'), 'utf8')
+let user_list = fs.readFileSync(path.join(viewsPath, 'user/list.html'), 'utf8')
 
-let nutzer = fs.readFileSync(path.join(htmlPath, 'nutzer.html'), 'utf8')
 let useNutzer = fs.readFileSync(path.join(htmlPath, 'use-nutzer.html'), 'utf8')
 let editPerson = fs.readFileSync(path.join(htmlPath, 'edit-person.html'), 'utf8')
 
@@ -68,8 +73,10 @@ O('#tables').append(tables)
 O('#beringungen_list_section').append(beringungen_list)
 O('#beringungen_edit_section').append(beringungen_edit)
 O('#beringungen_search_section').append(beringungen_search)
+O('#settings_edit_section').append(settings_edit)
 O('#login').append(login)
-O('#nutzer').append(nutzer)
+O('#users_list_section').append(user_list)
+
 O('#use-nutzer').append(useNutzer)
 O('#edit-person').append(editPerson)
 
@@ -80,6 +87,8 @@ $('body').html(dom)
 $('document').ready(function () {
   console.log('document is ready');
   console.log((require('electron').remote.getGlobal('sharedObject').session.username == '' ? 'Kein Nutzer angemeldet' : 'angemeldet als ' + require('electron').remote.getGlobal('sharedObject').session.username));
+  window.controllers.settings.init();
+  window.controllers.users.init();
   window.login_controller.init();
   window.beringungen_controller.init();
   window.start_controller.init();

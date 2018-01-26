@@ -46,7 +46,7 @@ module.exports.init = function() {
       context: this
     },
     function(evt) {
-      evt.data.context.list('beringernr = ' + require('electron').remote.getGlobal('sharedObject').session.id)
+      evt.data.context.list('beringernr = ' + require('electron').remote.getGlobal('sharedObject').session.beringernr)
     }
   )
 
@@ -90,7 +90,7 @@ module.exports.search = function(evt) {
     }
   }
 
-  beringung.beringernr = require('electron').remote.getGlobal('sharedObject').session.id
+  beringung.beringernr = require('electron').remote.getGlobal('sharedObject').session.beringernr
   beringung.datum = d.toLocaleDateString();
   beringung.uhrzeit = d.toLocaleTimeString();
   this.new(beringung)

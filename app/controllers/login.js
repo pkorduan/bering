@@ -23,7 +23,7 @@ module.exports.login = function(username, passwort) {
   if (username == 'korduan' && passwort == 'peko') {
     // login
     require('electron').remote.getGlobal('sharedObject').session.username = username;
-    require('electron').remote.getGlobal('sharedObject').session.id = 1;
+    require('electron').remote.getGlobal('sharedObject').session.beringernr = '0123';
     window.start_controller.start()
   }
 }
