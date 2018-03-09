@@ -9,6 +9,7 @@ const config = require(path.join(__dirname, 'package.json'))
 const model = require(path.join(__dirname, 'app', 'model.js'))
 const BrowserWindow = electron.BrowserWindow
 const dbPath = '//app/db';
+const dbName = 'bering.db';
 
 global.sharedObject = {
 	session: {
@@ -32,14 +33,13 @@ app.on('ready', function () {
     }
   })
 
-  //C:\Users\seip\AppData\Roaming\Local SQLite Example -> wg. ""productName": "Local SQLite Example"," in package.json
-  //model.initDb(app.getPath('userData'),
-  //Im Ordner der App
-  // console.log('Rufe in main.js model.initDb auf');
-  model.initDb(app.getAppPath()+dbPath,
+  model.migrateDb(
+    app.getAppPath() + dbPath,
+    dbName,
     // Load a DOM stub here. See renderer.js for the fully composed DOM.
     mainWindow.loadURL(`file://${__dirname}/app/html/index.html`)
   )
+
   // Open the DevTools.
   mainWindow.webContents.openDevTools()
 

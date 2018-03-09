@@ -74,14 +74,14 @@ SQL.dbClose = function (databaseHandle, databaseFileName) {
 */
 module.exports.initDb = function (appPath, callback) {
   // let dbPath = path.join(appPath, 'example.db')
-  //console.log('bin in model.initDb in model.js');
+  //console.log('model.initDb : ' + appPath);
   // let dbPath = path.join(app.getAppPath(), '//app//db//example.db')
   let dbPath = path.join(appPath, 'example.db')
   let createDb = function (dbPath) {
     // Create a database.
-	// console.log('Erzeuge DB')
+    console.log('Erzeuge DB: ', dbPath)
     let db = new SQL.Database()
-	// console.log('Fülle DB')
+	  // console.log('Fülle DB')
     let query = fs.readFileSync(
     path.join(__dirname, 'db', 'schema.sql'), 'utf8')
     let result = db.exec(query)
@@ -93,32 +93,106 @@ module.exports.initDb = function (appPath, callback) {
       console.log('model.initDb.createDb failed.')
     }
   }
-  // console.log('bin vor dbOpen');
+  console.log('Open DB: ', dbPath);
   let db = SQL.dbOpen(dbPath)
   // console.log('bin nach dbOpen');
   if (db === null) {
-    /* The file doesn't exist so create a new database. */
-	console.log('keine db da');
+    // The file doesn't exist so create a new database.
+    console.log('keine db da');
     createDb(dbPath)
-  } else {
-    /*
-      The file is a valid sqlite3 database. This simple query will demonstrate
-      whether it's in good health or not.
-    */
-	// console.log('db da');
+  }
+  else {
+	  // console.log('db da');
     let query = 'SELECT count(*) as `count` FROM `sqlite_master`'
     let row = db.exec(query)
     let tableCount = parseInt(row[0].values)
     if (tableCount === 0) {
       console.log('The file is an empty SQLite3 database.')
       createDb(dbPath)
-    } else {
+    }
+    else {
       console.log('The database has', tableCount, 'tables.')
     }
     if (typeof callback === 'function') {
       callback()
     }
   }
+}
+
+module.exports.migrateDb = function (dbPath, dbName, callback) {
+  console.log('model.js migrateDb dbFile: ', dbName)
+  let dbFile = path.join(dbPath, dbName),
+      db = SQL.dbOpen(dbFile),
+      rows = {},
+
+      migrate = function (dbFile, migrationsPath, migrationFile) {
+        console.log('Exec migrations file ', migrationFile)
+        let db = SQL.dbOpen(dbFile),
+            query = fs.readFileSync(path.join(migrationsPath, migrationFile), 'utf8')
+
+        try {
+          let result = db.exec(query)
+          console.log('Result: ', result)
+          db.exec("INSERT INTO `Migrationen` (`dateiname`) VALUES ('" + migrationFile + "')")
+        }
+        catch (error) {
+          console.log('Fehler: ', error.message)
+        }
+        finally {
+          SQL.dbClose(db, dbFile)
+        }
+      },
+
+      doMigrations = function(dbPath, dbFile, migrations) {
+        let migrationsPath = path.join(dbPath, 'migrations')
+
+        fs.readdir(migrationsPath, (err, files) => {
+          files.forEach(file => {
+            if (migrations.indexOf(file) == -1) {
+              migrate(dbFile, migrationsPath, file)
+            }
+        });
+      })
+    }
+
+  let result = db.exec("\
+    SELECT\
+      name\
+    FROM\
+      sqlite_master\
+    WHERE\
+      type='table' AND\
+      name='Migrationen'\
+  ")
+  if (result.length == 0) {
+    doMigrations(dbPath, dbFile, [])
+  }
+  else {
+    try {
+      result = db.exec("\
+        SELECT\
+          *\
+        FROM\
+          `Migrationen`\
+        ORDER BY\
+          dateiname\
+      ")
+      if (result !== undefined && result.length > 0) {
+        let migrations = result[0].values.map(x => x[0])
+        doMigrations(dbPath, dbFile, migrations)
+      }
+    }
+    catch (error) {
+      console.log('Fehler: ', error.message)
+    }
+    finally {
+      SQL.dbClose(db, dbFile)
+    }
+  }
+
+  if (typeof callback === 'function') {
+    callback()
+  }  
 }
 
 /*

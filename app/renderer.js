@@ -58,10 +58,11 @@ let beringungen_menu = fs.readFileSync(path.join(viewsPath, 'beringungen/menu.ht
 let beringungen_search = fs.readFileSync(path.join(viewsPath, 'beringungen/search.html'), 'utf8')
 let nutzer_menu =      fs.readFileSync(path.join(viewsPath, 'nutzer/menu.html'), 'utf8')
 let settings_edit =      fs.readFileSync(path.join(viewsPath, 'settings/edit.html'), 'utf8')
+let settings_info =      fs.readFileSync(path.join(viewsPath, 'settings/info.html'), 'utf8')
 let user_list = fs.readFileSync(path.join(viewsPath, 'user/list.html'), 'utf8')
 
-let useNutzer = fs.readFileSync(path.join(htmlPath, 'use-nutzer.html'), 'utf8')
-let editPerson = fs.readFileSync(path.join(htmlPath, 'edit-person.html'), 'utf8')
+let useNutzer = fs.readFileSync(path.join(htmlPath, 'use-nutzer.html'), 'utf8'),
+    editPerson = fs.readFileSync(path.join(htmlPath, 'edit-person.html'), 'utf8')
 
 let O = cheerio.load(body)
 O('#nav-bar').append(navBar)
@@ -74,6 +75,8 @@ O('#beringungen_list_section').append(beringungen_list)
 O('#beringungen_edit_section').append(beringungen_edit)
 O('#beringungen_search_section').append(beringungen_search)
 O('#settings_edit_section').append(settings_edit)
+O('#settings_info_section').append(settings_info)
+
 O('#login').append(login)
 O('#users_list_section').append(user_list)
 
