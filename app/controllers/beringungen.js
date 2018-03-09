@@ -46,7 +46,7 @@ module.exports.init = function() {
       context: this
     },
     function(evt) {
-      evt.data.context.list('beringernr = ' + require('electron').remote.getGlobal('sharedObject').session.beringernr)
+      evt.data.context.list("beringernr = '" + require('electron').remote.getGlobal('sharedObject').session.beringernr + "'")
     }
   )
 
@@ -60,6 +60,19 @@ module.exports.init = function() {
       evt.data.context.save(evt)
     }
   )
+
+  console.log('fill select option for alter');
+  let altersangaben = window.models.vogelalter.findWhere()
+  console.log('vogelalter %o', altersangaben)
+
+  $.each(altersangaben, function (i, item) {
+    $('#beringung_edit_form select[id=alter]').append(
+      $('<option>', { 
+        value: item.code,
+        text : item.bezeichnung_de 
+      })
+    );
+  });
 }
 
 module.exports.searchForm = function() {
