@@ -25,6 +25,7 @@ let controllersPath = path.join(app.getAppPath(), 'app', 'controllers')
 window.controllers = {}
 window.controllers.settings = require(path.join(controllersPath, 'settings.js'))
 window.controllers.users = require(path.join(controllersPath, 'users.js'))
+window.controllers.help = require(path.join(controllersPath, 'help.js'))
 window.login_controller = require(path.join(controllersPath, 'login.js'))
 window.beringungen_controller = require(path.join(controllersPath, 'beringungen.js'))
 window.start_controller = require(path.join(controllersPath, 'start.js'))
@@ -52,6 +53,8 @@ let tables = fs.readFileSync(path.join(htmlPath, 'tables.html'), 'utf8')
 
 // load views
 let viewsPath = path.join(app.getAppPath(), 'app', 'views')
+window.views = {}
+window.views.help = fs.readFileSync(path.join(viewsPath, 'help/help.html'), 'utf8')
 let login =            fs.readFileSync(path.join(viewsPath, 'login/login.html'), 'utf8')
 let beringungen_list = fs.readFileSync(path.join(viewsPath, 'beringungen/list.html'), 'utf8')
 let beringungen_edit = fs.readFileSync(path.join(viewsPath, 'beringungen/edit.html'), 'utf8')
@@ -75,12 +78,14 @@ O('#tables').append(tables)
 O('#beringungen_list_section').append(beringungen_list)
 O('#beringungen_edit_section').append(beringungen_edit)
 O('#beringungen_search_section').append(beringungen_search)
+
+O('#help_section').append(window.views.help)
+
 O('#settings_edit_section').append(settings_edit)
 O('#settings_info_section').append(settings_info)
 
 O('#login').append(login)
 O('#users_list_section').append(user_list)
-
 O('#use-nutzer').append(useNutzer)
 O('#edit-person').append(editPerson)
 
@@ -91,12 +96,12 @@ $('body').html(dom)
 $('document').ready(function () {
   console.log('document is ready');
   console.log((require('electron').remote.getGlobal('sharedObject').session.username == '' ? 'Kein Nutzer angemeldet' : 'angemeldet als ' + require('electron').remote.getGlobal('sharedObject').session.username));
+  window.controllers.help.init();
   window.controllers.settings.init();
   window.controllers.users.init();
   window.login_controller.init();
   window.beringungen_controller.init();
   window.start_controller.init();
-
   window.start_controller.start();
 /*
   $( "#use-nutzer-form" ).validate( {
