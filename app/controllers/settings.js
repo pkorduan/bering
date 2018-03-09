@@ -37,9 +37,10 @@ module.exports.edit = function(evt) {
 
 module.exports.info = function(evt) {
   console.log('controllers.settings.info');
-  let version = fs.readFileSync(path.join(app.getAppPath(), 'VERSION'), 'utf8')
+  let converter = new showdown.Converter(),
+      readme = fs.readFileSync(path.join(app.getAppPath(), 'README.md'), 'utf8')
 
-  $('#settings_info_version').html(version)
+  $('#settings_info').append(converter.makeHtml(readme))
   $('section').hide();
   $('#settings_info_section').show()
 }

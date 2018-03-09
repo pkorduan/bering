@@ -5,6 +5,7 @@ const path = require('path')
 const app = require('electron').remote.app
 const cheerio = require('cheerio')
 const dbfParser = require('node-dbf')
+const showdown = require('showdown')
 
 console.log('Start renderer');
 
