@@ -1,0 +1,20 @@
+CREATE TABLE Arten (
+    armarke   VARCHAR (100),
+    arrotlist VARCHAR (100),
+    arart     VARCHAR (10),
+    arname    VARCHAR (50),
+    arlatein  VARCHAR (100),
+    suchen    VARCHAR (255),
+    areuria   INTEGER,
+    areurin   INTEGER,
+    argmin    INTEGER,
+    argmax    INTEGER,
+    arfmin    INTEGER,
+    arfmax    INTEGER,
+    arneunutz VARCHAR (100),
+    arneudatu DATE,
+    arneuzeit TIME,
+    araennutz VARCHAR (100),
+    araendatu DATE,
+    araenzeit TIME
+);
