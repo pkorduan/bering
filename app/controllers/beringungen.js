@@ -73,6 +73,20 @@ module.exports.init = function() {
       })
     );
   });
+
+  console.log('fill select option for vogelarten');
+  let vogelarten = window.models.vogelarten.findWhere('', 'arname')
+  console.log('vogelarten %o', vogelarten)
+
+  $.each(vogelarten, function (i, item) {
+    $('#beringung_edit_form select[id=vogelart]').append(
+      $('<option>', { 
+        value: item.code,
+        text : item.bezeichnung
+      })
+    );
+  });
+
 }
 
 module.exports.searchForm = function() {

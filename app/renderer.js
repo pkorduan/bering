@@ -43,6 +43,7 @@ window.models.beringung = require(path.join(modelsPath, 'beringung.js'))
 window.models.dbMapper = require(path.join(modelsPath, 'db-mapper.js'))
 window.models.user = require(path.join(modelsPath, 'user.js'))
 window.models.vogelalter = require(path.join(modelsPath, 'vogelalter.js'))
+window.models.vogelarten = require(path.join(modelsPath, 'vogelarten.js'))
 
 // Compose the DOM from separate HTML concerns; each from its own file.
 let htmlPath = path.join(app.getAppPath(), 'app', 'html')
