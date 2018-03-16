@@ -1,3 +1,36 @@
+<script>
+  function setOneNumberDecimal(value, min = 0.1, max = 20000) {
+    var value = value;
+
+    // Replace , by .
+    value = value.replace(',', '.');
+
+    // convert to float type
+    value = parseFloat(value);
+
+    if (isNaN(value)) {
+      // remove text if it is not number
+      value = '';
+    }
+    else {
+      // round to one digit
+      value = value.toFixed(1)
+
+      // make always positive
+      value = Math.abs(value);
+
+      // make not larger than 5000
+      value = (value > max ? max : value);
+
+      // make not smaller than 1
+      value = (value < min ? min : value);
+
+      return value;
+    }
+
+    return value;
+  }
+</script>
 <h2><span id="beringung_edit_title">Beringung Ändern</span></h2>
 <div id="beringung_edit" class="container">
   <form id="beringung_edit_form">
@@ -6,7 +39,7 @@
         <label class="col-sm-3 col-form-label" for="id">Id</label>
         <input class="col-sm-4 form-control" type="text" id="id" aria-describedby="idHelpInline">
         <div class="form-control-feedback" id="idFB"></div>
-        <small id="idHelpInline" class="col-sm-4 align-top form-text text-muted">Id.</small>
+        <small id="idHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
       </div>
 
       <div class="form-group row">
@@ -38,7 +71,7 @@
       <label class="col-sm-3 col-form-label" for="zentrale">Zentrale</label>
       <input class="col-sm-4 form-control" type="text" id="zentrale" aria-describedby="zentraleHelpInline" value="test">
       <div class="form-control-feedback" id="zentraleFB"></div>
-      <small id="zentraleHelpInline" class="col-sm-4 align-top form-text text-muted">Zentrale.</small>
+      <small id="zentraleHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
     </div>
 
 
@@ -46,7 +79,7 @@
       <label class="col-sm-3 col-form-label" for="ringnr">Ringnummer</label>
       <input class="col-sm-4 form-control" type="text" id="ringnr" aria-describedby="ringnrHelpInline">
       <div class="form-control-feedback" id="ringnrFB"></div>
-      <small id="ringnrHelpInline" class="col-sm-4 align-top form-text text-muted">Ringnummer.</small>
+      <small id="ringnrHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
     </div>
 
     <div class="form-group row">
@@ -54,7 +87,7 @@
       <select class="col-sm-4 form-control" id="vogelart">
       </select>
       <div class="form-control-feedback" id="vogelartFB"></div>
-      <small id="vogelartHelpInline" class="col-sm-4 align-top form-text text-muted">Vogelart.</small>
+      <small id="vogelartHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
     </div>
 
     <div class="form-group row"  id="datetimepicker1">
@@ -64,7 +97,7 @@
       <span id="input_pick" class="input-group-addon" style="display:none">
         <span class="glyphicon glyphicon-calendar"></span>
       </span>
-      <small id="datumHelpInline" class="col-sm-4 align-top form-text text-muted">Datum.</small>
+      <small id="datumHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
     </div>
 
     <!-- <div class="form-group row"> -->
@@ -79,8 +112,7 @@
         <input class="col-sm-4 form-control" type="text" id="uhrzeit"
           aria-describedby="uhrzeitHelpInline">
       <div class="form-control-feedback" id="uhrzeitFB"></div>
-        <small id="uhrzeitHelpInline" class="col-sm-4 align-top form-text text-muted">
-          Uhrzeit (volle Stunde).</small>
+        <small id="uhrzeitHelpInline" class="col-sm-4 align-top form-text text-muted">(Exportiert wird volle Stunde)</small>
       </div>
 
     <div class="form-group row">
@@ -88,115 +120,103 @@
       <select class="col-sm-4 form-control" id="alter">
       </select>
       <div class="form-control-feedback" id="alterFB"></div>
-      <small id="alterHelpInline" class="col-sm-4 align-top form-text text-muted">Alter.</small>
+      <small id="alterHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
     </div>
 
     <div class="form-group row">
       <label class="col-sm-3 col-form-label" for="geschlecht">Geschlecht</label>
-      <input class="col-sm-4 form-control" type="text" id="geschlecht" aria-describedby="geschlechtHelpInline">
+      <select class="col-sm-4 form-control" id="geschlecht">
+        <option value="sf"></option>
+        <option value="F">female (F)</option>
+        <option value="M">male (M)</option>
+      </select>
       <div class="form-control-feedback" id="geschlechtFB"></div>
-      <small id="geschlechtHelpInline" class="col-sm-4 align-top form-text text-muted">Geschlecht.</small>
+      <small id="geschlechtHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
     </div>
 
     <div class="form-group row">
         <label class="col-sm-3 col-form-label" for="fluegellaenge">Flügellänge</label>
-        <input class="col-sm-4 form-control" type="text" id="fluegellaenge"
-          aria-describedby="fluegellaengeHelpInline">
+        <input class="col-sm-4 form-control" type="text" id="fluegellaenge" onchange="this.value = setOneNumberDecimal(this.value, 10.0, 2000);">
       <div class="form-control-feedback" id="fluegellaengeFB"></div>
-        <small id="fluegellaengeHelpInline" class="col-sm-4 align-top form-text text-muted">
-          Flügellänge.</small>
+        <small id="fluegellaengeHelpInline" class="col-sm-4 align-top form-text text-muted">mm</small>
       </div>
       <div class="form-group row">
         <label class="col-sm-3 col-form-label" for="teilfederlaenge">Teilfederlänge</label>
-        <input class="col-sm-4 form-control" type="text" id="teilfederlaenge"
-          aria-describedby="teilfederlaengeHelpInline">
+        <input class="col-sm-4 form-control" type="text" id="teilfederlaenge" onchange="this.value = setOneNumberDecimal(this.value, 1.0, 1000);">
       <div class="form-control-feedback" id="teilfederlaengeFB"></div>
-        <small id="teilfederlaengeHelpInline" class="col-sm-4 align-top form-text text-muted">
-          Teilfederlänge.</small>
+        <small id="teilfederlaengeHelpInline" class="col-sm-4 align-top form-text text-muted">mm</small>
       </div>
     <div class="form-group row">
         <label class="col-sm-3 col-form-label" for="schnabellaenge">Schnabellänge</label>
-        <input class="col-sm-4 form-control" type="text" id="schnabellaenge"
-          aria-describedby="schnabellaengeHelpInline">
+        <input class="col-sm-4 form-control" type="text" id="schnabellaenge"  onchange="this.value = setOneNumberDecimal(this.value, 0.1, 1000);">
       <div class="form-control-feedback" id="schnabellaengeFB"></div>
-        <small id="schnabellaengeHelpInline" class="col-sm-4 align-top form-text text-muted">
-          Schnabellänge.</small>
+        <small id="schnabellaengeHelpInline" class="col-sm-4 align-top form-text text-muted">mm</small>
       </div>
       <div class="form-group row">
         <label class="col-sm-3 col-form-label" for="schnabel_kopflaenge">Schnabel+Kopflänge</label>
-        <input class="col-sm-4 form-control" type="text" id="schnabel_kopflaenge"
-          aria-describedby="schnabel_kopflaengeHelpInline">
+        <input class="col-sm-4 form-control" type="text" id="schnabel_kopflaenge" onchange="this.value = setOneNumberDecimal(this.value, 0.2, 2000);">
       <div class="form-control-feedback" id="schnabel_kopflaengeFB"></div>
-        <small id="schnabel_kopflaengeHelpInline" class="col-sm-4 align-top form-text text-muted">
-          Schnabel+Kopflänge.</small>
+        <small id="schnabel_kopflaengeHelpInline" class="col-sm-4 align-top form-text text-muted">mm</small>
       </div>
     <div class="form-group row">
         <label class="col-sm-3 col-form-label" for="lauf">Lauf</label>
-        <input class="col-sm-4 form-control" type="text" id="lauf" aria-describedby="laufHelpInline">
+        <input class="col-sm-4 form-control" type="text" id="lauf" onchange="this.value = setOneNumberDecimal(this.value, 0.5, 2000);">
       <div class="form-control-feedback" id="laufFB"></div>
-        <small id="laufHelpInline" class="col-sm-4 align-top form-text text-muted">
-          Lauf.</small>
+        <small id="laufHelpInline" class="col-sm-4 align-top form-text text-muted">mm</small>
       </div>
     <div class="form-group row">
         <label class="col-sm-3 col-form-label" for="gewicht">Gewicht</label>
-        <input class="col-sm-4 form-control" type="text" id="gewicht"
-          aria-describedby="gewichtHelpInline">
+        <input class="col-sm-4 form-control" type="text" id="gewicht" onchange="this.value = setOneNumberDecimal(this.value, 1.0, 20000);">
       <div class="form-control-feedback" id="gewichtFB"></div>
-        <small id="gewichtHelpInline" class="col-sm-4 align-top form-text text-muted">
-          Gewicht.</small>
+        <small id="gewichtHelpInline" class="col-sm-4 align-top form-text text-muted">g</small>
       </div>
       <div class="form-group row">
         <label class="col-sm-3 col-form-label" for="brutstaus">Brutstaus</label>
         <input class="col-sm-4 form-control" type="text" id="brutstaus"
           aria-describedby="brutstausHelpInline">
       <div class="form-control-feedback" id="brutstausFB"></div>
-        <small id="brutstausHelpInline" class="col-sm-4 align-top form-text text-muted">
-          Brutstaus.</small>
+        <small id="brutstausHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
       </div>
       <div class="form-group row">
         <label class="col-sm-3 col-form-label" for="beringungsort">Beringungsort</label>
         <input class="col-sm-4 form-control" type="text" id="beringungsort"
-          aria-describedby="beringungsortHelpInline">
+          aria-describedby="beringungsortHelpInline" disabled>
       <div class="form-control-feedback" id="beringungsortFB"></div>
-        <small id="beringungsortHelpInline" class="col-sm-4 align-top form-text text-muted">
-          Beringungsort.</small>
+        <small id="beringungsortHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
       </div>
     <div class="form-group row">
         <label class="col-sm-3 col-form-label" for="koordinaten">Koordinaten</label>
         <input class="col-sm-4 form-control" type="text" id="koordinaten"
-          aria-describedby="koordinatenHelpInline">
+          aria-describedby="koordinatenHelpInline" disabled>
       <div class="form-control-feedback" id="koordinatenFB"></div>
-        <small id="koordinatenHelpInline" class="col-sm-4 align-top form-text text-muted">
-          Koordinaten.</small>
+        <small id="koordinatenHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
       </div>
     <div class="form-group row">
         <label class="col-sm-3 col-form-label" for="skz_1">SKZ 1</label>
         <input class="col-sm-4 form-control" type="text" id="skz_1"
           aria-describedby="skz_1HelpInline">
       <div class="form-control-feedback" id="skz_1FB"></div>
-        <small id="skz_1HelpInline" class="col-sm-4 align-top form-text text-muted">
-          SKZ 1.</small>
+        <small id="skz_1HelpInline" class="col-sm-4 align-top form-text text-muted"></small>
       </div>
     <div class="form-group row">
         <label class="col-sm-3 col-form-label" for="skz_2">SKZ 2</label>
         <input class="col-sm-4 form-control" type="text" id="skz_2"
           aria-describedby="skz_2HelpInline">
       <div class="form-control-feedback" id="skz_2FB"></div>
-        <small id="skz_2HelpInline" class="col-sm-4 align-top form-text text-muted">
-          SKZ 2.</small>
+        <small id="skz_2HelpInline" class="col-sm-4 align-top form-text text-muted"></small>
       </div>
     <div class="form-group row">
       <label class="col-sm-3 col-form-label" for="farbring">Farbring</label>
       <input class="col-sm-4 form-control" type="text" id="farbring" aria-describedby="farbringHelpInline">
       <div class="form-control-feedback" id="farbringFB"></div>
-      <small id="farbringHelpInline" class="col-sm-4 align-top form-text text-muted">Farbring.</small>
+      <small id="farbringHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
     </div>
 
     <div class="form-group row">
       <label class="col-sm-3 col-form-label" for="bemerkung">Bemerkung</label>
       <textarea cols="80" rows="5" class="col-sm-4 form-control" id="bemerkung" aria-describedby="bemerkungHelpInline"></textarea>
       <div class="form-control-feedback" id="bemerkungFB"></div>
-      <small id="bemerkungHelpInline" class="col-sm-4 align-top form-text text-muted">Bemerkung.</small>
+      <small id="bemerkungHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
     </div>
     <!-- <small id="bemerkungFB" class="form-control-feedback"></small> -->
 
