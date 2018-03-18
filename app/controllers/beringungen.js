@@ -87,6 +87,31 @@ module.exports.init = function() {
     );
   });
 
+  console.log('fill select option for fundzustaende');
+  let fundzustaende = window.models.fundzustand.findWhere('', 'bezeichnung')
+  console.log('fundzustaende %o', fundzustaende)
+
+  $.each(fundzustaende, function (i, item) {
+    $('#beringung_edit_form select[id=fundzustand]').append(
+      $('<option>', { 
+        value: item.code,
+        text : item.bezeichnung
+      })
+    );
+  });
+
+  console.log('fill select option for fundursache');
+  let fundursachen = window.models.fundursache.findWhere('', 'bezeichnung_de')
+  console.log('fundursachen %o', fundursachen)
+
+  $.each(fundursachen, function (i, item) {
+    $('#beringung_edit_form select[id=fundursache]').append(
+      $('<option>', { 
+        value: item.code,
+        text : item.bezeichnung_de
+      })
+    );
+  });
 }
 
 module.exports.searchForm = function() {

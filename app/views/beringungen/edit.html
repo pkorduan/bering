@@ -85,6 +85,7 @@
     <div class="form-group row">
       <label class="col-sm-3 col-form-label" for="vogelart">Vogelart</label>
       <select class="col-sm-4 form-control" id="vogelart">
+        <option value=""></option>
       </select>
       <div class="form-control-feedback" id="vogelartFB"></div>
       <small id="vogelartHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
@@ -118,6 +119,7 @@
     <div class="form-group row">
       <label class="col-sm-3 col-form-label" for="alter">Alter</label>
       <select class="col-sm-4 form-control" id="alter">
+        <option value=""></option>
       </select>
       <div class="form-control-feedback" id="alterFB"></div>
       <small id="alterHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
@@ -126,7 +128,7 @@
     <div class="form-group row">
       <label class="col-sm-3 col-form-label" for="geschlecht">Geschlecht</label>
       <select class="col-sm-4 form-control" id="geschlecht">
-        <option value="sf"></option>
+        <option value=""></option>
         <option value="F">female (F)</option>
         <option value="M">male (M)</option>
       </select>
@@ -192,19 +194,57 @@
         <small id="koordinatenHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
       </div>
     <div class="form-group row">
-        <label class="col-sm-3 col-form-label" for="skz_1">SKZ 1</label>
-        <input class="col-sm-4 form-control" type="text" id="skz_1"
-          aria-describedby="skz_1HelpInline">
+      <label class="col-sm-3 col-form-label" for="skz_1">SKZ 1</label>
+      <select class="col-sm-4 form-control" id="skz_1">
+        <option value=""></option>
+        <option value="1">Metallring über Intertarsal (1)</option>
+        <option value="2">Farb. Ring/zusätzl. Farbring (2)</option>
+        <option value="3">Farb. Ring über Intertarsal (3)</option>
+        <option value="4">Flügelmarke (4)</option>
+        <option value="5">Spezielle Markierung (5)</option>
+        <option value="6">Markierung mit Halsring (6)</option>
+        <option value="7">Gefieder gefärbt (7)</option>
+        <option value="8">Gefieder gefärbt + Spezialmark. (8)</option>
+        <option value="9">Besondere Markierung (9)</option>
+      </select>
       <div class="form-control-feedback" id="skz_1FB"></div>
         <small id="skz_1HelpInline" class="col-sm-4 align-top form-text text-muted"></small>
       </div>
     <div class="form-group row">
-        <label class="col-sm-3 col-form-label" for="skz_2">SKZ 2</label>
-        <input class="col-sm-4 form-control" type="text" id="skz_2"
-          aria-describedby="skz_2HelpInline">
+      <label class="col-sm-3 col-form-label" for="skz_2">SKZ 2</label>
+      <select class="col-sm-4 form-control" id="skz_2">
+        <option value=""></option>
+        <option value="0">+ Farbmarkierung (0)</option>
+        <option value="1">indiv. Farbkombination (1)</option>
+        <option value="2">Ort codiert (2)</option>
+        <option value="3">Jahr codiert (3)</option>
+        <option value="4">Ort u. Jahr codiert (4)</option>
+        <option value="5">Individueller Code (Inschrift) (5)</option>
+        <option value="6">Beringungsjahr + -ort codiert (6)</option>
+        <option value="7">mit Sender versehen (7)</option>
+      </select>
       <div class="form-control-feedback" id="skz_2FB"></div>
-        <small id="skz_2HelpInline" class="col-sm-4 align-top form-text text-muted"></small>
-      </div>
+      <small id="skz_2HelpInline" class="col-sm-4 align-top form-text text-muted"></small>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label" for="fundursache">Fundursache</label>
+      <select class="col-sm-4 form-control" id="fundursache">
+        <option value=""></option>
+      </select>
+      <div class="form-control-feedback" id="fundursacheFB"></div>
+      <small id="fundursacheHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label" for="fundzustand">Fundzustand</label>
+      <select class="col-sm-4 form-control" id="fundzustand">
+        <option value=""></option>
+      </select>
+      <div class="form-control-feedback" id="fundzustandFB"></div>
+      <small id="skz_2HelpInline" class="col-sm-4 align-top form-text text-muted"></small>
+    </div>
+
     <div class="form-group row">
       <label class="col-sm-3 col-form-label" for="farbring">Farbring</label>
       <input class="col-sm-4 form-control" type="text" id="farbring" aria-describedby="farbringHelpInline">
