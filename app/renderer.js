@@ -6,6 +6,7 @@ const app = require('electron').remote.app
 const cheerio = require('cheerio')
 const dbfParser = require('node-dbf')
 const showdown = require('showdown')
+const SHA256 = require('crypto-js/sha256')
 
 console.log('Start renderer');
 

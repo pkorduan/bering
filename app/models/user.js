@@ -49,19 +49,40 @@ module.exports.findWhere = function (where = '', order = '`name`') {
   return rows;
 }
 
-module.exports.findById = function (id) {
-  console.log('Model user.findById')
-  let features = {}
+module.exports.isAuthorized = function(loginname, passwort) {
+  console.log('Model user.isAuthorized');
+  let db = SQL.dbOpen(window.model.db),
+      rows = {},
+      authorized = false;
 
-  if (id > 0) {
-    let feature = this.findWhere('id = ' + id),
-        keys = Object.keys(features)
+  if (db !== null) {
+    let query = "\
+      SELECT\
+        beringernr,\
+        name,\
+        vorname\
+      FROM\
+        `Nutzer`\
+      WHERE\
+        loginname = '" + loginname + "' AND\
+        passwort = '" + SHA256(passwort) + "'\
+    ";
+    console.log('query: ' + query);
 
-    if (keys.length > 0) {
-      feature = features[keys[0]];
+    try {
+      let result = db.exec(query)
+      console.log('query result: %o', result);
+      if (result !== undefined && result.length > 0) {
+        rows = window.models.dbMapper.rowsFromSqlDataObject(result[0])
+        authorized = true
+      }
+    } catch (error) {
+      console.log('Fehler: ', error.message)
+    } finally {
+      SQL.dbClose(db, window.model.db)
     }
   }
-  return feature
+  return authorized;
 }
 
 module.exports.insert = function (tableName, kvps, callback) {

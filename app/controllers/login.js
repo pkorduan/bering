@@ -20,7 +20,8 @@ module.exports.init = function() {
 
 module.exports.login = function(username, passwort) {
   console.log('login_controller.login für Nutzer: ' + username);
-  if (username == 'korduan' && passwort == 'peko') {
+  
+  if (window.models.user.isAuthorized(username, passwort)) {
     // login
     require('electron').remote.getGlobal('sharedObject').session.username = username;
     require('electron').remote.getGlobal('sharedObject').session.beringernr = '0123';

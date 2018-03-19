@@ -13,17 +13,19 @@
     "start-mac": "/Applications/Electron.app/Contents/MacOS/Electron ."
   },
   "dependencies": {
-    "bootstrap": "4",
+    "bootstrap": "^4.0.0",
     "bootstrap-datetimepicker": "0.0.7",
     "cheerio": "^0.22.0",
+    "crypto-js": "^3.1.9-1",
     "dbf-parser": "0.0.1",
     "jquery": "^3.2.1",
     "moment": "^2.19.4",
     "node-dbf": "^0.3.0",
+    "popper.js": "^1.14.1",
     "read-dbf": "^1.1.0",
+    "showdown": "1.8.6",
     "sql.js": "^0.4.0",
-    "tether": "^1.4.0",
-		"showdown": "1.8.6"
+    "tether": "^1.4.0"
   },
   "standard": {
     "globals": [
