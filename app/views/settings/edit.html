@@ -2,21 +2,41 @@
 <div id="settings_edit" class="container">
   <form id="settings_edit_form">
     <div class="container-fluid">
-      <a id="users_passwort_link" href="#">Passwort ändern</a><br>
+      <a id="users_passwort_link" href="#">Passwort ändern</a>
       <div id="users_change_passwort_div" style="display: none">
-        Neues Passwort vergeben
+        Neues Passwort vergeben<br>
         <div id="change_passwort_help_text" style="display: none"></div>
-        <input class="col-sm-4 form-control" type="password" name="old_passwort" placeholder="Altes Passwort"><br>
-        <input class="col-sm-4 form-control" type="password" name="new_passwort1" placeholder="Neues Passwort"><br>
-        <input class="col-sm-4 form-control" type="password" name="new_passwort2" placeholder="Wiederholung"><br>
-        <button id="users_change_passwort_button" type="button" class="login-button">Speichern</button>
+        <input class="col-sm-4 form-control" type="password" name="old_passwort" placeholder="Altes Passwort">
+        <small id="beringungsort_kreisHelpInline" class="col-sm-4 text-muted">Altes Passwort</small><br>
+        <input class="col-sm-4 form-control" type="password" name="new_passwort1" placeholder="Neues Passwort">
+        <small id="beringungsort_kreisHelpInline" class="col-sm-4 text-muted">Neues Passwort</small><br>
+        <input class="col-sm-4 form-control" type="password" name="new_passwort2" placeholder="Wiederholung">
+        <small id="beringungsort_kreisHelpInline" class="col-sm-4 text-muted">Neues Passwort Wiederholung</small><br>
+        <button id="change_user_passwort_button" type="button" class="login-button">Speichern</button>
       </div>
-      <a id="users_list_link" href="#">Nutzer anzeigen</a><br>
-      <div class="form-group row">
-        <label class="col-sm-3 col-form-label" for="savePath">Speicherort der Sicherung</label>
-        <input class="col-sm-4 form-control" type="text" id="savePath" aria-describedby="savePathHelpInline">
-        <div class="form-control-feedback" id="savePathFB"></div>
-        <small id="savePathHelpInline" class="col-sm-4 align-top form-text text-muted">Implementierung folgt</small>
+      <br>
+      <a id="users_list_link" href="#">Nutzer anzeigen</a>
+      <div id="beringer_list_div" style="display: none">
+      </div>
+      <br>
+      <a id="beringungsort_link" href="#" onclick="$('#beringungsort_div').toggle();">Beringungsort</a>
+      <div id="beringungsort_div" style="display: none">
+        <input class="col-sm-4 form-control" type="text" name="beringungsort" placeholder="Beringungsort">
+        <small id="beringungsort_kreisHelpInline" class="col-sm-4 text-muted">Bezeichnung</small><br>
+        <input class="col-sm-4 form-control" type="text" name="beringungsort_position" placeholder="Position">
+        <small id="beringungsort_kreisHelpInline" class="col-sm-4 text-muted">Koordinaten</small><br>
+        <input class="col-sm-4 form-control" type="text" name="beringungsort_kreis" placeholder="Landkreis">
+        <small id="beringungsort_kreisHelpInline" class="col-sm-4 text-muted">Landkreis</small><br>
+        <button id="change_beringungsort_button" type="button" class="button" style="display: none">Speichern</button>
+      </div>
+      <br>
+      <a id="sicherung_link" href="#" onclick="$('#sicherungsort_div').toggle();">Speicherort der Sicherung</a>
+      <div id="sicherungsort_div" style="display: none">
+        <input class="col-sm-4 form-control" type="text" name="sicherung_verzeichnis" placeholder="Speicherort">
+        <small id="beringungsort_kreisHelpInline" class="col-sm-4 text-muted">Verzeichnis</small><br>
+        <input class="col-sm-4 form-control" type="text" name="sicherung_dateiname" placeholder="Dateiname">
+        <small id="beringungsort_kreisHelpInline" class="col-sm-4 text-muted">Dateiname</small><br>
+        <button id="change_sicherungsort_button" type="button" class="button" style="display: none">Speichern</button>
       </div>
     </div>
   </form>

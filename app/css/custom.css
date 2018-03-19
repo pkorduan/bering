@@ -32,3 +32,8 @@ h2 {
   /*border: 1px solid gray;*/
   padding: 2px;
 }
+
+.form-control {
+  display: inline;
+  margin-bottom: 5px;
+}

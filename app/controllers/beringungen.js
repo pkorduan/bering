@@ -57,7 +57,7 @@ module.exports.init = function() {
       context: this
     },
     function(evt) {
-      evt.data.context.save(evt)
+      evt.data.context.update(evt)
     }
   )
 
@@ -241,8 +241,18 @@ module.exports.setDateAndTimeToForm = function(d) {
   $('form#beringung_edit_form :input[id=uhrzeit]').val(d.toLocaleTimeString())
 }
 
+/*
+* Speichert neue Datensätze
+* beringungsort und koordinaten werden aus Einstellungen übernommen.
+*/
 module.exports.save = function(evt) {
-  console.log('Controller beringungen.save')
+  console.log('Controller beringungen.save');
+  kvps['beringungsort'] = window.models.setting.findByBezeichnung('beringungsort').wert
+  kvps['koordinaten'] = window.models.setting.findByBezeichnung('beringungsort_position').wert
+}
+
+module.exports.update = function(evt) {
+  console.log('Controller beringungen.update')
   let all_valid = true,
       validation
 
@@ -266,6 +276,7 @@ module.exports.save = function(evt) {
   if (all_valid) {
     console.log('Alle Eingabenn valide!')
     let kvps = window.models.dbMapper.getFormFieldKVPs('beringung_edit_form')
+
     window.models.beringung.update(kvps)
   }
 }
