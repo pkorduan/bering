@@ -101,7 +101,12 @@ module.exports.init = function() {
       context: this
     },
     function(evt) {
-      evt.data.context.update(evt)
+      if ($(evt.target).val() == 'Insert') {
+        evt.data.context.insert(evt)
+      }
+      else {
+        evt.data.context.update(evt)
+      }
     }
   )
 
@@ -171,19 +176,25 @@ module.exports.searchForm = function() {
 module.exports.search = function(evt) {
   console.log('beringungen_controller.search');
   let ringnr = $('#beringung_search_form :input[id=ringnr]').val(),
-      beringungen = window.models.beringung.findWhere('ringnr = ' + ringnr),
-      beringung = {},
+      beringung = window.models.beringung.findByRingnr(ringnr),
       d = new Date()
 
-  if (Object.keys(beringungen).length > 0) {
-    // wiederfund
-    beringung = beringungen[0]
+  if (beringung.hasOwnProperty('ringnr')) {
+    console.log('beringung.beringernr: ' + beringung.beringernr + ' session: ' + window.session.beringernr);
+    if (beringung.beringernr == window.session.beringernr) {
+      // Eigenwiederfund
+      beringung.fundart = 2
+    }
+    else {
+      // Fremdfund
+      beringung.fundart = 3
+      beringung.beringernr_alt = beringung.beringernr
+    }
   }
   else {
-    // neu fund
-    beringung = {
-      ringnr: ringnr
-    }
+    // Neue Beringung
+    beringung.fundart = 1
+    beringung.ringnr = ringnr
   }
 
   beringung.beringernr = window.session.beringernr
@@ -235,33 +246,50 @@ module.exports.edit = function(id) {
   this.setValuesToForm(beringung);
 
   $('#beringung_edit_title').html('Änderung Beringungsdaten')
+  $('form#beringung_edit_form :input[id=ringnr]').prop('readonly', false)
   $('#beringung_speichern_button').val('Update')
   $('section').hide();
   $('#beringungen_edit_section').show();
 }
 
 module.exports.new = function(beringung) {
-  console.log('controller beringungen.edit id: %o', beringung);
+  console.log('controller beringungen.new id: %o', beringung);
+  console.log('fundart: ', beringung.fundart)
+  let readonly = false;
 
-  if (beringung.id === undefined) {
+  if (beringung.fundart == 1) {
     $('form#beringung_edit_form :input').each(
       function(i, field) {
         $(field).val('')
       }
     )
-    $('#beringung_edit_title').html('Fremdfund')
+    $('#beringung_edit_title').html('Neue Beringung')
+    $('#beringung_beringernr_alt_div').hide()
   }
   else {
-    beringung.id = ''
-    $('#beringung_edit_title').html('Eigener Wiederfund')
-
     // ToDo Set Wiederfund
     // Set values in form to identify it as wiederfund
     // ohne id, nicht als edit, sondern als new aber
     // werte übernommen.
+
+    readonly = true;
+
+    if (beringung.fundart == 2) {
+      $('#beringung_edit_title').html('Eigener Wiederfund')
+      $('#beringung_beringernr_alt_div').hide()
+    }
+
+    if (beringung.fundart == 3) {
+      $('#beringung_edit_title').html('Fremdfund')
+      $('#beringung_beringernr_alt_div').show()
+    }
   }
 
   this.setValuesToForm(beringung);
+  $('#beringung_beringername').html(window.session.beringername);
+
+  $('form#beringung_edit_form :input[id=ringnr]').prop('readonly', readonly)
+
   $('#beringung_speichern_button').val('Insert')
 
   $('section').hide();
@@ -294,10 +322,36 @@ module.exports.setDateAndTimeToForm = function(d) {
 * Speichert neue Datensätze
 * beringungsort und koordinaten werden aus Einstellungen übernommen.
 */
-module.exports.save = function(evt) {
-  console.log('Controller beringungen.save');
-  kvps['beringungsort'] = window.models.setting.findByBezeichnung('beringungsort').wert
-  kvps['koordinaten'] = window.models.setting.findByBezeichnung('beringungsort_position').wert
+module.exports.insert = function(evt) {
+  console.log('Controller beringungen.insert');
+  let all_valid = true,
+      validation
+
+  evt.preventDefault() // ToDo: prüfen was das soll
+  $('form#beringung_edit_form :input').each(
+    function(i, field) {
+      if (field.type != 'submit') {
+        validation = window.models.beringung.validate(field)
+        if (!validation.valid) {
+          all_valid = false
+          $(field).parent().removeClass('has-success').addClass('has-danger')
+          $(field).next().html('&nbsp;&nbsp;&nbsp; ' + validation.message);
+          $(field).next().next().html("");
+        }
+        else {
+          $(field).parent().addClass('has-success').removeClass('has-danger')
+        }
+      }
+    }
+  )
+  if (all_valid) {
+    console.log('Alle Eingabenn valide!')
+    let kvps = window.models.dbMapper.getFormFieldKVPs('beringung_edit_form')
+
+    kvps['beringungsort'] = window.models.setting.findByBezeichnung('beringungsort').wert
+    kvps['koordinaten'] = window.models.setting.findByBezeichnung('beringungsort_position').wert
+    window.models.beringung.insert(kvps)
+  }
 }
 
 module.exports.update = function(evt) {

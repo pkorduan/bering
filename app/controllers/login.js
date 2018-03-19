@@ -53,9 +53,10 @@ module.exports.login = function(loginname, passwort, passwort2) {
   else {
     if (user.passwort == SHA256(passwort)) {
       // login
-      window.session.angemeldet = true;
-      window.session.loginname = user.loginname;
-      window.session.beringernr = user.beringernr;
+      window.session.angemeldet = true
+      window.session.loginname = user.loginname
+      window.session.beringernr = user.beringernr
+      window.session.beringername = user.vorname + ' ' + user.name
       window.start_controller.start()
     }
     else {

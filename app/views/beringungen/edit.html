@@ -37,18 +37,37 @@
     <div class="container-fluid">
       <div class="form-group row">
         <label class="col-sm-3 col-form-label" for="id">Id</label>
-        <input class="col-sm-4 form-control" type="text" id="id" aria-describedby="idHelpInline">
+        <input class="col-sm-4 form-control" type="text" id="id" aria-describedby="idHelpInline" readonly>
         <div class="form-control-feedback" id="idFB"></div>
         <small id="idHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
+      </div>
+
+      <div id="beringung_beringernr_alt_div" class="form-group row" style="display: none">
+        <label class="col-sm-3 col-form-label" for="beringernr">ursprünglich beringt von</label>
+        <input class="col-sm-4 form-control" type="text" id="beringernr_alt" readonly>
+        <small id="beringernr_altInfo" class="col-sm-4 align-top form-text text-muted">Beringernr</small>
       </div>
 
       <div class="form-group row">
         <label class="col-sm-3 col-form-label" for="beringernr">Beringernr</label>
         <input class="col-sm-4 form-control" type="text" id="beringernr" aria-describedby="beringerInfo" readonly>
         <!-- <small id="personIdHelpInline" class="col-sm-4 align-top form-text text-muted"> -->
-          <!-- The number assigned to the person below.</small> -->
-      <small id="beringerInfo"  class="col-sm-4 align-top form-text text-muted">(<span id="smallVorname">Vorname</span> <span id="smallName">Name</span>)</small>
+        <!-- The number assigned to the person below.</small> -->
+        <small id="beringerInfo"  class="col-sm-4 align-top form-text text-muted">(<span id="beringung_beringername"></span>)</small>
       </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="beringernr">Fundart</label>
+        <select class="col-sm-4 form-control" type="text" id="fundart" aria-describedby="fundartInfo" disabled>
+          <option value="1">Neue Berinung</option>
+          <option value="2">Eigenwiederfund (EWF)</option>
+          <option value="3">Fremdfund</option>
+        </select>
+        <!-- <small id="personIdHelpInline" class="col-sm-4 align-top form-text text-muted"> -->
+        <!-- The number assigned to the person below.</small> -->
+        <small id="beringerInfo"  class="col-sm-4 align-top form-text text-muted">nicht auswählbar</small>
+      </div>
+  
       <!-- 
     <div class="form-group row">
         <label class="col-sm-3 col-form-label" for="vorname">Vorname: </label>
@@ -69,7 +88,7 @@
 
     <div class="form-group row">
       <label class="col-sm-3 col-form-label" for="zentrale">Zentrale</label>
-      <input class="col-sm-4 form-control" type="text" id="zentrale" aria-describedby="zentraleHelpInline" value="test">
+      <input class="col-sm-4 form-control" type="text" id="zentrale" readonly>
       <div class="form-control-feedback" id="zentraleFB"></div>
       <small id="zentraleHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
     </div>

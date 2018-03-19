@@ -1,7 +1,7 @@
 // model Beringung
 'use strict'
 
-module.exports.findWhere = function (where = '', order = '`datum`, `uhrzeit` DESC') {
+module.exports.findWhere = function (where = '', order = '`datum`, `uhrzeit` DESC', limit = '') {
   console.log('Model Beringung.findWhere')
   let db = SQL.dbOpen(window.model.db),
       rows = {};
@@ -10,6 +10,7 @@ module.exports.findWhere = function (where = '', order = '`datum`, `uhrzeit` DES
     let query = 'SELECT * FROM `Daten`'
     if (where != '') query += ' WHERE ' + where
     if (order != '') query += ' ORDER BY ' + order
+    if (limit != '') query += ' LIMIT ' + limit
     console.log('query: ' + query);
 
     try {
@@ -27,6 +28,21 @@ module.exports.findWhere = function (where = '', order = '`datum`, `uhrzeit` DES
   return rows;
 }
 
+module.exports.findByRingnr = function (ringnr) {
+  console.log('Model Beringung.findByRingnr')
+  let beringung = {}
+
+  if (ringnr != '') {
+    let beringungen = this.findWhere("ringnr = '" + ringnr + "'", "datum, uhrzeit", '1'),
+        keys = Object.keys(beringungen)
+
+    if (keys.length > 0) {
+      beringung = beringungen[keys[0]];
+    }
+  }
+  return beringung
+}
+
 module.exports.findById = function (id) {
   console.log('Model Beringung.findById')
   let beringung = {}
@@ -42,19 +58,34 @@ module.exports.findById = function (id) {
   return beringung
 }
 
-module.exports.insert = function (tableName, kvps, callback) {
-	console.log('Model beringung.saveformData');
-  if (kvps.columns.length > 0) {
+module.exports.insert = function (kvps) {
+	console.log('Model beringung.insert kvps: ', kvps);
+  if (kvps.hasOwnProperty('ringnr')) {
     let db = SQL.dbOpen(window.model.db)
     if (db !== null) {
-      let query = 'INSERT OR REPLACE INTO `' + tableName + '`'
-      query += ' (`' + kvps.columns.join('`, `') + '`)'
+      let query = "
+        INSERT OR REPLACE INTO `Daten` (\
+          " + $.map(
+            kvps,
+            function(value, key) {
+              return "`" + key + "`";
+            }
+          ).join(', ') + "\
+        )\
+        VALUES (\
+          " + $.map(
+            kvps,
+            function(value, key) {
+              return "'" + value + "'";
+            }
+          ).join(', ') + "\
+        )\
+      ";
 
+      console.log('Insert sql: ', query)
       let statement = db.prepare(query)
       try {
-        window.debug_s = statement
         if (statement.run(kvps.values)) {
-          console.log('statement gerunt')
           $('#' + kvps.columns.join(', #'))
           .addClass('form-control-success')
           .animate({class: 'form-control-success'}, 1500, function () {
