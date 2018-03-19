@@ -48,7 +48,7 @@ module.exports.init = function() {
 module.exports.saveChangedPasswort = function(oldPwd, newPwd1, newPwd2) {
   console.log('controllers.users.saveChangedPasswort');
 
-  let user = window.models.user.findByLoginName(require('electron').remote.getGlobal('sharedObject').session.username),
+  let user = window.models.user.findByLoginName(window.session.loginname),
       help_text = ''
 
   if (user.passwort != SHA256(oldPwd)) {

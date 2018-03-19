@@ -21,6 +21,12 @@ require(path.join(webRoot, 'jquery.validate.min.js'))
 require(path.join(webRoot, 'bootstrap-datepicker.min.js'))
 require(path.join(webRoot, 'bootstrap-datepicker.de.min.js'))
 
+window.session = {
+  'angemeldet' : false,
+  'beringernr' : '',
+  'loginname' : ''
+}
+
 // load controllers
 let controllersPath = path.join(app.getAppPath(), 'app', 'controllers')
 window.controllers = {}
@@ -97,7 +103,7 @@ $('body').html(dom)
 
 $('document').ready(function () {
   console.log('document is ready');
-  console.log((require('electron').remote.getGlobal('sharedObject').session.username == '' ? 'Kein Nutzer angemeldet' : 'angemeldet als ' + require('electron').remote.getGlobal('sharedObject').session.username));
+  console.log((window.session.angemeldet ? 'angemeldet als ' + window.session.loginname : 'Kein Nutzer angemeldet'));
   window.controllers.help.init();
   window.controllers.settings.init();
   window.controllers.users.init();
@@ -105,109 +111,6 @@ $('document').ready(function () {
   window.beringungen_controller.init();
   window.start_controller.init();
   window.start_controller.start();
-/*
-  $( "#use-nutzer-form" ).validate( {
-  rules: {
-    bemerkung: {
-      required: true,
-      minlength: 5
-    },
-    lastname: "required",
-    username: {
-      required: true,
-      minlength: 2
-    },
-    password: {
-      required: true,
-      minlength: 5
-    },
-    confirm_password: {
-      required: true,
-      minlength: 5,
-      equalTo: "#password"
-    },
-    email: {
-      required: true,
-      email: true
-    },
-    agree: "required"
-  },
-  messages: {
-    bemerkung: {
-      required: "Please enter a username",
-      minlength: "Your username must consist of at least 2 characters"
-    },
-    lastname: "Please enter your lastname",
-    username: {
-      required: "Please enter a username",
-      minlength: "Your username must consist of at least 2 characters"
-    },
-    password: {
-      required: "Please provide a password",
-      minlength: "Your password must be at least 5 characters long"
-    },
-    confirm_password: {
-      required: "Please provide a password",
-      minlength: "Your password must be at least 5 characters long",
-      equalTo: "Please enter the same password as above"
-    },
-    email: "Please enter a valid email address",
-    agree: "Please accept our policy"
-  },
-  errorElement: "em",
-  errorPlacement: function ( error, element ) {
-    // Add the `help-block` class to the error element
-    error.addClass( "help-block" );
-    if ( element.prop( "type" ) === "checkbox" ) {
-      error.insertAfter( element.parent( "label" ) );
-    } else {
-      error.insertAfter( element );
-    }
-  },
-  highlight: function ( element, errorClass, validClass ) {
-    $('#bemerkungFB').html("Testxxx");
-    $( element ).parents( ".col-sm-5" ).addClass( "has-danger" ).removeClass( "has-success" );
-  },
-  unhighlight: function (element, errorClass, validClass) {
-    $( element ).parents( ".col-sm-5" ).addClass( "has-success" ).removeClass( "has-danger" );
-  }
-} );
-  //Einstiegspunkt in die App.
-  // window.model.getPeople()
-  window.model.getNutzer();
-  window.model.parseDBF("ARTEN.DBF");
-  //window.model.parseDBF("bayarea_zipcodes.dbf");
-  //Echte Buttons bzw. deren Funktion
-  //Edit/Add User
-  $('#edit-person-submit').click(function (e) {
-    e.preventDefault()
-    let ok = true
-    $('#first_name, #last_name').each(function (idx, obj) {
-      if ($(obj).val() === '') {
-        $(obj).parent().removeClass('has-success').addClass('has-danger')
-        ok = false
-      } else {
-        $(obj).parent().addClass('has-success').removeClass('has-danger')
-      }
-    })
-    if (ok) {
-      let formId = $(e.target).parents('form').attr('id')
-      let keyValue = window.view.getFormFieldValues(formId)
-      window.model.saveFormData('people', keyValue, function () {
-        window.model.getPeople()
-      })
-    }
-  })
-
-  $(function () {
-    // $('#datetimepicker1').datetimepicker();
-    // $('#datetimepicker1').datepicker();
-    $('#datetimepicker1').datepicker({
-      language: 'de'
-    });
-    console.log("datepicker");
-  });
-*/
 })
 
 // Set jQuery.validate settings for bootstrap integration

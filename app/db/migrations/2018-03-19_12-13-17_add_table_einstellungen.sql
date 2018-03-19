@@ -1,4 +1,4 @@
-BEGIN;
+BEGIN TRANSACTION;
 
 CREATE TABLE Einstellungen (
   bezeichnung VARCHAR PRIMARY KEY,
@@ -14,4 +14,4 @@ INSERT INTO Einstellungen (bezeichnung, wert) VALUES ('loesch_funktion_an', 'aus
 INSERT INTO Einstellungen (bezeichnung, wert) VALUES ('sicherung_dateiname', 'Sicherung.db');
 INSERT INTO Einstellungen (bezeichnung, wert) VALUES ('sicherung_verzeichnis', 'C:\tmp\');
 
-COMMIT;
+COMMIT TRANSACTION;

@@ -1,6 +1,8 @@
+BEGIN TRANSACTION;
+
 CREATE TABLE Brutstatus (
-    status       CHAR (1)     PRIMARY KEY,
-    beschreibung VARCHAR (50) 
+  status       CHAR (1)     PRIMARY KEY,
+  beschreibung VARCHAR (50) 
 );
 
 INSERT INTO Brutstatus (status, beschreibung) VALUES
@@ -15,4 +17,6 @@ INSERT INTO Brutstatus (status, beschreibung) VALUES
   ('9', 'Kuckuck, Wirtsvogel bekannt'),
   ('B', 'mit Blutfleck'),
   ('C', 'wahrscheinlich Brutvogel'),
-  ('D', 'sicherer Brutvogel')
+  ('D', 'sicherer Brutvogel');
+
+COMMIT TRANSACTION;

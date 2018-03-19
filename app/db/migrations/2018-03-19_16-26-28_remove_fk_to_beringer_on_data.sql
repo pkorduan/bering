@@ -8,7 +8,7 @@ DROP TABLE Daten;
 
 CREATE TABLE Daten (
   id  INTEGER  PRIMARY KEY,
-  beringernr  VARCHAR (4)  REFERENCES Nutzer (beringernr),
+  beringernr  VARCHAR (4),
   zentrale  VARCHAR  DEFAULT ('DEH'),
   ringnr  INTEGER  NOT NULL,
   bemerkung  TEXT,
@@ -29,9 +29,9 @@ CREATE TABLE Daten (
   skz_1  VARCHAR,
   skz_2  VARCHAR,
   farbring  VARCHAR,
-  fundart  INTEGER  DEFAULT (1),
   fundzustand  INTEGER  REFERENCES Fundzustaende (code),
-  fundursache  VARCHAR
+  fundursache  VARCHAR,
+  fundart  INTEGER  DEFAULT (1) 
 );
 
 INSERT INTO Daten (
@@ -57,6 +57,8 @@ INSERT INTO Daten (
   skz_1,
   skz_2,
   farbring,
+  fundzustand,
+  fundursache,
   fundart
 )
 SELECT
@@ -82,6 +84,8 @@ SELECT
   skz_1,
   skz_2,
   farbring,
+  fundzustand,
+  fundursache,
   fundart
 FROM
   sqlitestudio_temp_table;

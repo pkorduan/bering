@@ -1,3 +1,5 @@
+BEGIN TRANSACTION;
+
 PRAGMA foreign_keys = 0;
 
 CREATE TABLE sqlitestudio_temp_table AS SELECT * FROM Nutzer;
@@ -32,3 +34,5 @@ FROM
 DROP TABLE sqlitestudio_temp_table;
 
 PRAGMA foreign_keys = 1;
+
+COMMIT TRANSACTION;

@@ -1,3 +1,5 @@
+BEGIN TRANSACTION;
+
 CREATE TABLE Farbcodes (
     code       CHAR (1)     PRIMARY KEY,
     name VARCHAR (25) ,
@@ -17,3 +19,5 @@ INSERT INTO Farbcodes (code, name, bezeichnung) VALUES
   ('SW', 'Schwarz', 'Schwarz'),
   ('VIO', 'VIO', 'violett'),
   ('WS', 'Weiss', 'Weiss');
+
+COMMIT TRANSACTION;

@@ -11,7 +11,7 @@ module.exports.init = function() {
     },
     function(evt) {
       evt.data.context.login(
-        $('#login_form input[name=username]').val(),
+        $('#login_form input[name=loginname]').val(),
         $('#login_form input[name=passwort]').val(),
         $('#login_form input[name=passwort2]').val()
       );
@@ -53,8 +53,9 @@ module.exports.login = function(loginname, passwort, passwort2) {
   else {
     if (user.passwort == SHA256(passwort)) {
       // login
-      require('electron').remote.getGlobal('sharedObject').session.username = user.loginname;
-      require('electron').remote.getGlobal('sharedObject').session.beringernr = user.beringernr;
+      window.session.angemeldet = true;
+      window.session.loginname = user.loginname;
+      window.session.beringernr = user.beringernr;
       window.start_controller.start()
     }
     else {
@@ -66,6 +67,8 @@ module.exports.login = function(loginname, passwort, passwort2) {
 
 module.exports.logout = function(evt) {
   console.log('login_controller.logout');
-  require('electron').remote.getGlobal('sharedObject').session.username = '';
+  window.angemeldet = false
+  window.session.loginname = ''
+  window.session.beringernr = ''
   window.start_controller.start()
 }

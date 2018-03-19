@@ -1,3 +1,5 @@
+BEGIN TRANSACTION;
+
 CREATE TABLE Vogelalter (
   code   CHAR (4) PRIMARY KEY,
   eucode CHAR (1),
@@ -23,3 +25,5 @@ INSERT INTO Vogelalter (code, eucode, bezeichnung_de, bezeichnung_en) VALUES
   ('N2.J', '6', 'Nach dem 2.Kalenderjahr', 'After 2nd calendar-year'),
   ('N3.J', '8', 'Nach dem 3.Kalenderjahr', 'After 3rd calendar-year'),
   ('N4.J', 'A', 'Nach dem 4.Kalenderjahr', 'After 4th calendar-year');
+
+COMMIT TRANSACTION;

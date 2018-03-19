@@ -1,3 +1,5 @@
+BEGIN TRANSACTION;
+
 CREATE TABLE Sonderkennzeichen1 (
   code       CHAR (1) PRIMARY KEY,
   bezeichnung VARCHAR (100),
@@ -14,3 +16,5 @@ INSERT INTO Sonderkennzeichen1 (code, bezeichnung, bezeichnung_en) VALUES
   ('7', 'Gefieder gefärbt', '+Plumage coloured'),
   ('8', 'Gefieder gefärbt+Spezialmark.', '+Special marked'),
   ('9', 'Besondere Markierung', '+Special marked');
+
+COMMIT TRANSACTION;

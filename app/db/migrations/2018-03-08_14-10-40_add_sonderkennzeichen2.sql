@@ -1,3 +1,5 @@
+BEGIN TRANSACTION;
+
 CREATE TABLE Sonderkennzeichen2 (
   code       CHAR (1) PRIMARY KEY,
   bezeichnung VARCHAR (100),
@@ -13,3 +15,5 @@ INSERT INTO Sonderkennzeichen2 (code, bezeichnung, bezeichnung_en) VALUES
   ('5', 'Individueller Code (Inschrift)', 'With individual inscription'),
   ('6', 'Beringungsjahr+-ort codiert', 'Year and place coded'),
   ('7', 'mit Sender versehen', 'Transmitter applicated');
+
+COMMIT TRANSACTION;

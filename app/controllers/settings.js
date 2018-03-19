@@ -164,6 +164,9 @@ module.exports.edit = function(evt) {
   $.each(rows, function(i, v) {
     settings[v.bezeichnung] = v.wert
     $('#settings_edit_form input[name=' + v.bezeichnung + ']').val(v.wert)
+    if ($('#settings_edit_form input[name=' + v.bezeichnung + ']').attr('type') == 'checkbox' && v.wert == 'an') {
+      $('#settings_edit_form input[name=' + v.bezeichnung + ']').prop('checked', true)
+    }
   })
   console.log('settings: %o', settings)
   

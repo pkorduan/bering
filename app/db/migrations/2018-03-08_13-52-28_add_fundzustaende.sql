@@ -1,3 +1,5 @@
+BEGIN TRANSACTION;
+
 CREATE TABLE Fundzustaende (
   code       CHAR (1) PRIMARY KEY,
   code_euring VARCHAR (1) ,
@@ -16,4 +18,6 @@ INSERT INTO Fundzustaende (code, code_euring, bezeichnung, bezeichnung_euring) V
   ('7', '8', 'Lebend u.frei am Beringungsort', 'Alive, released at place of ringing'),
   ('8', '6', 'Lebend, in Gefangenschaft/in Pflege', 'Alive, but in captivity'),
   ('9', '9', 'Lebend, Verbleib unbekannt', 'Alive, fate unknown'),
-  ('A', '9', 'Lebend, Ring entfernt', 'Alive, ring removed')
+  ('A', '9', 'Lebend, Ring entfernt', 'Alive, ring removed');
+
+COMMIT TRANSACTION;
