@@ -1,0 +1,1 @@
+INSERT INTO Nutzer (beringernr, name, vorname, loginname, passwort) VALUES (0, 'Istrator', 'Admin', 'admin', '');

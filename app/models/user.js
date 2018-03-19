@@ -23,6 +23,25 @@ module.exports.getNutzer = function () {
 }
 */
 
+module.exports.findByLoginName = function (loginname) {
+  console.log('Model Beringung.findByLoginName')
+  let users = {},
+      user;
+
+  if (loginname != '') {
+    let users = this.findWhere("loginname = '" + loginname + "'"),
+        keys = Object.keys(users)
+
+    if (keys.length > 0) {
+      user = users[keys[0]];
+    }
+    else {
+      user = false
+    }
+  }
+  return user
+}
+
 module.exports.findWhere = function (where = '', order = '`name`') {
   console.log('Model user.findWhere')
   let db = SQL.dbOpen(window.model.db),
@@ -68,7 +87,7 @@ module.exports.isAuthorized = function(loginname, passwort) {
         passwort = '" + SHA256(passwort) + "'\
     ";
     console.log('query: ' + query);
-
+        console.log('passwort: %o %o', passwort, SHA256(passwort))
     try {
       let result = db.exec(query)
       console.log('query result: %o', result);
@@ -91,6 +110,38 @@ module.exports.insert = function (tableName, kvps, callback) {
 
 module.exports.update = function (kvps) {
   console.log('Model user.update');
+  let db = SQL.dbOpen(window.model.db),
+      success = false
+    
+  if (db !== null) {
+    let query = "\
+      UPDATE\
+        `Nutzer`\
+      SET\
+        " + $.map(
+          kvps,
+          function(value, key) {
+            return "`" + key + "`"  + " = '" + value + "'";
+          }
+        ).join(', ') + "\
+      WHERE\
+        loginname = '" + kvps.loginname + "'\
+    ";
+    console.log('query: ', query)
+    let result = db.exec(query)
+    try {
+      if (result !== undefined) {
+        success = true
+        SQL.dbClose(db, window.model.db)
+      }
+      else {
+        console.log('Fehler: ', 'Query failed for', kvps.values)
+      }
+    } catch (error) {
+      console.log('Fehler: ', error.message)
+    }
+    if (!success) SQL.dbClose(db, window.model.db)
+  }
 }
 
 module.exports.validate = function (field) {

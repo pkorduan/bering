@@ -2,12 +2,22 @@
 <div id="settings_edit" class="container">
   <form id="settings_edit_form">
     <div class="container-fluid">
+      <a id="users_passwort_link" href="#">Passwort ändern</a><br>
+      <div id="users_change_passwort_div" style="display: none">
+        Neues Passwort vergeben
+        <div id="change_passwort_help_text" style="display: none"></div>
+        <input class="col-sm-4 form-control" type="password" name="old_passwort" placeholder="Altes Passwort"><br>
+        <input class="col-sm-4 form-control" type="password" name="new_passwort1" placeholder="Neues Passwort"><br>
+        <input class="col-sm-4 form-control" type="password" name="new_passwort2" placeholder="Wiederholung"><br>
+        <button id="users_change_passwort_button" type="button" class="login-button">Speichern</button>
+      </div>
       <a id="users_list_link" href="#">Nutzer anzeigen</a><br>
-       <div class="form-group row">
+      <div class="form-group row">
         <label class="col-sm-3 col-form-label" for="savePath">Speicherort der Sicherung</label>
         <input class="col-sm-4 form-control" type="text" id="savePath" aria-describedby="savePathHelpInline">
         <div class="form-control-feedback" id="savePathFB"></div>
         <small id="savePathHelpInline" class="col-sm-4 align-top form-text text-muted">Implementierung folgt</small>
       </div>
+    </div>
   </form>
 </div>

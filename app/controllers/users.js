@@ -17,6 +17,69 @@ module.exports.init = function() {
     }
   )
 
+  console.log('register click on users_passwort_link')
+  $('#users_passwort_link').on(
+    'click',
+    {
+      context: this,
+    },
+    function(evt) {
+      $('#settings_edit_form div[id=users_change_passwort_div]').show()
+    }
+  )
+
+  console.log('register click on users_change_passwort_button')
+  $('#users_change_passwort_button').on(
+    'click',
+    {
+      context: this
+    },
+    function(evt) {
+      evt.data.context.saveChangedPasswort(
+        $('#settings_edit_form input[name=old_passwort]').val(),
+        $('#settings_edit_form input[name=new_passwort1]').val(),
+        $('#settings_edit_form input[name=new_passwort2]').val()
+      )
+    }
+  )
+
+}
+
+module.exports.saveChangedPasswort = function(oldPwd, newPwd1, newPwd2) {
+  console.log('controllers.users.saveChangedPasswort');
+
+  let user = window.models.user.findByLoginName(require('electron').remote.getGlobal('sharedObject').session.username),
+      help_text = ''
+
+  if (user.passwort != SHA256(oldPwd)) {
+    help_text = 'Das alte Passwort stimmt nicht! Versuchen Sie es noch einmal.'
+  }
+  else {
+    if (newPwd1 == '' || newPwd2 == '') {
+      help_text = 'Es muss ein neues Passwort und seine Wiederholung angegeben werden!'
+    }
+    else {
+      if (newPwd1 != newPwd2) {
+        help_text = 'Die beiden neuen Passwörter stimmen nicht überein! Versuchen Sie es noch einmal.'
+      }
+      else {
+        if (newPwd1 == oldPwd) {
+          help_text = 'Das neue Passwort muss sich vom alten unterscheiden!';
+        }
+        else {
+          user.passwort = SHA256(newPwd1);
+          window.models.user.update(user);
+          $('#settings_edit_form div[id=users_change_passwort_div]').hide()
+        }
+      }
+    }
+  }
+  if (help_text != '') {
+    $('#settings_edit_form div[id=change_passwort_help_text]').html(help_text).show()
+  }
+  else {
+    $('#settings_edit_form div[id=change_passwort_help_text]').html('').hide()
+  }
 }
 
 module.exports.list = function(evt) {
@@ -32,20 +95,12 @@ module.exports.list = function(evt) {
         <td width="20%">' + v.beringernr + '</td>\
         <td width="20%">' + v.name + '</td>\
         <td width="20%">' + v.vorname+ '</td>\
-        <td><a href="#" onclick="window.controllers.users.edit(' + v.id + ')"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>\
       </tr>');
     }
   )
   $('#users_list').html(t)
 
-
-
-
-
-
 /*
-
-
 
   let rowsObject = window.models.user.findWhere()
   let markup = ''

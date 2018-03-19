@@ -65,17 +65,14 @@ let beringungen_list = fs.readFileSync(path.join(viewsPath, 'beringungen/list.ht
 let beringungen_edit = fs.readFileSync(path.join(viewsPath, 'beringungen/edit.html'), 'utf8')
 let beringungen_menu = fs.readFileSync(path.join(viewsPath, 'beringungen/menu.html'), 'utf8')
 let beringungen_search = fs.readFileSync(path.join(viewsPath, 'beringungen/search.html'), 'utf8')
-let nutzer_menu =      fs.readFileSync(path.join(viewsPath, 'nutzer/menu.html'), 'utf8')
 let settings_edit =      fs.readFileSync(path.join(viewsPath, 'settings/edit.html'), 'utf8')
 let settings_info =      fs.readFileSync(path.join(viewsPath, 'settings/info.html'), 'utf8')
 let user_list = fs.readFileSync(path.join(viewsPath, 'user/list.html'), 'utf8')
 
-let useNutzer = fs.readFileSync(path.join(htmlPath, 'use-nutzer.html'), 'utf8'),
-    editPerson = fs.readFileSync(path.join(htmlPath, 'edit-person.html'), 'utf8')
+let editPerson = fs.readFileSync(path.join(htmlPath, 'edit-person.html'), 'utf8')
 
 let O = cheerio.load(body)
 O('#nav-bar').append(navBar)
-O('#nutzer_menu').append(nutzer_menu)
 O('#beringungen_menu').append(beringungen_menu)
 O('#people').append(people)
 //Hinzufügen Navbarelement: wichtig!
@@ -91,7 +88,6 @@ O('#settings_info_section').append(settings_info)
 
 O('#login').append(login)
 O('#users_list_section').append(user_list)
-O('#use-nutzer').append(useNutzer)
 O('#edit-person').append(editPerson)
 
 // Pass the DOM from Cheerio to jQuery.
