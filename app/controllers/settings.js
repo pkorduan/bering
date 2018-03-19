@@ -83,6 +83,25 @@ module.exports.init = function() {
       $('#settings_edit_form button[id=change_sicherungsort_button]').show()
     }
   )
+
+  $('#change_admin_functions_button').on(
+    'click',
+    {
+      context: this
+    },
+    function(evt) {
+      evt.data.context.saveAdminFunctions(
+        ($('#settings_edit_form input[name=loesch_funktion_an]').is(':checked') ? 'an' : 'aus')
+      )
+    }
+  )
+  $('#settings_edit_form input[name=loesch_funktion_an]').on(
+    'click',
+    function(evt) {
+      $('#settings_edit_form button[id=change_admin_functions_button]').show()
+    }
+  )
+
 }
 
 module.exports.saveBeringungsort = function(beringungsort, beringungsort_position, beringungsort_kreis) {
@@ -121,6 +140,19 @@ module.exports.saveSicherungsort = function(sicherung_verzeichnis, sicherung_dat
 
   $('#change_sicherungsort_button').hide()
   $('#sicherungsort_div').fadeOut(1000)
+}
+
+module.exports.saveAdminFunctions = function(loesch_funktion_an) {
+  console.log('controllers.settings.saveAdminFunctions')
+  let setting;
+
+  window.models.setting.update({
+    'bezeichnung' : 'loesch_funktion_an',
+    'wert' : loesch_funktion_an
+  })
+
+  $('#change_admin_functions_button').hide()
+  $('#admin_functions_div').fadeOut(1000)
 }
 
 module.exports.edit = function(evt) {

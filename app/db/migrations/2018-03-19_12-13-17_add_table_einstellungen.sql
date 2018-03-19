@@ -7,7 +7,7 @@ CREATE TABLE Einstellungen (
 
 INSERT INTO Einstellungen (bezeichnung, wert) VALUES ('beringungsort', 'a021insel langenwerder');
 INSERT INTO Einstellungen (bezeichnung, wert) VALUES ('beringungsort_position', '540200n0113000e');
-INSERT INTO Einstellungen (bezeichnung, wert) VALUES ('beringungsort_kreis', 'Nordwestmecklenburg');
+INSERT INTO Einstellungen (bezeichnung, wert) VALUES ('beringungsort_kreis', 'NWM');
 
 INSERT INTO Einstellungen (bezeichnung, wert) VALUES ('loesch_funktion_an', 'aus');
 
