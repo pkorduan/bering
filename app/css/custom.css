@@ -46,3 +46,17 @@ h2 {
 .nav-item {
   cursor: pointer;
 }
+
+.nav-item :hover {
+  background-color: lightgray;
+}
+
+.nav-button {
+  width: 90%;
+  margin: 5px 0px 5px 10px;
+  border-radius: 5px
+}
+
+.form-group {
+  margin-bottom: 0px;
+}

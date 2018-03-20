@@ -13,6 +13,8 @@ module.exports.init = function() {
       context: this
     },
     function(evt) {
+      $('.menue-selected').removeClass('menue-selected')
+      $(evt.target).parent().addClass('menue-selected')
       evt.data.context.newBeringung()
     }
   )
@@ -24,7 +26,9 @@ module.exports.init = function() {
       context: this
     },
     function(evt) {
-      evt.data.context.searchForm(evt)
+      $('.menue-selected').removeClass('menue-selected')
+      $(evt.target).parent().addClass('menue-selected')
+      evt.data.context.searchForm()
     }
   )
 
@@ -121,7 +125,6 @@ module.exports.init = function() {
     }
   )
 
-
   console.log('register click on beringung_speichern_uebernehmen_button')
   $('#beringung_speichern_uebernehmen_button').on(
     'click',
@@ -197,16 +200,19 @@ module.exports.init = function() {
       })
     );
   });
+
 }
 
 module.exports.searchForm = function() {
-  console.log('controllers.beringungen.searchForm');
+  console.log('controllers.beringungen.controllers.start');
 
   $('.sidebar').hide()
   $('#beringungen_menu').show()
 
   $('section').hide();
   $('#beringungen_search_section').show();
+
+  $('#beringung_search_form :input[id=ringnr]').focus();
 }
 
 module.exports.search = function(evt) {
@@ -322,6 +328,7 @@ module.exports.newBeringung = function(uebernehmen = false) {
 
   $('#beringung_beringernr_alt_div').hide()
   $('form#beringung_edit_form :input[id=fundart]').val(1);
+  $('form#beringung_edit_form :input[id=ringnr]').prop('readonly', false).focus()
   $('#beringung_speichern_uebernehmen_button').show()
   this.openNewForm()
 }
