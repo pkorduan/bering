@@ -58,12 +58,14 @@ module.exports.findById = function (id) {
   return beringung
 }
 
-module.exports.insert = function (kvps) {
+module.exports.insert = function (kvps, uebernehmen = false) {
 	console.log('Model beringung.insert kvps: ', kvps);
+  let success = false;
+
   if (kvps.hasOwnProperty('ringnr')) {
     let db = SQL.dbOpen(window.model.db)
     if (db !== null) {
-      let query = "
+      let query = "\
         INSERT OR REPLACE INTO `Daten` (\
           " + $.map(
             kvps,
@@ -81,24 +83,28 @@ module.exports.insert = function (kvps) {
           ).join(', ') + "\
         )\
       ";
+      console.log('query: ', query)
 
-      console.log('Insert sql: ', query)
-      let statement = db.prepare(query)
       try {
-        if (statement.run(kvps.values)) {
-          $('#' + kvps.columns.join(', #'))
-          .addClass('form-control-success')
-          .animate({class: 'form-control-success'}, 1500, function () {
+        let result = db.exec(query)
+        if (result !== undefined) {
+          success = true
+          SQL.dbClose(db, window.model.db)
+          if ($.inArray(kvps['fundart'], [2,3]) > -1) {
             window.beringungen_controller.list()
-          })
-        } else {
-          console.log('Model beringung.saveFormData', 'Query failed for', kvps.values)
+          }
+          else {
+            window.beringungen_controller.newBeringung(uebernehmen)
+          }
+
+        }
+        else {
+          console.log('Fehler: ', 'Query failed for', kvps)
         }
       } catch (error) {
         console.log('model.saveFormData', error.message)
-      } finally {
-        SQL.dbClose(db, window.model.db)
       }
+      if (!success) SQL.dbClose(db, window.model.db)
     }
   }
 }
@@ -123,20 +129,16 @@ module.exports.update = function (kvps) {
         id = " + kvps.id + "\
     ";
     console.log('query: ', query)
-    let result = db.exec(query)
+
     try {
+      let result = db.exec(query)
       if (result !== undefined) {
         success = true
         SQL.dbClose(db, window.model.db)
         window.beringungen_controller.list()
-/*        $('#' + kvps.columns.join(', #'))
-        .addClass('form-control-success')
-        .animate({class: 'form-control-success'}, 1500, function () {
-          window.beringungen_controller.list()
-        })*/
       }
       else {
-        console.log('Fehler: ', 'Query failed for', kvps.values)
+        console.log('Fehler: ', 'Query failed for', kvps)
       }
     } catch (error) {
       console.log('Fehler: ', error.message)

@@ -68,7 +68,7 @@ module.exports.login = function(loginname, passwort, passwort2) {
 
 module.exports.logout = function(evt) {
   console.log('login_controller.logout');
-  window.angemeldet = false
+  window.session.angemeldet = false
   window.session.loginname = ''
   window.session.beringernr = ''
   window.start_controller.start()

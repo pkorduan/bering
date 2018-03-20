@@ -29,7 +29,7 @@ module.exports.getFormFieldValues = function (formId) {
 module.exports.getFormFieldKVPs = function (formId) {
   console.log('Model dbMapper.getFormFieldKVPs');
   let kvps = {}
-  $('#' + formId).find('input:visible, textarea:visible').each(
+  $('#' + formId).find('select, input:visible, textarea:visible').each(
     function (idx, field) {
       if (!(field.id == 'id' && field.value == ''))
         kvps[field.id] = field.value

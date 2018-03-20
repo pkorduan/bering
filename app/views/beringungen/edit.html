@@ -35,7 +35,7 @@
 <div id="beringung_edit" class="container">
   <form id="beringung_edit_form">
     <div class="container-fluid">
-      <div class="form-group row">
+      <div id="beringung_id_div" class="form-group row">
         <label class="col-sm-3 col-form-label" for="id">Id</label>
         <input class="col-sm-4 form-control" type="text" id="id" aria-describedby="idHelpInline" readonly>
         <div class="form-control-feedback" id="idFB"></div>
@@ -43,9 +43,8 @@
       </div>
 
       <div id="beringung_beringernr_alt_div" class="form-group row" style="display: none">
-        <label class="col-sm-3 col-form-label" for="beringernr">ursprünglich beringt von</label>
-        <input class="col-sm-4 form-control" type="text" id="beringernr_alt" readonly>
-        <small id="beringernr_altInfo" class="col-sm-4 align-top form-text text-muted">Beringernr</small>
+        <label class="col-sm-3 col-form-label" for="beringernr_alt">ursprünglich beringt von</label>
+        <span id="beringernr_alt" style="margin-top: 5px"></span>
       </div>
 
       <div class="form-group row">
@@ -85,14 +84,6 @@
           A person's last name or surname (family name).</small>
       </div>
     -->
-
-    <div class="form-group row">
-      <label class="col-sm-3 col-form-label" for="zentrale">Zentrale</label>
-      <input class="col-sm-4 form-control" type="text" id="zentrale" readonly>
-      <div class="form-control-feedback" id="zentraleFB"></div>
-      <small id="zentraleHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
-    </div>
-
 
     <div class="form-group row">
       <label class="col-sm-3 col-form-label" for="ringnr">Ringnummer</label>
@@ -193,8 +184,10 @@
     </div>
 
     <div class="form-group row">
-      <label class="col-sm-3 col-form-label" for="brutstaus">Brutstaus</label>
-      <input class="col-sm-4 form-control" type="text" id="brutstaus" aria-describedby="brutstausHelpInline">
+      <label class="col-sm-3 col-form-label" for="brutstatus">Brutstatus</label>
+      <select class="col-sm-4 form-control" id="brutstatus">
+        <option value=""></option>
+      </select>
       <div class="form-control-feedback" id="brutstausFB"></div>
       <small id="brutstausHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
     </div>
@@ -267,7 +260,7 @@
     <!-- <small id="bemerkungFB" class="form-control-feedback"></small> -->
 
     <div class="form-group row offset-sm-1">
-      <button class="col-sm-auto m-1 btn btn-primary justify-content-start p-0.5" id="beringung_speichern_button" type="button" value="Update">Speichern</button>
+      <button class="col-sm-auto m-1 btn btn-primary justify-content-start p-0.5" id="beringung_speichern_button" type="button" value="Update">Speichern</button> <button class="col-sm-auto m-1 btn btn-primary justify-content-start p-0.5" id="beringung_speichern_uebernehmen_button" type="button" value="Update">Speichern und Übernehmen</button>
     </div>
   </form>
 </div>

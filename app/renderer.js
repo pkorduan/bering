@@ -53,6 +53,7 @@ window.models.vogelalter = require(path.join(modelsPath, 'vogelalter.js'))
 window.models.vogelarten = require(path.join(modelsPath, 'vogelarten.js'))
 window.models.fundzustand = require(path.join(modelsPath, 'fundzustand.js'))
 window.models.fundursache = require(path.join(modelsPath, 'fundursache.js'))
+window.models.brutstatus = require(path.join(modelsPath, 'brutstatus.js'))
 window.models.setting = require(path.join(modelsPath, 'setting.js'))
 
 // Compose the DOM from separate HTML concerns; each from its own file.
