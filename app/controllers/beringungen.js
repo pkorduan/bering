@@ -244,33 +244,34 @@ module.exports.search = function(evt) {
 module.exports.list = function(target, filter = '') {
   console.log('controllers.beringungen.list');
   let beringungen = window.models.beringung.findWhere(filter),
-      t = $('<table class="table table-striped table-hover" id="list-table">'),
-      loesch_funktion_an =  window.models.setting.findByBezeichnung('loesch_funktion_an');
+      loesch_funktion_an =  window.models.setting.findByBezeichnung('loesch_funktion_an'),
+      rows = [],
+      table = $('#beringungen_list_table')
 
   $('.menue-selected').removeClass('menue-selected')
   target.parent().addClass('menue-selected')
   $('#beringungen_list_title').html(target.html())
 
-  t.append('<tr><th width="15%">Ringnr</th><th width="5%">Beringernr</th><th width="15%">Datum</th><th width="15%">Zeit</th><th width="15%">Art</th><th width="15%">Alter</th><th>Notiz</th></tr>');
   $.each(
     beringungen,
     function(index, v) {
-
-
-      t.append('<tr>\
-        <td width="20%">' + v.ringnr + '</td>\
-        <td width="20%">' + v.beringernr + '</td>\
-        <td width="20%">' + v.datum + '</td>\
-        <td width="20%">' + v.uhrzeit+ '</td>\
-        <td width="20%">' + v.vogelart + '</td>\
-        <td width="20%">' + v.alter + '</td>\
-        <td>' + v.bemerkung + '</td>\
-        <td>' + (v.beringernr == window.session.beringernr ? '<a href="#" onclick="window.controllers.beringungen.edit(' + v.id + ')"><i class="fa fa-pencil" aria-hidden="true"></i></a>' : '&nbsp;') + '</td>\
-        <td>' + (v.beringernr == window.session.beringernr && loesch_funktion_an.wert == 'an' ? '<a href="#" onclick="window.controllers.beringungen.delete(' + v.id + ')"><i class="fa fa-trash" aria-hidden="true"></i></a>' : '&nbsp;') + '</td>\
-      </tr>');
+      rows.push({
+        id: v.id,
+        ringnr: v.ringnr,
+        beringernr: v.beringernr,
+        datum: v.datum,
+        uhrzeit: v.uhrzeit,
+        vogelart: v.vogelart,
+        alter: v.alter,
+        bemerkung: v.bemerkung,
+        edit: (v.beringernr == window.session.beringernr ? '<a href="#" onclick="window.controllers.beringungen.edit(' + v.id + ')"><i class="fa fa-pencil" aria-hidden="true"></i></a>' : '&nbsp;'),
+        delete: (v.beringernr == window.session.beringernr && loesch_funktion_an.wert == 'an' ? '<a href="#" onclick="window.controllers.beringungen.delete(' + v.id + ')"><i class="fa fa-trash" aria-hidden="true"></i></a>' : '&nbsp;')
+      })
     }
   )
-  $('#beringungen_list').html(t)
+  console.log('rows: ', rows);
+  table.bootstrapTable('load', rows)
+  $('.fixed-table-loading').hide()
 
   $('.sidebar').hide()
   $('#beringungen_menu').show()

@@ -7,13 +7,13 @@ const cheerio = require('cheerio')
 const dbfParser = require('node-dbf')
 const showdown = require('showdown')
 const SHA256 = require('crypto-js/sha256')
-const bootstraptable = require('bootstrap-table')
 
 console.log('Start renderer');
 
 window.$ = window.jQuery = require('jquery')
 window.Tether = require('tether')
 window.Bootstrap = require('bootstrap')
+window.BootstrapTable = require('bootstrap-table')
 //window.BootstrapDatetimepicker = require('bootstrap-datetimepicker')
 
 let webRoot = path.dirname(__dirname)

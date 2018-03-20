@@ -91,7 +91,7 @@ module.exports.insert = function (kvps, uebernehmen = false) {
           success = true
           SQL.dbClose(db, window.model.db)
           if ($.inArray(kvps['fundart'], [2,3]) > -1) {
-            window.controllers.beringungen.list()
+            window.controllers.beringungen.list($('#list_all_data_menue_link'))
           }
           else {
             window.controllers.beringungen.newBeringung(uebernehmen)
@@ -135,7 +135,7 @@ module.exports.update = function (kvps) {
       if (result !== undefined) {
         success = true
         SQL.dbClose(db, window.model.db)
-        window.controllers.beringungen.list()
+        window.controllers.beringungen.list($('#list_all_data_menue_link'))
       }
       else {
         console.log('Fehler: ', 'Query failed for', kvps)
