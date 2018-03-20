@@ -33,9 +33,9 @@ window.controllers = {}
 window.controllers.settings = require(path.join(controllersPath, 'settings.js'))
 window.controllers.users = require(path.join(controllersPath, 'users.js'))
 window.controllers.help = require(path.join(controllersPath, 'help.js'))
-window.login_controller = require(path.join(controllersPath, 'login.js'))
-window.beringungen_controller = require(path.join(controllersPath, 'beringungen.js'))
-window.start_controller = require(path.join(controllersPath, 'start.js'))
+window.controllers.beringungen = require(path.join(controllersPath, 'beringungen.js'))
+window.controllers.login = require(path.join(controllersPath, 'login.js'))
+window.controllers.start = require(path.join(controllersPath, 'start.js'))
 
 window.view = require(path.join(webRoot, 'view.js'))
 window.model = require(path.join(webRoot, 'model.js'))
@@ -108,10 +108,10 @@ $('document').ready(function () {
   window.controllers.help.init();
   window.controllers.settings.init();
   window.controllers.users.init();
-  window.login_controller.init();
-  window.beringungen_controller.init();
-  window.start_controller.init();
-  window.start_controller.start();
+  window.controllers.login.init();
+  window.controllers.beringungen.init();
+  window.controllers.start.init();
+  window.controllers.start.start();
 })
 
 // Set jQuery.validate settings for bootstrap integration

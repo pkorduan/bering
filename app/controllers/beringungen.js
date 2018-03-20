@@ -2,7 +2,7 @@
 'use strict'
 
 module.exports.init = function() {
-  console.log('beringungen_controller.init');
+  console.log('controllers.beringungen.init');
 
   // register event handler
 
@@ -46,8 +46,7 @@ module.exports.init = function() {
       context: this
     },
     function(evt) {
-      $('#beringungen_list_title').html($(evt.target).html())
-      evt.data.context.list("")
+      evt.data.context.list($(evt.target), "")
     }
   )
 
@@ -58,8 +57,7 @@ module.exports.init = function() {
       context: this
     },
     function(evt) {
-      $('#beringungen_list_title').html($(evt.target).html())
-      evt.data.context.list("fundart = 1")
+      evt.data.context.list($(evt.target), "fundart = 1")
     }
   )
 
@@ -70,8 +68,7 @@ module.exports.init = function() {
       context: this
     },
     function(evt) {
-      $('#beringungen_list_title').html($(evt.target).html())
-      evt.data.context.list("fundart = 1 AND beringernr = '" + window.session.beringernr + "'")
+      evt.data.context.list($(evt.target), "fundart = 1 AND beringernr = '" + window.session.beringernr + "'")
     }
   )
 
@@ -82,8 +79,7 @@ module.exports.init = function() {
       context: this
     },
     function(evt) {
-      $('#beringungen_list_title').html($(evt.target).html())
-      evt.data.context.list("fundart = 2 AND beringernr = '" + window.session.beringernr + "'")
+      evt.data.context.list($(evt.target), "fundart = 2 AND beringernr = '" + window.session.beringernr + "'")
     }
   )
 
@@ -94,8 +90,7 @@ module.exports.init = function() {
       context: this
     },
     function(evt) {
-      $('#beringungen_list_title').html($(evt.target).html())
-      evt.data.context.list("fundart = 2")
+      evt.data.context.list($(evt.target), "fundart = 2")
     }
   )
 
@@ -106,8 +101,7 @@ module.exports.init = function() {
       context: this
     },
     function(evt) {
-      $('#beringungen_list_title').html($(evt.target).html())
-      evt.data.context.list("fundart = 3")
+      evt.data.context.list($(evt.target), "fundart = 3")
     }
   )
 
@@ -206,7 +200,7 @@ module.exports.init = function() {
 }
 
 module.exports.searchForm = function() {
-  console.log('beringungen_controller.searchForm');
+  console.log('controllers.beringungen.searchForm');
 
   $('.sidebar').hide()
   $('#beringungen_menu').show()
@@ -216,7 +210,7 @@ module.exports.searchForm = function() {
 }
 
 module.exports.search = function(evt) {
-  console.log('beringungen_controller.search');
+  console.log('controllers.beringungen.search');
   let ringnr = $('#beringung_search_form :input[id=ringnr]').val(),
       beringung = window.models.beringung.findByRingnr(ringnr)
 
@@ -241,13 +235,15 @@ module.exports.search = function(evt) {
   this.newFund(beringung)
 }
 
-module.exports.list = function(filter = '') {
-  console.log('beringungen_controller.list');
+module.exports.list = function(target, filter = '') {
+  console.log('controllers.beringungen.list');
   let beringungen = window.models.beringung.findWhere(filter),
       t = $('<table id="list-table">'),
       loesch_funktion_an =  window.models.setting.findByBezeichnung('loesch_funktion_an');
 
-      console.log('loesch_funktion_an.wert %o', loesch_funktion_an.wert);
+  $('.menue-selected').removeClass('menue-selected')
+  target.parent().addClass('menue-selected')
+  $('#beringungen_list_title').html(target.html())
 
   t.append('<tr><th width="15%">Ringnr</th><th width="5%">Beringernr</th><th width="15%">Datum</th><th width="15%">Zeit</th><th width="15%">Art</th><th width="15%">Alter</th><th>Notiz</th></tr>');
   $.each(
@@ -263,8 +259,8 @@ module.exports.list = function(filter = '') {
         <td width="20%">' + v.vogelart + '</td>\
         <td width="20%">' + v.alter + '</td>\
         <td>' + v.bemerkung + '</td>\
-        <td>' + (v.beringernr == window.session.beringernr ? '<a href="#" onclick="window.beringungen_controller.edit(' + v.id + ')"><i class="fa fa-pencil" aria-hidden="true"></i></a>' : '&nbsp;') + '</td>\
-        <td>' + (v.beringernr == window.session.beringernr && loesch_funktion_an.wert == 'an' ? '<a href="#" onclick="window.beringungen_controller.delete(' + v.id + ')"><i class="fa fa-trash" aria-hidden="true"></i></a>' : '&nbsp;') + '</td>\
+        <td>' + (v.beringernr == window.session.beringernr ? '<a href="#" onclick="window.controllers.beringungen.edit(' + v.id + ')"><i class="fa fa-pencil" aria-hidden="true"></i></a>' : '&nbsp;') + '</td>\
+        <td>' + (v.beringernr == window.session.beringernr && loesch_funktion_an.wert == 'an' ? '<a href="#" onclick="window.controllers.beringungen.delete(' + v.id + ')"><i class="fa fa-trash" aria-hidden="true"></i></a>' : '&nbsp;') + '</td>\
       </tr>');
     }
   )

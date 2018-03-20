@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports.init = function() {
-  console.log('login_controller.init');
+  console.log('controllers.login.init');
 
   // register event handler
   $('#login_button').on(
@@ -20,11 +20,11 @@ module.exports.init = function() {
 }
 
 module.exports.login = function(loginname, passwort, passwort2) {
-  console.log('login_controller.login für Nutzer: ' + loginname);
+  console.log('controllers.login.login für Nutzer: ' + loginname);
   
   let user = window.models.user.findByLoginName(loginname),
       admin_passwort_hint = '';
-  console.log('login_controller.login found user %o', user);
+  console.log('controllers.login.login found user %o', user);
 
   if (user.loginname == 'admin' && user.passwort == '') {
     if (passwort2 != '') {
@@ -57,7 +57,7 @@ module.exports.login = function(loginname, passwort, passwort2) {
       window.session.loginname = user.loginname
       window.session.beringernr = user.beringernr
       window.session.beringername = user.vorname + ' ' + user.name
-      window.start_controller.start()
+      window.controllers.start.start()
     }
     else {
       $('#login_form input[name=passwort2]').hide()
@@ -67,9 +67,9 @@ module.exports.login = function(loginname, passwort, passwort2) {
 }
 
 module.exports.logout = function(evt) {
-  console.log('login_controller.logout');
+  console.log('controllers.login.logout');
   window.session.angemeldet = false
   window.session.loginname = ''
   window.session.beringernr = ''
-  window.start_controller.start()
+  window.controllers.start.start()
 }

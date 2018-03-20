@@ -13,6 +13,7 @@ module.exports.init = function() {
       context: this
     },
     function(evt) {
+      $('.menue-selected').removeClass('menue-selected')
       evt.data.context.edit(evt)
     }
   )

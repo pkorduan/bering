@@ -37,3 +37,12 @@ h2 {
   display: inline;
   margin-bottom: 5px;
 }
+
+.menue-selected {
+  background-color: lightblue;
+  cursor: default;
+}
+
+.nav-item {
+  cursor: pointer;
+}

@@ -1,11 +1,11 @@
 'use strict'
 
 module.exports.init = function() {
-  console.log('start_controller.init');
+  console.log('controllers.start.init');
 }
 
 module.exports.start = function() {
-  console.log('start_controller.show')
+  console.log('controllers.start.show')
 
   $('.row .placeholders').hide();
   if (window.session.angemeldet) {
@@ -13,8 +13,8 @@ module.exports.start = function() {
     $('.nav-item').show();
     $('#login_link').hide();
     $('#logout_link').show();
-    window.beringungen_controller.list();
-  }
+    window.controllers.beringungen.list($('#list_all_data_menue_link'));
+  }controllers.start
   else {
     $('#menu').hide();
     $('.nav-item').hide();
