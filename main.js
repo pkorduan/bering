@@ -11,13 +11,14 @@ const BrowserWindow = electron.BrowserWindow
 const dbPath = '//app/db';
 const dbName = 'bering.db';
 
+/*
 global.sharedObject = {
 	session: {
 		username: '',
     id: ''
 	}
 }
-
+*/
 app.setName(config.productName)
 var mainWindow = null
 app.on('ready', function () {

@@ -7,6 +7,7 @@ const cheerio = require('cheerio')
 const dbfParser = require('node-dbf')
 const showdown = require('showdown')
 const SHA256 = require('crypto-js/sha256')
+const bootstraptable = require('bootstrap-table')
 
 console.log('Start renderer');
 
@@ -20,6 +21,7 @@ require(path.join(webRoot, 'jquery.validate.min.js'))
 // require(path.join(webRoot, 'bootstrap-datetimepicker.min.js'))
 require(path.join(webRoot, 'bootstrap-datepicker.min.js'))
 require(path.join(webRoot, 'bootstrap-datepicker.de.min.js'))
+
 
 window.session = {
   'angemeldet' : false,

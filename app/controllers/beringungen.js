@@ -244,7 +244,7 @@ module.exports.search = function(evt) {
 module.exports.list = function(target, filter = '') {
   console.log('controllers.beringungen.list');
   let beringungen = window.models.beringung.findWhere(filter),
-      t = $('<table id="list-table">'),
+      t = $('<table class="table table-striped table-hover" id="list-table">'),
       loesch_funktion_an =  window.models.setting.findByBezeichnung('loesch_funktion_an');
 
   $('.menue-selected').removeClass('menue-selected')
