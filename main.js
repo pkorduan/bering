@@ -11,14 +11,6 @@ const BrowserWindow = electron.BrowserWindow
 const dbPath = '//app/db';
 const dbName = 'bering.db';
 
-/*
-global.sharedObject = {
-	session: {
-		username: '',
-    id: ''
-	}
-}
-*/
 app.setName(config.productName)
 var mainWindow = null
 app.on('ready', function () {
@@ -42,7 +34,7 @@ app.on('ready', function () {
   )
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  //mainWindow.webContents.openDevTools()
 
   // Enable keyboard shortcuts for Developer Tools on various platforms.
   let platform = os.platform()

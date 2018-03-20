@@ -263,13 +263,19 @@ module.exports.list = function(target, filter = '') {
         uhrzeit: v.uhrzeit,
         vogelart: v.vogelart,
         alter: v.alter,
+        brutstatus: v.brutstatus,
+        skz_1: v.skz_1,
+        skz_2: v.skz_2,
+        fundursache: v.fundursache,
+        fundzustand: v.fundzustand,
+        farbring: v.farbring,
         bemerkung: v.bemerkung,
         edit: (v.beringernr == window.session.beringernr ? '<a href="#" onclick="window.controllers.beringungen.edit(' + v.id + ')"><i class="fa fa-pencil" aria-hidden="true"></i></a>' : '&nbsp;'),
         delete: (v.beringernr == window.session.beringernr && loesch_funktion_an.wert == 'an' ? '<a href="#" onclick="window.controllers.beringungen.delete(' + v.id + ')"><i class="fa fa-trash" aria-hidden="true"></i></a>' : '&nbsp;')
       })
     }
   )
-  console.log('rows: ', rows);
+  //console.log('rows: ', rows);
   table.bootstrapTable('load', rows)
   $('.fixed-table-loading').hide()
 

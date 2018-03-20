@@ -14,6 +14,7 @@ window.$ = window.jQuery = require('jquery')
 window.Tether = require('tether')
 window.Bootstrap = require('bootstrap')
 window.BootstrapTable = require('bootstrap-table')
+
 //window.BootstrapDatetimepicker = require('bootstrap-datetimepicker')
 
 let webRoot = path.dirname(__dirname)
@@ -21,7 +22,7 @@ require(path.join(webRoot, 'jquery.validate.min.js'))
 // require(path.join(webRoot, 'bootstrap-datetimepicker.min.js'))
 require(path.join(webRoot, 'bootstrap-datepicker.min.js'))
 require(path.join(webRoot, 'bootstrap-datepicker.de.min.js'))
-
+require(path.join(webRoot,'../node_modules/bootstrap-table/dist/extensions/export/bootstrap-table-export.js'))
 
 window.session = {
   'angemeldet' : false,
