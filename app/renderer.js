@@ -7,6 +7,7 @@ const cheerio = require('cheerio')
 const dbfParser = require('node-dbf')
 const showdown = require('showdown')
 const SHA256 = require('crypto-js/sha256')
+//const dialog = require('electron').remote.require('dialog')
 
 console.log('Start renderer');
 
@@ -42,8 +43,6 @@ window.controllers.start = require(path.join(controllersPath, 'start.js'))
 
 window.view = require(path.join(webRoot, 'view.js'))
 window.model = require(path.join(webRoot, 'model.js'))
-// window.model.db = path.join(app.getPath('userData'), 'example.db')
-//siehe auch model.js module.exports.initDb
 window.model.db = path.join(app.getAppPath(), '//app//db//bering.db')
 
 // load models
@@ -135,4 +134,3 @@ jQuery.validator.setDefaults({
         }
     }
 });
-

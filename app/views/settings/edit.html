@@ -32,10 +32,14 @@
       <br>
       <a id="sicherung_link" href="#" onclick="$('#sicherungsort_div').toggle();">Speicherort der Sicherung</a>
       <div id="sicherungsort_div" style="display: none">
-        <input class="col-sm-4 form-control" type="text" name="sicherung_verzeichnis" placeholder="Speicherort">
-        <small id="beringungsort_kreisHelpInline" class="col-sm-4 text-muted">Verzeichnis</small><br>
-        <input class="col-sm-4 form-control" type="text" name="sicherung_dateiname" placeholder="Dateiname">
-        <small id="beringungsort_kreisHelpInline" class="col-sm-4 text-muted">Dateiname</small><br>
+        <input class="col-sm-8 form-control" type="text" name="sicherung_verzeichnis" placeholder="Speicherort">
+        <button id="select_sicherung_verzeichnis_button" type="button" class="button">
+          <i class="fa fa-folder-open" aria-hidden="true"></i>
+        </button>
+        <small id="verzeichnisHelpInline" class="col-sm-4 text-muted">Verzeichnis</small><br>
+        <input class="col-sm-6 form-control" type="text" name="sicherung_dateiname" placeholder="Dateiname">
+        <small id="dateinameHelpInline" class="col-sm-4 text-muted">Dateiname</small><br>
+        <button id="save_database_button" type="button" class="button">Datenbank jetzt sichern</button>
         <button id="change_sicherungsort_button" type="button" class="button" style="display: none">Speichern</button>
       </div>
       <br>

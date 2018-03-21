@@ -6,6 +6,18 @@ module.exports.init = function() {
 
   // register event handler
 
+  console.log('register click on select_sicherung_verzeichnis_button');
+  $('#select_sicherung_verzeichnis_button').on(
+    'click',
+    {
+      context: this
+    },
+    function (evt) {
+      console.log('Funktion ist noch nicht eingebaut.');
+//        $('#sicherung_verzeichnis').val(fileNames[0])
+    }
+  )
+
   console.log('register click on settings_edit_link')
   $('#settings_edit_link').on(
     'click',
@@ -170,7 +182,7 @@ module.exports.edit = function(evt) {
     }
   })
   console.log('settings: %o', settings)
-  
+
   $('section').hide();
   $('#settings_edit_section').show()
 }

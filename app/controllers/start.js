@@ -2,6 +2,17 @@
 
 module.exports.init = function() {
   console.log('start_controller.init');
+
+  console.log('register click on save_database_button')
+  $('#save_database_button').on(
+    'click',
+    {
+      context: this
+    },
+    function (evt) {
+      evt.data.context.backupDb()
+    }
+  )
 }
 
 module.exports.start = function() {
@@ -14,12 +25,21 @@ module.exports.start = function() {
     $('#login_link').hide();
     $('#logout_link').show();
     window.controllers.beringungen.list($('#list_all_data_menue_link'));
-  }
-  else {
+  } else {
     $('#menu').hide();
     $('.nav-item').hide();
     $('#login_link').addClass('active').show();
     $('#logout_link').hide();
     $('#login').show();
   }
+}
+
+module.exports.backupDb = function () {
+  console.log('controllers.start.backupDb');
+  let src = window.model.db,
+      dst = window.models.setting.findByBezeichnung('sicherung_verzeichnis').wert + '/' +
+            window.models.setting.findByBezeichnung('sicherung_dateiname').wert
+  console.log('Save Database ' + src + ' to ' + dst)
+
+  fs.createReadStream(src).pipe(fs.createWriteStream(dst));
 }

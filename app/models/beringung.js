@@ -90,6 +90,9 @@ module.exports.insert = function (kvps, uebernehmen = false) {
         if (result !== undefined) {
           success = true
           SQL.dbClose(db, window.model.db)
+          let myNotification = new Notification('Datenbank', {
+            body: 'Datensatz erfolgreich angelegt.'
+          })
           if ($.inArray(kvps['fundart'], [2,3]) > -1) {
             window.controllers.beringungen.list($('#list_all_data_menue_link'))
           }
@@ -113,7 +116,7 @@ module.exports.update = function (kvps) {
 	console.log('Model beringung.update');
   let db = SQL.dbOpen(window.model.db),
       success = false
-    
+
   if (db !== null) {
     let query = "\
       UPDATE\
@@ -135,6 +138,13 @@ module.exports.update = function (kvps) {
       if (result !== undefined) {
         success = true
         SQL.dbClose(db, window.model.db)
+        let myNotification = new Notification('Datenbank', {
+          body: 'Datensatz erfolgreich aktualisiert'
+        })
+
+        myNotification.onclick = () => {
+          console.log('Notification clicked')
+        }
         window.controllers.beringungen.list($('#list_all_data_menue_link'))
       }
       else {
