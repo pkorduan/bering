@@ -17,17 +17,6 @@ module.exports.init = function() {
     }
   )
 
-  console.log('register click on users_passwort_link')
-  $('#users_passwort_link').on(
-    'click',
-    {
-      context: this,
-    },
-    function(evt) {
-      $('#settings_edit_form div[id=users_change_passwort_div]').toggle()
-    }
-  )
-
   console.log('register click on users_change_passwort_button')
   $('#change_user_passwort_button').on(
     'click',
@@ -87,21 +76,16 @@ module.exports.list = function(evt) {
   let users = window.models.user.findWhere(),
       t = $('<table id="user-list-table">');
 
-  if ($('#beringer_list_div').is(':visible')) {
-    $('#beringer_list_div').hide();
-  }
-  else {
-    t.append('<tr><th width="5%">Beringernr</th><th width="15%">Nachname</th><th width="15%">Vorname</th></tr>');
-    $.each(
-      users,
-      function(index, v) {
-        t.append('<tr>\
-          <td width="20%">' + v.beringernr + '</td>\
-          <td width="20%">' + v.name + '</td>\
-          <td width="20%">' + v.vorname+ '</td>\
-        </tr>');
-      }
-    )
-    $('#beringer_list_div').html(t).show();
-  }
+  t.append('<tr><th width="5%">Beringernr</th><th width="15%">Nachname</th><th width="15%">Vorname</th></tr>');
+  $.each(
+    users,
+    function(index, v) {
+      t.append('<tr>\
+        <td width="20%">' + v.beringernr + '</td>\
+        <td width="20%">' + v.name + '</td>\
+        <td width="20%">' + v.vorname+ '</td>\
+      </tr>');
+    }
+  )
+  $('#beringer_list_div').html(t);
 }

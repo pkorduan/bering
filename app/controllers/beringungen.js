@@ -4,6 +4,15 @@
 module.exports.init = function() {
   console.log('controllers.beringungen.init');
 
+  $('#beringung_datepicker input').datepicker({
+      format: "dd.mm.yyyy",
+      todayHighlight: true
+  });
+/*
+  $('#beringung_timepicker input').timepicker({
+      format: "hh:mm:ss"
+  });
+*/
   // register event handler
 
   console.log('register click on beringung_link')
@@ -142,9 +151,9 @@ module.exports.init = function() {
 
   $.each(altersangaben, function (i, item) {
     $('#beringung_edit_form select[id=alter]').append(
-      $('<option>', { 
+      $('<option>', {
         value: item.code,
-        text : item.bezeichnung_de 
+        text : item.bezeichnung_de
       })
     );
   });
@@ -155,7 +164,7 @@ module.exports.init = function() {
 
   $.each(vogelarten, function (i, item) {
     $('#beringung_edit_form select[id=vogelart]').append(
-      $('<option>', { 
+      $('<option>', {
         value: item.code,
         text : item.bezeichnung
       })
@@ -168,7 +177,7 @@ module.exports.init = function() {
 
   $.each(fundzustaende, function (i, item) {
     $('#beringung_edit_form select[id=fundzustand]').append(
-      $('<option>', { 
+      $('<option>', {
         value: item.code,
         text : item.bezeichnung
       })
@@ -181,7 +190,7 @@ module.exports.init = function() {
 
   $.each(fundursachen, function (i, item) {
     $('#beringung_edit_form select[id=fundursache]').append(
-      $('<option>', { 
+      $('<option>', {
         value: item.code,
         text : item.bezeichnung_de
       })
@@ -194,7 +203,7 @@ module.exports.init = function() {
 
   $.each(brutstati, function (i, item) {
     $('#beringung_edit_form select[id=brutstatus]').append(
-      $('<option>', { 
+      $('<option>', {
         value: item.status,
         text : item.beschreibung
       })
@@ -243,7 +252,7 @@ module.exports.search = function(evt) {
 
 module.exports.list = function(target, filter = '') {
   console.log('controllers.beringungen.list');
-  let beringungen = window.models.beringung.findWhere(filter),
+  let beringungen = window.models.beringung.findWhere('*', filter),
       loesch_funktion_an =  window.models.setting.findByBezeichnung('loesch_funktion_an'),
       rows = [],
       table = $('#beringungen_list_table')
@@ -430,6 +439,8 @@ module.exports.insert = function(evt, uebernehmen = false) {
       validation,
       callback
 
+  #// TODO: convert date and time to valid date in a function and time bevor validation
+
   if (this.allValid()) {
     console.log('Alle Eingabenn valide!')
     let kvps = window.models.dbMapper.getFormFieldKVPs('beringung_edit_form')
@@ -448,6 +459,8 @@ module.exports.update = function(evt) {
   console.log('Controller beringungen.update')
   let all_valid = true,
       validation
+
+  #// TODO: convert date and time to valid date in a function and time bevor validation
 
   if (this.allValid()) {
     console.log('Alle Eingabenn valide!')
@@ -480,5 +493,5 @@ module.exports.allValid = function() {
     }
   )
 
-  return all_valid  
+  return all_valid
 }

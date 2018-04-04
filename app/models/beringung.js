@@ -1,14 +1,15 @@
 // model Beringung
 'use strict'
 
-module.exports.findWhere = function (where = '', order = '`datum`, `uhrzeit` DESC', limit = '') {
+module.exports.findWhere = function (select = '*', where = '', group = '', order = '`datum`, `uhrzeit` DESC', limit = '') {
   console.log('Model Beringung.findWhere')
   let db = SQL.dbOpen(window.model.db),
       rows = {};
 
   if (db !== null) {
-    let query = 'SELECT * FROM `Daten`'
+    let query = 'SELECT ' + select + ' FROM `Daten`'
     if (where != '') query += ' WHERE ' + where
+    if (group != '') query += ' GROUP BY ' + group
     if (order != '') query += ' ORDER BY ' + order
     if (limit != '') query += ' LIMIT ' + limit
     console.log('query: ' + query);
@@ -33,7 +34,7 @@ module.exports.findByRingnr = function (ringnr) {
   let beringung = {}
 
   if (ringnr != '') {
-    let beringungen = this.findWhere("ringnr = '" + ringnr + "'", "datum, uhrzeit", '1'),
+    let beringungen = this.findWhere('*', "ringnr = '" + ringnr + "'", '', "datum, uhrzeit", '1'),
         keys = Object.keys(beringungen)
 
     if (keys.length > 0) {
@@ -48,7 +49,7 @@ module.exports.findById = function (id) {
   let beringung = {}
 
   if (id > 0) {
-    let beringungen = this.findWhere('id = ' + id),
+    let beringungen = this.findWhere('*', 'id = ' + id),
         keys = Object.keys(beringungen)
 
     if (keys.length > 0) {

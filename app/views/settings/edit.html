@@ -2,8 +2,9 @@
 <div id="settings_edit" class="container">
   <form id="settings_edit_form">
     <div class="container-fluid">
-      <a id="users_passwort_link" href="#">Passwort ändern</a>
-      <div id="users_change_passwort_div" style="display: none">
+
+      <a id="users_passwort_link" class="setting_link" href="#">Passwort ändern</a>
+      <div id="users_change_passwort_div" class="setting_div" style="display: none">
         Neues Passwort vergeben<br>
         <div id="change_passwort_help_text" style="display: none"></div>
         <input class="col-sm-4 form-control" type="password" name="old_passwort" placeholder="Altes Passwort">
@@ -15,12 +16,14 @@
         <button id="change_user_passwort_button" type="button" class="login-button">Speichern</button>
       </div>
       <br>
-      <a id="users_list_link" href="#">Nutzer anzeigen</a>
-      <div id="beringer_list_div" style="display: none">
+
+      <a id="users_list_link" class="setting_link" href="#">Nutzer anzeigen</a>
+      <div id="beringer_list_div" class="setting_div" style="display: none">
       </div>
       <br>
-      <a id="beringungsort_link" href="#" onclick="$('#beringungsort_div').toggle();">Beringungsort</a>
-      <div id="beringungsort_div" style="display: none">
+
+      <a id="beringungsort_link" class="setting_link" href="#">Beringungsort</a>
+      <div id="beringungsort_div" class="setting_div" style="display: none">
         <input class="col-sm-4 form-control" type="text" name="beringungsort" placeholder="Beringungsort">
         <small id="beringungsort_kreisHelpInline" class="col-sm-4 text-muted">Bezeichnung</small><br>
         <input class="col-sm-4 form-control" type="text" name="beringungsort_position" placeholder="Position">
@@ -30,8 +33,9 @@
         <button id="change_beringungsort_button" type="button" class="button" style="display: none">Speichern</button>
       </div>
       <br>
-      <a id="sicherung_link" href="#" onclick="$('#sicherungsort_div').toggle();">Speicherort der Sicherung</a>
-      <div id="sicherungsort_div" style="display: none">
+
+      <a id="sicherung_link" class="setting_link" href="#">Speicherort der Sicherung</a>
+      <div id="sicherungsort_div" class="setting_div" style="display: none">
         <input class="col-sm-8 form-control" type="text" name="sicherung_verzeichnis" placeholder="Speicherort">
         <button id="select_sicherung_verzeichnis_button" type="button" class="button">
           <i class="fa fa-folder-open" aria-hidden="true"></i>
@@ -39,12 +43,25 @@
         <small id="verzeichnisHelpInline" class="col-sm-4 text-muted">Verzeichnis</small><br>
         <input class="col-sm-6 form-control" type="text" name="sicherung_dateiname" placeholder="Dateiname">
         <small id="dateinameHelpInline" class="col-sm-4 text-muted">Dateiname</small><br>
+        <button id="change_sicherungsort_button" type="button" class="button" style="margin-bottom: 10px; display: none">Speichern</button><br>
         <button id="save_database_button" type="button" class="button">Datenbank jetzt sichern</button>
-        <button id="change_sicherungsort_button" type="button" class="button" style="display: none">Speichern</button>
       </div>
       <br>
-      <a id="admin_functions_link" href="#" onclick="$('#admin_functions_div').toggle();">Änderungsfunktionen</a>
-      <div id="admin_functions_div" style="display: none">
+
+      <a id="export_link" class="setting_link" href="#">Speicherort für Exporte</a>
+      <div id="exportort_div" class="setting_div" style="display: none">
+        <input class="col-sm-8 form-control" type="text" name="export_verzeichnis" placeholder="Speicherort">
+        <button id="select_export_verzeichnis_button" type="button" class="button">
+          <i class="fa fa-folder-open" aria-hidden="true"></i>
+        </button>
+        <small id="verzeichnisHelpInline" class="col-sm-4 text-muted">Verzeichnis</small><br>
+        <button id="change_exportort_button" type="button" class="button" style="display: none">Speichern</button>
+        <a id="checkPathBtn" href="#">Prüfe Pfad</a><br>
+      </div>
+      <br>
+
+      <a id="admin_functions_link" class="setting_link" href="#">Änderungsfunktionen</a>
+      <div id="admin_functions_div" class="setting_div" style="display: none">
         <input type="checkbox" name="loesch_funktion_an"> Datensätze löschen<br>
         <button id="change_admin_functions_button" type="button" class="button" style="display: none">Speichern</button>
       </div>

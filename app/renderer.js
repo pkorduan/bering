@@ -20,9 +20,9 @@ window.BootstrapTable = require('bootstrap-table')
 
 let webRoot = path.dirname(__dirname)
 require(path.join(webRoot, 'jquery.validate.min.js'))
-// require(path.join(webRoot, 'bootstrap-datetimepicker.min.js'))
 require(path.join(webRoot, 'bootstrap-datepicker.min.js'))
 require(path.join(webRoot, 'bootstrap-datepicker.de.min.js'))
+require(path.join(webRoot, 'bootstrap-timepicker.min.js'))
 require(path.join(webRoot,'../node_modules/bootstrap-table/dist/extensions/export/bootstrap-table-export.js'))
 
 window.session = {
@@ -40,6 +40,7 @@ window.controllers.help = require(path.join(controllersPath, 'help.js'))
 window.controllers.beringungen = require(path.join(controllersPath, 'beringungen.js'))
 window.controllers.login = require(path.join(controllersPath, 'login.js'))
 window.controllers.start = require(path.join(controllersPath, 'start.js'))
+window.controllers.export = require(path.join(controllersPath, 'export.js'))
 
 window.model = require(path.join(webRoot, 'model.js'))
 window.model.db = path.join(app.getAppPath(), '//app//db//bering.db')
@@ -70,6 +71,7 @@ window.views.beringungen_menu =   fs.readFileSync(path.join(viewsPath, 'beringun
 window.views.beringungen_search = fs.readFileSync(path.join(viewsPath, 'beringungen/search.html'), 'utf8')
 window.views.settings_edit =      fs.readFileSync(path.join(viewsPath, 'settings/edit.html'), 'utf8')
 window.views.settings_info =      fs.readFileSync(path.join(viewsPath, 'settings/info.html'), 'utf8')
+window.views.export =             fs.readFileSync(path.join(viewsPath, 'export/export.html'), 'utf8')
 
 // Compose the DOM from separate HTML concerns; each from its own file.
 let O = cheerio.load(window.views.body)
@@ -82,6 +84,7 @@ O('#help_section').append(window.views.help)
 O('#settings_edit_section').append(window.views.settings_edit)
 O('#settings_info_section').append(window.views.settings_info)
 O('#login').append(window.views.login)
+O('#export_section').append(window.views.export)
 
 // Pass the DOM from Cheerio to jQuery.
 let dom = O.html()
@@ -97,6 +100,7 @@ $('document').ready(function () {
   window.controllers.beringungen.init();
   window.controllers.start.init();
   window.controllers.start.start();
+  window.controllers.export.init();
 })
 
 // Set jQuery.validate settings for bootstrap integration

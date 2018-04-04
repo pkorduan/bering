@@ -84,16 +84,37 @@ module.exports.init = function() {
       )
     }
   )
+
   $('#settings_edit_form input[name=sicherung_verzeichnis]').on(
     'keyup',
     function(evt) {
       $('#settings_edit_form button[id=change_sicherungsort_button]').show()
     }
   )
+
   $('#settings_edit_form input[name=sicherung_dateiname]').on(
     'keyup',
     function(evt) {
       $('#settings_edit_form button[id=change_sicherungsort_button]').show()
+    }
+  )
+
+  $('#change_exportort_button').on(
+    'click',
+    {
+      context: this
+    },
+    function(evt) {
+      evt.data.context.saveExportort(
+        $('#settings_edit_form input[name=export_verzeichnis]').val(),
+      )
+    }
+  )
+
+  $('#settings_edit_form input[name=export_verzeichnis]').on(
+    'keyup',
+    function(evt) {
+      $('#settings_edit_form button[id=change_exportort_button]').show()
     }
   )
 
@@ -115,6 +136,13 @@ module.exports.init = function() {
     }
   )
 
+  $('.setting_link').on(
+    'click',
+    function (evt) {
+      $('.setting_div').hide()
+      $(evt.target).next().toggle()
+    }
+  )
 }
 
 module.exports.saveBeringungsort = function(beringungsort, beringungsort_position, beringungsort_kreis) {
@@ -155,6 +183,19 @@ module.exports.saveSicherungsort = function(sicherung_verzeichnis, sicherung_dat
   $('#sicherungsort_div').fadeOut(1000)
 }
 
+module.exports.saveExportort = function(export_verzeichnis) {
+  console.log('controllers.settings.saveExportort')
+  let setting;
+
+  window.models.setting.update({
+    'bezeichnung' : 'export_verzeichnis',
+    'wert' : export_verzeichnis
+  })
+
+  $('#change_exportort_button').hide()
+  $('#exportort_div').fadeOut(1000)
+}
+
 module.exports.saveAdminFunctions = function(loesch_funktion_an) {
   console.log('controllers.settings.saveAdminFunctions')
   let setting;
@@ -174,6 +215,7 @@ module.exports.edit = function(evt) {
   let rows = window.models.setting.findWhere('','bezeichnung'),
       settings = {};
 
+  // Fill form fields with values
   $.each(rows, function(i, v) {
     settings[v.bezeichnung] = v.wert
     $('#settings_edit_form input[name=' + v.bezeichnung + ']').val(v.wert)
