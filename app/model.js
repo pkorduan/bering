@@ -3,7 +3,6 @@
 const path = require('path')
 const fs = require('fs')
 const SQL = require('sql.js')
-const view = require(path.join(__dirname, 'view.js'))
 
 /*
   SQL.js returns a compact object listing the columns separately from the
@@ -14,7 +13,7 @@ const view = require(path.join(__dirname, 'view.js'))
     1: {first_name: "Svend", last_name: "Asmussen", person_id: 2},
   }
   This format makes updating the markup easy when the DOM input id attribute
-  is the same as the column name. See view.showPeople() for an example.
+  is the same as the column name.
 */
 let _rowsFromSqlDataObject = function (object) {
   let data = {}
@@ -192,178 +191,6 @@ module.exports.migrateDb = function (dbPath, dbName, callback) {
 
   if (typeof callback === 'function') {
     callback()
-  }  
-}
-
-/*
-  Populates the People List.
-*/
-module.exports.getPeople = function () {
-  let db = SQL.dbOpen(window.model.db)
-  if (db !== null) {
-    let query = 'SELECT * FROM `people` ORDER BY `last_name` ASC'
-    try {
-      let row = db.exec(query)
-      if (row !== undefined && row.length > 0) {
-        row = _rowsFromSqlDataObject(row[0])
-		console.log('getPeople Ergebnis:', row)
-        view.showPeople(row)
-      }
-    } catch (error) {
-      console.log('model.getPeople', error.message)
-    } finally {
-      SQL.dbClose(db, window.model.db)
-    }
-  }
-}
-
-/*
-  Populates the Tables List.
-*/
-module.exports.getTables = function () {
-  let db = SQL.dbOpen(window.model.db)
-  if (db !== null) {
-    let query = "SELECT name FROM sqlite_master WHERE type='table'";
-    try {
-      let row = db.exec(query)
-      if (row !== undefined && row.length > 0) {
-        row = _rowsFromSqlDataObject(row[0])
-		console.log('getTables Ergebnis:', row)
-        view.showTables(row)
-      }
-    } catch (error) {
-      console.log('model.getTables', error.message)
-    } finally {
-      SQL.dbClose(db, window.model.db)
-    }
-  }
-}
-
-/*
-  Populates the Tables List.
-*/
-module.exports.getTables = function () {
-  let db = SQL.dbOpen(window.model.db)
-  if (db !== null) {
-    let query = "SELECT name FROM sqlite_master WHERE type='table'";
-    try {
-      let row = db.exec(query)
-      if (row !== undefined && row.length > 0) {
-        row = _rowsFromSqlDataObject(row[0])
-		console.log('getTables Ergebnis:', row)
-        view.showTables(row)
-      }
-    } catch (error) {
-      console.log('model.getTables', error.message)
-    } finally {
-      SQL.dbClose(db, window.model.db)
-    }
-  }
-}
-
-/*
-  Fetch a beringungen data from the database.
-*/
-module.exports.getBeringungen = function (ringnr) {
-  let db = SQL.dbOpen(window.model.db)
-  if (db !== null) {
-    let query = 'SELECT * FROM `Daten` WHERE `ringnr` = ?'
-    let statement = db.prepare(query, [ringnr])
-    try {
-      if (statement.step()) {
-        let values = [statement.get()]
-        let columns = statement.getColumnNames()
-        return _rowsFromSqlDataObject({values: values, columns: columns})
-      } else {
-        console.log('model.getBeringungen', 'No data found for ', ringnr)
-      }
-    } catch (error) {
-      console.log('model.getBeringungen', error.message)
-    } finally {
-      SQL.dbClose(db, window.model.db)
-    }
-  }
-}
-
-/*
-  Fetch a Nutzer's data from the database.
-*/
-module.exports.getNutzerMitID = function (pid) {
-	console.log("getNutzerMitID: " + pid);
-  let db = SQL.dbOpen(window.model.db)
-  if (db !== null) {
-    let query = 'SELECT * FROM `Nutzer` WHERE `beringernr` IS ?'
-    let statement = db.prepare(query, [pid])
-    try {
-      if (statement.step()) {
-        let values = [statement.get()]
-        let columns = statement.getColumnNames()
-        return _rowsFromSqlDataObject({values: values, columns: columns})
-      } else {
-        console.log('model.getNutzerMitID', 'No data found for beringernr =', pid)
-      }
-    } catch (error) {
-      console.log('model.getNutzerMitID', error.message)
-    } finally {
-      SQL.dbClose(db, window.model.db)
-    }
-  }
-}
-
-/*
-  Delete a person's data from the database.
-*/
-module.exports.deletePerson = function (pid, callback) {
-  let db = SQL.dbOpen(window.model.db)
-  if (db !== null) {
-    let query = 'DELETE FROM `people` WHERE `person_id` IS ?'
-    let statement = db.prepare(query)
-    try {
-      if (statement.run([pid])) {
-        if (typeof callback === 'function') {
-          callback()
-        }
-      } else {
-        console.log('model.deletePerson', 'No data found for person_id =', pid)
-      }
-    } catch (error) {
-      console.log('model.deletePerson', error.message)
-    } finally {
-      SQL.dbClose(db, window.model.db)
-    }
-  }
-}
-
-/*
-  Insert or update a person's data in the database.
-*/
-module.exports.saveFormData = function (tableName, keyValue, callback) {
-	console.log("bin in saveFormData");
-  if (keyValue.columns.length > 0) {
-    let db = SQL.dbOpen(window.model.db)
-    if (db !== null) {
-      let query = 'INSERT OR REPLACE INTO `' + tableName
-      query += '` (`' + keyValue.columns.join('`, `') + '`)'
-      query += ' VALUES (' + _placeHoldersString(keyValue.values.length) + ')'
-      let statement = db.prepare(query)
-      try {
-        if (statement.run(keyValue.values)) {
-          $('#' + keyValue.columns.join(', #'))
-          .addClass('form-control-success')
-          .animate({class: 'form-control-success'}, 1500, function () {
-            if (typeof callback === 'function') {
-              callback()
-            }
-          })
-        } else {
-          console.log('model.saveFormData', 'Query failed for', keyValue.values)
-        }
-      } catch (error) {
-        console.log('model.saveFormData', error.message)
-      } finally {
-        SQL.dbClose(db, window.model.db)
-      }
-    }
   }
 }
 
@@ -382,13 +209,13 @@ module.exports.test = function () {
 //TODO: beim Starten einmal Array füllen, dann nur noch nutzen, da DBF's sehr groß
 module.exports.parseDBF = function (fileName) {
 	var readDbf = require('read-dbf');
- 
+
 	readDbf(path.join(__dirname, '/data/'+fileName), function(err, res) {
 		console.log('parseDBF ERROR: '+err);
 		// res is an array of objects
 		var resJSON = JSON.stringify(res);
 		//console.log('parseDBF: '+resJSON);
-		var arrayA = []; 
+		var arrayA = [];
 		for (var i = 0; i < resJSON.length; i++) {
 			//console.log('parseDBF: '+resJSON[i][0]);
 			// console.log("Pushe Nr. "+i+": "+resJSON[i].ARNAME);

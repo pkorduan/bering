@@ -105,8 +105,3 @@ module.exports.list = function(evt) {
     $('#beringer_list_div').html(t).show();
   }
 }
-
-module.exports.edit = function(evt) {
-  console.log('controllers.users.edit');
-  alert('Änderungen des Nutzers ist noch nicht implementiert. Bitte benutzen Sie dafür den Datenbank-Manager!');
-}

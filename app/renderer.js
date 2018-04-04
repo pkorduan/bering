@@ -41,7 +41,6 @@ window.controllers.beringungen = require(path.join(controllersPath, 'beringungen
 window.controllers.login = require(path.join(controllersPath, 'login.js'))
 window.controllers.start = require(path.join(controllersPath, 'start.js'))
 
-window.view = require(path.join(webRoot, 'view.js'))
 window.model = require(path.join(webRoot, 'model.js'))
 window.model.db = path.join(app.getAppPath(), '//app//db//bering.db')
 
@@ -58,47 +57,31 @@ window.models.fundursache = require(path.join(modelsPath, 'fundursache.js'))
 window.models.brutstatus = require(path.join(modelsPath, 'brutstatus.js'))
 window.models.setting = require(path.join(modelsPath, 'setting.js'))
 
-// Compose the DOM from separate HTML concerns; each from its own file.
-let htmlPath = path.join(app.getAppPath(), 'app', 'html')
-let body = fs.readFileSync(path.join(htmlPath, 'body.html'), 'utf8')
-let navBar = fs.readFileSync(path.join(htmlPath, 'nav-bar.html'), 'utf8')
-let people = fs.readFileSync(path.join(htmlPath, 'people.html'), 'utf8')
-//Hinzufügen Navbarelement: wichtig!
-let tables = fs.readFileSync(path.join(htmlPath, 'tables.html'), 'utf8')
-
 // load views
 let viewsPath = path.join(app.getAppPath(), 'app', 'views')
 window.views = {}
-window.views.help = fs.readFileSync(path.join(viewsPath, 'help/help.html'), 'utf8')
-let login =            fs.readFileSync(path.join(viewsPath, 'login/login.html'), 'utf8')
-let beringungen_list = fs.readFileSync(path.join(viewsPath, 'beringungen/list.html'), 'utf8')
-let beringungen_edit = fs.readFileSync(path.join(viewsPath, 'beringungen/edit.html'), 'utf8')
-let beringungen_menu = fs.readFileSync(path.join(viewsPath, 'beringungen/menu.html'), 'utf8')
-let beringungen_search = fs.readFileSync(path.join(viewsPath, 'beringungen/search.html'), 'utf8')
-let settings_edit =      fs.readFileSync(path.join(viewsPath, 'settings/edit.html'), 'utf8')
-let settings_info =      fs.readFileSync(path.join(viewsPath, 'settings/info.html'), 'utf8')
-let user_list = fs.readFileSync(path.join(viewsPath, 'user/list.html'), 'utf8')
+window.views.body =               fs.readFileSync(path.join(viewsPath, 'body.html'), 'utf8')
+window.views.navBar =             fs.readFileSync(path.join(viewsPath, 'nav-bar.html'), 'utf8')
+window.views.help =               fs.readFileSync(path.join(viewsPath, 'help/help.html'), 'utf8')
+window.views.login =              fs.readFileSync(path.join(viewsPath, 'login/login.html'), 'utf8')
+window.views.beringungen_list =   fs.readFileSync(path.join(viewsPath, 'beringungen/list.html'), 'utf8')
+window.views.beringungen_edit =   fs.readFileSync(path.join(viewsPath, 'beringungen/edit.html'), 'utf8')
+window.views.beringungen_menu =   fs.readFileSync(path.join(viewsPath, 'beringungen/menu.html'), 'utf8')
+window.views.beringungen_search = fs.readFileSync(path.join(viewsPath, 'beringungen/search.html'), 'utf8')
+window.views.settings_edit =      fs.readFileSync(path.join(viewsPath, 'settings/edit.html'), 'utf8')
+window.views.settings_info =      fs.readFileSync(path.join(viewsPath, 'settings/info.html'), 'utf8')
 
-let editPerson = fs.readFileSync(path.join(htmlPath, 'edit-person.html'), 'utf8')
-
-let O = cheerio.load(body)
-O('#nav-bar').append(navBar)
-O('#beringungen_menu').append(beringungen_menu)
-O('#people').append(people)
-//Hinzufügen Navbarelement: wichtig!
-O('#tables').append(tables)
-O('#beringungen_list_section').append(beringungen_list)
-O('#beringungen_edit_section').append(beringungen_edit)
-O('#beringungen_search_section').append(beringungen_search)
-
+// Compose the DOM from separate HTML concerns; each from its own file.
+let O = cheerio.load(window.views.body)
+O('#nav-bar').append(window.views.navBar)
+O('#beringungen_menu').append(window.views.beringungen_menu)
+O('#beringungen_list_section').append(window.views.beringungen_list)
+O('#beringungen_edit_section').append(window.views.beringungen_edit)
+O('#beringungen_search_section').append(window.views.beringungen_search)
 O('#help_section').append(window.views.help)
-
-O('#settings_edit_section').append(settings_edit)
-O('#settings_info_section').append(settings_info)
-
-O('#login').append(login)
-O('#users_list_section').append(user_list)
-O('#edit-person').append(editPerson)
+O('#settings_edit_section').append(window.views.settings_edit)
+O('#settings_info_section').append(window.views.settings_info)
+O('#login').append(window.views.login)
 
 // Pass the DOM from Cheerio to jQuery.
 let dom = O.html()

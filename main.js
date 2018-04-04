@@ -30,7 +30,7 @@ app.on('ready', function () {
     app.getAppPath() + dbPath,
     dbName,
     // Load a DOM stub here. See renderer.js for the fully composed DOM.
-    mainWindow.loadURL(`file://${__dirname}/app/html/index.html`)
+    mainWindow.loadURL(`file://${__dirname}/app/views/index.html`)
   )
 
   // Open the DevTools.
