@@ -59,7 +59,7 @@ module.exports.init = function() {
       context: this
     },
     function(evt) {
-      evt.data.context.list($(evt.target), "")
+      evt.data.context.list($(evt.target))
     }
   )
 
@@ -70,7 +70,7 @@ module.exports.init = function() {
       context: this
     },
     function(evt) {
-      evt.data.context.list($(evt.target), "fundart = 1")
+      evt.data.context.list($(evt.target), ["fundart = 1"])
     }
   )
 
@@ -81,7 +81,7 @@ module.exports.init = function() {
       context: this
     },
     function(evt) {
-      evt.data.context.list($(evt.target), "fundart = 1 AND beringernr = '" + window.session.beringernr + "'")
+      evt.data.context.list($(evt.target), ["fundart = 1", "beringernr = '" + window.session.beringernr + "'"])
     }
   )
 
@@ -92,7 +92,7 @@ module.exports.init = function() {
       context: this
     },
     function(evt) {
-      evt.data.context.list($(evt.target), "fundart = 2 AND beringernr = '" + window.session.beringernr + "'")
+      evt.data.context.list($(evt.target), ["fundart = 2", "beringernr = '" + window.session.beringernr + "'"])
     }
   )
 
@@ -103,7 +103,7 @@ module.exports.init = function() {
       context: this
     },
     function(evt) {
-      evt.data.context.list($(evt.target), "fundart = 2")
+      evt.data.context.list($(evt.target), ["fundart = 2"])
     }
   )
 
@@ -114,7 +114,7 @@ module.exports.init = function() {
       context: this
     },
     function(evt) {
-      evt.data.context.list($(evt.target), "fundart = 3")
+      evt.data.context.list($(evt.target), ["fundart = 3"])
     }
   )
 
@@ -250,10 +250,15 @@ module.exports.search = function(evt) {
   this.newFund(beringung)
 }
 
-module.exports.list = function(target, filter = '') {
+module.exports.list = function(target, filter = []) {
   console.log('controllers.beringungen.list');
-  let beringungen = window.models.beringung.findWhere('*', filter),
-      loesch_funktion_an =  window.models.setting.findByBezeichnung('loesch_funktion_an'),
+
+  let loesch_funktion_an =  window.models.setting.findByBezeichnung('loesch_funktion_an'),
+      nur_nicht_exportierte_an =  window.models.setting.findByBezeichnung('nur_nicht_exportierte_an'),
+      beringungen = window.models.beringung.findWhere(
+        '*',
+        (nur_nicht_exportierte_an.wert == 'an' ? filter.concat('exportiert_am IS NULL') : filter).join(' AND ')
+      ),
       rows = [],
       table = $('#beringungen_list_table')
 
@@ -279,6 +284,7 @@ module.exports.list = function(target, filter = '') {
         fundzustand: v.fundzustand,
         farbring: v.farbring,
         bemerkung: v.bemerkung,
+        exportiert_am: v.exportiert_am,
         edit: (v.beringernr == window.session.beringernr ? '<a href="#" onclick="window.controllers.beringungen.edit(' + v.id + ')"><i class="fa fa-pencil" aria-hidden="true"></i></a>' : '&nbsp;'),
         delete: (v.beringernr == window.session.beringernr && loesch_funktion_an.wert == 'an' ? '<a href="#" onclick="window.controllers.beringungen.delete(' + v.id + ')"><i class="fa fa-trash" aria-hidden="true"></i></a>' : '&nbsp;')
       })
@@ -421,6 +427,8 @@ module.exports.setValuesToForm = function(beringung) {
       $('form#beringung_edit_form :input[id=' + index + ']').val(value)
     }
   )
+
+  this.formatDateToDe();
 }
 
 module.exports.setDateAndTimeToForm = function(d) {
@@ -439,7 +447,7 @@ module.exports.insert = function(evt, uebernehmen = false) {
       validation,
       callback
 
-  #// TODO: convert date and time to valid date in a function and time bevor validation
+  this.formatDateToEn()
 
   if (this.allValid()) {
     console.log('Alle Eingabenn valide!')
@@ -460,7 +468,7 @@ module.exports.update = function(evt) {
   let all_valid = true,
       validation
 
-  #// TODO: convert date and time to valid date in a function and time bevor validation
+  this.formatDateToEn()
 
   if (this.allValid()) {
     console.log('Alle Eingabenn valide!')
@@ -468,6 +476,14 @@ module.exports.update = function(evt) {
 
     window.models.beringung.update(kvps)
   }
+}
+
+module.exports.formatDateToEn = function() {
+  $('#beringung_edit_form input[id=datum]').val($('#beringung_edit_form input[id=datum]').val().split('.').reverse().join('-'));
+}
+
+module.exports.formatDateToDe = function() {
+  $('#beringung_edit_form input[id=datum]').val($('#beringung_edit_form input[id=datum]').val().split('-').reverse().join('.'));
 }
 
 module.exports.allValid = function() {

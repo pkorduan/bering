@@ -37,9 +37,10 @@
       <a id="sicherung_link" class="setting_link" href="#">Speicherort der Sicherung</a>
       <div id="sicherungsort_div" class="setting_div" style="display: none">
         <input class="col-sm-8 form-control" type="text" name="sicherung_verzeichnis" placeholder="Speicherort">
-        <button id="select_sicherung_verzeichnis_button" type="button" class="button">
+        <button id="select_sicherung_verzeichnis_button" type="button" class="dir-button">
           <i class="fa fa-folder-open" aria-hidden="true"></i>
         </button>
+
         <small id="verzeichnisHelpInline" class="col-sm-4 text-muted">Verzeichnis</small><br>
         <input class="col-sm-6 form-control" type="text" name="sicherung_dateiname" placeholder="Dateiname">
         <small id="dateinameHelpInline" class="col-sm-4 text-muted">Dateiname</small><br>
@@ -51,18 +52,18 @@
       <a id="export_link" class="setting_link" href="#">Speicherort für Exporte</a>
       <div id="exportort_div" class="setting_div" style="display: none">
         <input class="col-sm-8 form-control" type="text" name="export_verzeichnis" placeholder="Speicherort">
-        <button id="select_export_verzeichnis_button" type="button" class="button">
+        <button id="select_export_verzeichnis_button" type="button" class="dir-button">
           <i class="fa fa-folder-open" aria-hidden="true"></i>
         </button>
         <small id="verzeichnisHelpInline" class="col-sm-4 text-muted">Verzeichnis</small><br>
         <button id="change_exportort_button" type="button" class="button" style="display: none">Speichern</button>
-        <a id="checkPathBtn" href="#">Prüfe Pfad</a><br>
       </div>
       <br>
 
       <a id="admin_functions_link" class="setting_link" href="#">Änderungsfunktionen</a>
       <div id="admin_functions_div" class="setting_div" style="display: none">
-        <input type="checkbox" name="loesch_funktion_an"> Datensätze löschen<br>
+        <input type="checkbox" class="admin_setting_input" name="loesch_funktion_an"> Datensätze löschen<br>
+        <input type="checkbox" class="admin_setting_input" name="nur_nicht_exportierte_an"> Nur noch nicht exportierte Datensätze anzeigen<br>
         <button id="change_admin_functions_button" type="button" class="button" style="display: none">Speichern</button>
       </div>
 

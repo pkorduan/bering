@@ -19,12 +19,15 @@ app.on('ready', function () {
     backgroundColor: 'lightgray',
     title: config.productName,
     show: false,
-	width: 1600,
-	height: 1500,
+    width: 1600,
+    height: 1500,
+    icon: path.join(__dirname, 'assets/icons/png/64x64.png'),
     webPreferences: {
       nodeIntegration: true
     }
   })
+
+  console.log(path.join(__dirname, 'assets/icons/png/64x64.png'))
 
   model.migrateDb(
     app.getAppPath() + dbPath,
@@ -34,7 +37,7 @@ app.on('ready', function () {
   )
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  //mainWindow.webContents.openDevTools()
 
   // Enable keyboard shortcuts for Developer Tools on various platforms.
   let platform = os.platform()

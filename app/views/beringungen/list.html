@@ -1,6 +1,16 @@
 <script>
   function datum_zeit_formatter(value, row) {
-    return row.datum  + ' ' + row.uhrzeit;
+    return row.datum.split('-').reverse().join('.')  + ' ' + row.uhrzeit;
+  }
+
+  function exportiert_am_formatter(value, row) {
+    if (value != null) {
+      let parts = value.split(' ');
+      return parts[0].split('-').reverse().join('.') + ' ' + parts[1];
+    }
+    else {
+      return value;
+    }
   }
 </script>
 <h2 id="beringungen_list_title">Alle Daten</h2>
@@ -84,6 +94,12 @@
         <th
           data-field="bemerkung"
         >Bemerkung</th>
+        <th
+          data-field="exportiert_am"
+          data-sortable="true"
+          data-visible="false"
+          data-formatter="exportiert_am_formatter"
+        >Exportiert am</th>
         <th
           data-field="edit"
         ><i class="fa fa-pencil" aria-hidden="true"></i></th>

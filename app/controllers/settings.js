@@ -86,14 +86,14 @@ module.exports.init = function() {
   )
 
   $('#settings_edit_form input[name=sicherung_verzeichnis]').on(
-    'keyup',
+    'keyup keypress blur change',
     function(evt) {
       $('#settings_edit_form button[id=change_sicherungsort_button]').show()
     }
   )
 
   $('#settings_edit_form input[name=sicherung_dateiname]').on(
-    'keyup',
+    'keyup keypress blur change',
     function(evt) {
       $('#settings_edit_form button[id=change_sicherungsort_button]').show()
     }
@@ -112,7 +112,7 @@ module.exports.init = function() {
   )
 
   $('#settings_edit_form input[name=export_verzeichnis]').on(
-    'keyup',
+    'keyup keypress blur change',
     function(evt) {
       $('#settings_edit_form button[id=change_exportort_button]').show()
     }
@@ -124,12 +124,14 @@ module.exports.init = function() {
       context: this
     },
     function(evt) {
-      evt.data.context.saveAdminFunctions(
-        ($('#settings_edit_form input[name=loesch_funktion_an]').is(':checked') ? 'an' : 'aus')
-      )
+      evt.data.context.saveAdminFunctions([
+          'loesch_funktion_an',
+          'nur_nicht_exportierte_an'
+      ])
     }
   )
-  $('#settings_edit_form input[name=loesch_funktion_an]').on(
+
+  $('#settings_edit_form .admin_setting_input').on(
     'click',
     function(evt) {
       $('#settings_edit_form button[id=change_admin_functions_button]').show()
@@ -139,10 +141,41 @@ module.exports.init = function() {
   $('.setting_link').on(
     'click',
     function (evt) {
-      $('.setting_div').hide()
-      $(evt.target).next().toggle()
+      if ($(evt.target).next().is(':visible')) {
+        $(evt.target).next().hide()
+      }
+      else {
+        $('.setting_div').hide()
+        $(evt.target).next().toggle()
+      }
     }
   )
+
+  $('.dir-button').on(
+    'click',
+    function (evt) {
+      let dir_field = ($(evt.target).is('i') ? $(evt.target).parent() : $(evt.target)).prev()
+      dialog.showOpenDialog(
+        {
+          //Weitere mögliche Properties:
+          //createDirectory: macOS - Allow creating new directories from dialog.
+          //promptToCreate: Windows - Prompt for creation if the file path entered in the dialog does not exist. This does not actually create the file at the path but allows non-existent paths to be returned that should be created by the application.
+          //zumindest unter Windows kann man sich die Optionen sparen -> Ordner kann man auch so anlegen
+        properties: ['openDirectory']
+        },
+        function (dirname) {
+          if (dirname === undefined) {
+            console.log("No destination folder selected");
+          }
+          else {
+            console.log('Ausgewähltes Verzeichnis: ', dirname);
+              dir_field.val(dirname.toString()).change()
+          }
+        }
+      );
+    }
+  )
+
 }
 
 module.exports.saveBeringungsort = function(beringungsort, beringungsort_position, beringungsort_kreis) {
@@ -196,14 +229,20 @@ module.exports.saveExportort = function(export_verzeichnis) {
   $('#exportort_div').fadeOut(1000)
 }
 
-module.exports.saveAdminFunctions = function(loesch_funktion_an) {
+module.exports.saveAdminFunctions = function(admin_settings) {
   console.log('controllers.settings.saveAdminFunctions')
-  let setting;
 
-  window.models.setting.update({
-    'bezeichnung' : 'loesch_funktion_an',
-    'wert' : loesch_funktion_an
-  })
+  $.each(
+    admin_settings,
+    function(index, bezeichnung) {
+      let wert = ($('#settings_edit_form input[name=' + bezeichnung + ']').is(':checked') ? 'an' : 'aus')
+
+      window.models.setting.update({
+        'bezeichnung' : bezeichnung,
+        'wert' : wert
+      })
+    }
+  )
 
   $('#change_admin_functions_button').hide()
   $('#admin_functions_div').fadeOut(1000)
@@ -237,4 +276,25 @@ module.exports.info = function(evt) {
   $('#settings_info').append(converter.makeHtml(readme))
   $('section').hide();
   $('#settings_info_section').show()
+}
+
+module.exports.checkPath = function (pfad) {
+  console.log('Controllers settings.checkPath')
+  // console.log('Pfad: '+pfad)
+
+  const remote = require('electron').remote;
+  const dialog = remote.dialog;
+
+  //https://stackoverflow.com/questions/4482686/check-synchronously-if-file-directory-exists-in-node-js
+  var fs = require('fs');
+  if (fs.existsSync(pfad)) {
+    console.log('Pfad '+pfad+' existiert');
+    //dialog.showMessageBox({message: 'Pfad '+pfad+' existiert', buttons: ["OK"]});
+    return true;
+  }
+  else {
+    console.log('FEHLER setPath: Pfad '+pfad+'existiert nicht!')
+   dialog.showErrorBox('FEHLER setPath', 'Pfad '+pfad+' existiert nicht!');
+    return false;
+  }
 }

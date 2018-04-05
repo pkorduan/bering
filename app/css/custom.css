@@ -54,7 +54,19 @@ h2 {
 .nav-button {
   width: 90%;
   margin: 5px 0px 5px 10px;
-  border-radius: 5px
+  border-radius: 4px
+}
+
+.dir-button {
+  cursor: pointer;
+  color: gray;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  background-color: #ededed;
+  padding-top: 6px;
+  padding-left: 10px;
+  padding-bottom: 6px;
+  padding-right: 7px;
 }
 
 .form-group {

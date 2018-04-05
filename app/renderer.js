@@ -7,7 +7,7 @@ const cheerio = require('cheerio')
 const dbfParser = require('node-dbf')
 const showdown = require('showdown')
 const SHA256 = require('crypto-js/sha256')
-//const dialog = require('electron').remote.require('dialog')
+const dialog = require('electron').remote.dialog
 
 console.log('Start renderer');
 
