@@ -119,7 +119,7 @@ module.exports.initDb = function (appPath, callback) {
 }
 
 module.exports.migrateDb = function (dbPath, dbName, callback) {
-  console.log('model.js migrateDb dbFile: ', dbName)
+  //console.log('model.js migrateDb dbFile: ', dbName)
   let dbFile = path.join(dbPath, dbName),
       db = SQL.dbOpen(dbFile),
       rows = {},
@@ -196,59 +196,4 @@ module.exports.migrateDb = function (dbPath, dbName, callback) {
 
 module.exports.test = function () {
 	return "Test erfolgreich";
-}
-
-//ursprünglich: https://www.npmjs.com/package/node-dbf
-//bzw. https://www.npmjs.com/package/dbf-parser
-//funzt: https://www.npmjs.com/package/read-dbf
-//noch nicht getestet: https://www.npmjs.com/package/stream-dbf
-
-//nach: https://stackoverflow.com/questions/27364486/json-array-into-html-select-option
-//https://stackoverflow.com/a/27364771/6532988
-
-//TODO: beim Starten einmal Array füllen, dann nur noch nutzen, da DBF's sehr groß
-module.exports.parseDBF = function (fileName) {
-	var readDbf = require('read-dbf');
-
-	readDbf(path.join(__dirname, '/data/'+fileName), function(err, res) {
-		console.log('parseDBF ERROR: '+err);
-		// res is an array of objects
-		var resJSON = JSON.stringify(res);
-		//console.log('parseDBF: '+resJSON);
-		var arrayA = [];
-		for (var i = 0; i < resJSON.length; i++) {
-			//console.log('parseDBF: '+resJSON[i][0]);
-			// console.log("Pushe Nr. "+i+": "+resJSON[i].ARNAME);
-			arrayA.push(resJSON[i].ARNAME);
-		}
-		return arrayA;
-		// for (var i = 0; i < resJSON.length; i++) {
-			// var select = document.getElementById("vogelart");
-			// var option = document.createElement("option");
-			// option.text = resJSON[i].ARNAME;
-			// option.value = resJSON[i].ARNAME;
-			// select.add(option);
-		// }
-	})
-	var test = [{"ARMARKE":null,"ARROTLIST":null,"ARART":"ACCBRE","ARNAME":"Kurzfangsperber","ARLATEIN":"Accipter brevipes","SUCHEN":"ACCBRE  Kurzfangsperber              Accipter brevipes","AREURIA":"0000","AREURIN":"02730","ARGMIN":"0","ARGMAX":"0","ARFMIN":"0","ARFMAX":"0","ARNEUNUTZ":null,"ARNEUDATU":null,"ARNEUZEIT":null,"ARAENNUTZ":null,"ARAENDATU":null,"ARAENZEIT":null},{"ARMARKE":null,"ARROTLIST":null,"ARART":"ACCGEN","ARNAME":"Habicht","ARLATEIN":"Accipiter gentilis","SUCHEN":"ACCGEN  Habicht                      Accipiter gentilis","AREURIA":"1110","AREURIN":"02670","ARGMIN":"4230","ARGMAX":"26000","ARFMIN":"150","ARFMAX":"424","ARNEUNUTZ":null,"ARNEUDATU":null,"ARNEUZEIT":null,"ARAENNUTZ":null,"ARAENDATU":null,"ARAENZEIT":null}];
-	var test2 = [
-		{ "Produktid": "01", "Titel": "Dangerous", "Band": "David Guetta", "Nettoeinzelpreis": "1.99" },
-		{ "Produktid": "02", "Titel": "Sun goes down", "Band": "Robin Schulz", "Nettoeinzelpreis": "1.99" },
-		{ "Produktid": "03", "Titel": "Fade out lines", "Band": "The Avener", "Nettoeinzelpreis": "1.99" },
-		{ "Produktid": "04", "Titel": "Walk", "Band": "Kwabs", "Nettoeinzelpreis": "1.99" },
-		{ "Produktid": "05", "Titel": "Blame", "Band": "Calvin Harris", "Nettoeinzelpreis": "1.99" },
-		{ "Produktid": "06", "Titel": "Geronimo", "Band": "Sheppard", "Nettoeinzelpreis": "1.99" },
-		{ "Produktid": "07", "Titel": "Animals", "Band": "Maroon 5", "Nettoeinzelpreis": "1.99" },
-		{ "Produktid": "08", "Titel": "What are you waiting for?", "Band": "Nickelback", "Nettoeinzelpreis": "1.99" },
-		{ "Produktid": "09", "Titel": "Shake it off", "Band": "Taylor Swift", "Nettoeinzelpreis": "1.99" },
-		{ "Produktid": "10", "Titel": "Chandelier", "Band": "Sia", "Nettoeinzelpreis": "1.99" }
-	];
-	for (var i = 0; i < test.length; i++) {
-			//console.log('parseDBF: '+resJSON[i][0]);
-			console.log("Pushe Nr. "+i+": "+test[i].ARNAME);
-		}
-	for (var i = 0; i < test2.length; i++) {
-			//console.log('parseDBF: '+resJSON[i][0]);
-			console.log("Pushe Nr. "+i+": "+test2[i].Titel);
-		}
 }

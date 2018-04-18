@@ -158,6 +158,10 @@ module.exports.update = function (kvps) {
   }
 }
 
+module.exports.updateExportDate = function(where) {
+  console.log('Update export date with where: ', where);
+}
+
 module.exports.validate = function (field) {
   let result = {
     valid: true,

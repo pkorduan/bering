@@ -205,7 +205,7 @@ module.exports.init = function() {
     $('#beringung_edit_form select[id=brutstatus]').append(
       $('<option>', {
         value: item.status,
-        text : item.beschreibung
+        text : item.status + ' ' + item.beschreibung
       })
     );
   });
@@ -323,8 +323,7 @@ module.exports.edit = function(id) {
 
 module.exports.newBeringung = function(uebernehmen = false) {
   console.log('controller beringungen.newBerinung uebernehmen:', uebernehmen);
-  let d = new Date(),
-      beringung = {}
+  let beringung = {}
 
   if (uebernehmen) {
     $('#beringung_edit_title').html('Neue Beringung (Daten übernommen)')
@@ -392,6 +391,12 @@ module.exports.newFund = function(beringung) {
   this.openNewForm()
 }
 
+module.exports.date_format = function(date) {
+  return window.controllers.export.lpad(date.getDate(), 2, '0') + '.' +
+    window.controllers.export.lpad(date.getMonth() + 1 , 2, '0') + '.' +
+    date.getFullYear()
+}
+
 module.exports.openNewForm = function() {
   let d = new Date()
 
@@ -402,7 +407,7 @@ module.exports.openNewForm = function() {
   $('form#beringung_edit_form :input[id=beringernr]').val(window.session.beringernr);
   $('#beringung_beringername').html(window.session.beringername);
   // aktuellen Zeitstempel setzen
-  $('form#beringung_edit_form :input[id=datum]').val(d.toLocaleDateString());
+  $('form#beringung_edit_form :input[id=datum]').val(this.date_format(d));
   $('form#beringung_edit_form :input[id=uhrzeit]').val(d.toLocaleTimeString());
   // Als insert form markieren
   $('#beringung_speichern_button').val('Insert')
@@ -455,6 +460,7 @@ module.exports.insert = function(evt, uebernehmen = false) {
 
     kvps['beringungsort'] = window.models.setting.findByBezeichnung('beringungsort').wert
     kvps['koordinaten'] = window.models.setting.findByBezeichnung('beringungsort_position').wert
+    kvps['zentrale'] = window.models.setting.findByBezeichnung('zentrale').wert
 
     window.models.beringung.insert(kvps, uebernehmen)
   }

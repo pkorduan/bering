@@ -14,7 +14,6 @@ const dbName = 'bering.db';
 app.setName(config.productName)
 var mainWindow = null
 app.on('ready', function () {
-	console.log('App is ready')
   mainWindow = new BrowserWindow({
     backgroundColor: 'lightgray',
     title: config.productName,
@@ -26,8 +25,6 @@ app.on('ready', function () {
       nodeIntegration: true
     }
   })
-
-  console.log(path.join(__dirname, 'assets/icons/png/64x64.png'))
 
   model.migrateDb(
     app.getAppPath() + dbPath,
@@ -52,7 +49,6 @@ app.on('ready', function () {
   }
 
   mainWindow.once('ready-to-show', () => {
-		console.log('mainWindow is ready-to-show');
     mainWindow.setMenu(null)
     mainWindow.show()
   })

@@ -94,7 +94,7 @@ module.exports.showExportPathEdit = function() {
   $('#exportort_div').toggle();
   controllers.settings.edit();
 }
-
+/*
 module.exports.calculateSpaces = function (strOrNumber, lengthField) {
   let spaces = '';
   if (strOrNumber == null) strOrNumber = '';
@@ -103,10 +103,23 @@ module.exports.calculateSpaces = function (strOrNumber, lengthField) {
   }
   return spaces;
 }
+*/
+module.exports.lpad = function (value, length = value.length, fillChar = ' ') {
+  return (fillChar.repeat(length) + value).slice(-length)
+}
+
+module.exports.rpad = function (value, length = value.length, fillChar = ' ') {
+  value = value || '';
+  console.log('value: ' + value + ' length: ' + length + ' fillChar: ' + fillChar);
+  let fillLength = length - (value).toString().length;
+  if (fillLength < -1) fillLength = 0;
+  return (value + Array(fillLength + 1).join(fillChar)).substr(0, length);
+}
 
 module.exports.export = function(filter = []) {
-  console.log('controllers.exports.export');
-  let select = "*",
+  console.log('controllers.exports.export filter: ', filter);
+  let fundart = filter[0].slice(-1),
+      select = "*",
       where = filter.concat(
         "beringernr = '" + window.session.beringernr + "'",
         "exportiert_am IS NULL",
@@ -114,105 +127,194 @@ module.exports.export = function(filter = []) {
       ).join(' AND '),
       order = "datum, uhrzeit",
       beringungen = window.models.beringung.findWhere(select, where, '', order),
-      export_verzeichnis = window.models.setting.findByBezeichnung('export_verzeichnis').wert
-
-  console.log('export beringungen: %o', beringungen);
-
-  this.calculateSpaces(200.8, 7);
-  //Build String: Ringnummer Vogelart Alter ?? Gewicht Datum Beringungsort Koordinaten ?? ô )Freifeld)+249 Leerezeichen Familienzugehörigkeit (250 lang)
-  //ô ist der Beginn einer Freifelddefinition. Dabei handelt es sich in Ihrem Fall einfach um 250 Leerzeichen. Dann folgen 250 Zeichen in denen die Familienzugehörigkeit bestimmt werden kann. (z.B. „N:IA0167138+IA0167139;E:IA0131895;“)
-  //ACHTUNG: freifeld hier erstmal fest definiert!
-  //TODO: ersetzen durch bemerkung?!
-
-  //ACHTUNG: Familienzugehörigkeit hier erstmal fest definiert!
-  //TODO; durch was in der db ersetze?
-  let freifeld = '\u00f4',
-      family = 'N:IA0167138+IA0167139;E:IA0131895;',
-      strWrite = $.map(
-        beringungen,
-        (function(beringung) {
-          if (beringung.gewicht == 0) beringung.gewicht = "0.0";
-          //\u0020=normal space; \n=LF; \r=CR; ô = \u00f4
-          return '' +
-            '\u0020\u0020\u0020' +
-            beringung.ringnr +
-            '\u0020' +
-            beringung.vogelart +
-            '\u0020\u0020' +
-            beringung.alter +
-            '\u0020\u0020\u0020' +
-            'ubekannt1' +
-            this.calculateSpaces(beringung.gewicht, 7) +
-            beringung.gewicht +
-            '\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020' +
-            beringung.datum +
-            '\u0020\u0020\u0020\u0020' +
-            beringung.beringungsort +
-            this.calculateSpaces(beringung.beringungsort, 30) +
-            beringung.koordinaten +
-            this.calculateSpaces('ubekannt2', 77) +
-            'ubekannt2' +
-            this.calculateSpaces(freifeld, 51) +
-            freifeld +
-            this.calculateSpaces(freifeld, 250) +
-            family +
-            this.calculateSpaces(family, 250)
-        }).bind(this)
-      ).join('\r\n')
-/*
-    if (keys.length > 0) {
-      keys.forEach(
-        function(key) {
-          beringung = beringungen[key];
-          //Go through all entries
-          //console.log(beringung);
-          // console.log("Gewicht: "+beringung.gewicht);
-          //Gewicht von 0 muss als "0.0" in der Exportdatei gespeichert werden
-          if (beringung.gewicht==0) beringung.gewicht = "0.0";
-          //\u0020=normal space; \n=LF; \r=CR; ô = \u00f4
-          strWrite += strWrite +
-            '\u0020\u0020\u0020' +
-            beringung.ringnr +
-            '\u0020' +
-            beringung.vogelart +
-            '\u0020\u0020' +
-            beringung.alter +
-            '\u0020\u0020\u0020' +
-            'ubekannt1' +
-            self.calculateSpaces(beringung.gewicht, 7) +
-            beringung.gewicht +
-            '\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020' +
-            beringung.datum +
-            '\u0020\u0020\u0020\u0020' +
-            beringung.beringungsort +
-            self.calculateSpaces(beringung.beringungsort, 30) +
-            beringung.koordinaten +
-            self.calculateSpaces('ubekannt2', 77) +
-            'ubekannt2' +
-            self.calculateSpaces(freifeld, 51) +
-            freifeld +
-            self.calculateSpaces(freifeld, 250) +
-            family +
-            self.calculateSpaces(family, 250) +
-            '\r\n';
-        }
-      );
-    }
-*/
-    //Dateiende: ^Z = \u001a
-    strWrite += '\u001a';
-    console.log('exporttext: %o', strWrite);
+      export_verzeichnis = window.models.setting.findByBezeichnung('export_verzeichnis').wert,
+      beringungsort_kreis = window.models.setting.findByBezeichnung('beringungsort_kreis').wert,
+      date = new Date(),
+      file_name = '',
+      lines = [],
+      strWrite = '';
 
     if (window.controllers.settings.checkPath(export_verzeichnis)) {
-      console.log('checkPath ok');
+      switch (fundart) {
+        case '1': {
+          file_name = 'B'
+          lines = $.map(
+            beringungen,
+            (function(beringung) {
+              if (beringung.gewicht == 0) beringung.gewicht = "0.0";
+              return '' +
+                this.rpad(beringung.zentrale, 3) +
+                this.rpad(beringung.ringnr, 9) +
+                this.rpad(' ', 1) + // Z
+                this.rpad(beringung.vogelart, 7) +
+                this.rpad(beringung.geschlecht, 1) +
+                this.rpad(beringung.alter, 4) +
+                this.rpad(beringung.brutstatus, 1) +
+                this.rpad(beringung.teilfederlaenge, 5) +
+                this.rpad(beringung.fluegellaenge, 5) +
+                this.rpad(beringung.gewicht, 7) +
+                this.rpad(' ', 4) + // Habitat
+                this.rpad(' ', 4) + // Brutstatus
+                this.rpad(beringung.datum.substr(5, 2)) + // Tag
+                this.rpad(beringung.datum.substr(8, 2)) + // Monat
+                this.rpad(beringung.uhrzeit.substr(0, 2)) + // Stunde
+                this.rpad(' ', 1) + // U
+                this.rpad(beringung.skz_1, 1) + this.rpad(beringung.skz_2, 1) +
+                this.rpad(' ', 1) + // RA
+                this.rpad(beringungsort_kreis, 4) +
+                this.rpad(beringung.beringungsort, 22) +
+                this.rpad(' ', 2) + // Entfernung
+                this.rpad(' ', 2) + // Richtung
+                this.rpad(beringung.koordinaten, 15) +
+                this.rpad(' ', 1) + // Genau
+                this.rpad(beringung.bemerkung, 60) +
+                this.rpad(' ', 3) + // Prog
+                this.rpad(' ', 2) + // Zeile
+                this.rpad(' ', 3) + // Blatt
+                this.rpad(beringung.datum.substr(0, 4)) + // Jahr
+                this.lpad(beringung.beringernr, 4) +
+                '\u00f4' + // Korrzeich
+                this.rpad(' ', 7) + // Wirt
+                this.rpad(beringung.farbring, 2) + // SKFarbe
+                this.rpad(' ', 2) + // SKFarbe1
+                this.rpad(' ', 2) + // SKFarbe2
+                this.rpad(' ', 2) + // SKFarbe3
+                this.rpad(' ', 9) + // SKNummer
+                this.rpad(' ', 9) + // ZNummer
+                this.rpad(' ', 3) + // ZZentrale
+                this.rpad(' ', 9) + // UNummer
+                this.rpad(' ', 3) // UZentrale
+            }).bind(this)
+          )
+        } break;
+        case '2': {
+          file_name = 'W'
+          lines = $.map(
+            beringungen,
+            (function(beringung) {
+              if (beringung.gewicht == 0) beringung.gewicht = "0.0";
+              return '' +
+                this.rpad(beringung.zentrale, 3) +
+                this.rpad(beringung.ringnr, 9) +
+                this.rpad(beringung.id, 3) + // Nummer
+                this.rpad(' ', 1) + // VER
+                this.rpad(' ', 1) + // Zusring
+                this.rpad(' ', 1) + // Umring
+                this.rpad(beringung.skz_1, 2) +
+                this.rpad(beringung.skz_2, 2) +
+                this.rpad(' ', 3) + // KZE
+                this.rpad(' ', 9) + // Neuring
+                this.rpad(beringung.vogelart, 7) +
+                this.rpad(beringung.geschlecht, 1) +
+                this.rpad(beringung.alter, 4) +
+                this.rpad(beringung.brutstatus, 1) +
+                this.rpad(beringung.teilfederlaenge, 5) +
+                this.rpad(beringung.fluegellaenge, 5) +
+                this.rpad(beringung.gewicht, 7) +
+                this.rpad(' ', 3) + // VEF
+                this.rpad(' ', 1) + // Genau
+                this.rpad(beringung.datum.substr(5, 2)) + // Tag
+                this.rpad(beringung.datum.substr(8, 2)) + // Monat
+                this.rpad(beringung.datum.substr(0, 4)) + // Jahr
+                this.rpad(beringung.uhrzeit.substr(0, 2)) + // Stunde
+                this.rpad(beringung.fundzustand, 1) + // Fundstatus
+                this.rpad(beringung.fundursache, 3) + // Umstand
+                this.rpad(' ', 1) + // ANS
+                this.rpad(' ', 2) + // LAN
+                this.rpad(' ', 3) + // FUZ
+                this.rpad(beringungsort_kreis, 4) +
+                this.rpad(beringung.beringungsort, 22) +
+                this.rpad(' ', 2) + // Entfernung
+                this.rpad(' ', 2) + // EntRicht
+                this.rpad(beringung.koordinaten, 15) +
+                this.rpad(' ', 4) + // Tage
+                this.rpad(' ', 2) + // Richtung
+                this.rpad(' ', 3) + // WIG
+                this.rpad(' ', 2) + // WIM
+                this.rpad(' ', 5) + // Kilometer
+                this.rpad(' ', 2) + // FZE
+                this.rpad(' ', 4) + // FBL
+                this.rpad(' ', 2) + // JGG
+                this.rpad(' ', 1) + // KJB
+                this.rpad(' ', 3) + // Programm
+                this.lpad(beringung.beringernr, 4) +
+                this.rpad(beringung.bemerkung, 30)
+            }).bind(this)
+          )
+        } break;
+        default: {
+          file_name = 'F' // im Moment genauso formatiert wie Wiederfunde
+          lines = $.map(
+            beringungen,
+            (function(beringung) {
+              if (beringung.gewicht == 0) beringung.gewicht = "0.0";
+              return '' +
+                this.rpad(beringung.zentrale, 3) +
+                this.rpad(beringung.ringnr, 9) +
+                this.rpad(beringung.id, 3) + // Nummer
+                this.rpad(' ', 1) + // VER
+                this.rpad(' ', 1) + // Zusring
+                this.rpad(' ', 1) + // Umring
+                this.rpad(beringung.skz_1, 2) +
+                this.rpad(beringung.skz_2, 2) +
+                this.rpad(' ', 3) + // KZE
+                this.rpad(' ', 9) + // Neuring
+                this.rpad(beringung.vogelart, 7) +
+                this.rpad(beringung.geschlecht, 1) +
+                this.rpad(beringung.alter, 4) +
+                this.rpad(beringung.brutstatus, 1) +
+                this.rpad(beringung.teilfederlaenge, 5) +
+                this.rpad(beringung.fluegellaenge, 5) +
+                this.rpad(beringung.gewicht, 7) +
+                this.rpad(' ', 3) + // VEF
+                this.rpad(' ', 1) + // Genau
+                this.rpad(beringung.datum.substr(5, 2)) + // Tag
+                this.rpad(beringung.datum.substr(8, 2)) + // Monat
+                this.rpad(beringung.datum.substr(0, 4)) + // Jahr
+                this.rpad(beringung.uhrzeit.substr(0, 2)) + // Stunde
+                this.rpad(beringung.fundzustand, 1) + // Fundstatus
+                this.rpad(beringung.fundursache, 3) + // Umstand
+                this.rpad(' ', 1) + // ANS
+                this.rpad(' ', 2) + // LAN
+                this.rpad(' ', 3) + // FUZ
+                this.rpad(beringungsort_kreis, 4) +
+                this.rpad(beringung.beringungsort, 22) +
+                this.rpad(' ', 2) + // Entfernung
+                this.rpad(' ', 2) + // EntRicht
+                this.rpad(beringung.koordinaten, 15) +
+                this.rpad(' ', 4) + // Tage
+                this.rpad(' ', 2) + // Richtung
+                this.rpad(' ', 3) + // WIG
+                this.rpad(' ', 2) + // WIM
+                this.rpad(' ', 5) + // Kilometer
+                this.rpad(' ', 2) + // FZE
+                this.rpad(' ', 4) + // FBL
+                this.rpad(' ', 2) + // JGG
+                this.rpad(' ', 1) + // KJB
+                this.rpad(' ', 3) + // Programm
+                this.lpad(beringung.beringernr, 4) +
+                this.rpad(beringung.bemerkung, 30)
+            }).bind(this)
+          )
+        }
+      }
+
+      strWrite  = lines.join('\r\n') // join lines
+      strWrite += '\r\n\u001a' //Dateiende: ^Z = \u001a
+
+      file_name += window.session.beringernr + '_' + date.getFullYear() + '-' + this.lpad(date.getMonth() + 1, 2, '0') + '-' + this.lpad(date.getDay(), 2, '0') + '_' + date.getHours() + '-' + date.getMinutes() + '-' + date.getSeconds()
+      file_name += '.sdf'
+      console.log('Write export file to: ', path.join(export_verzeichnis, file_name));
+
       fs.writeFile(
-        path.join(export_verzeichnis, 'test1.sdf'),
+        path.join(export_verzeichnis, file_name),
         strWrite,
         (err) => {
           if (err) {
-            alert("An error ocurred creating the file "+ err.message)
+            alert("Fehler beim Speichern der Exportdatei: " + err.message)
           }
-          alert("The file has been succesfully saved");
+          window.models.beringung.updateExportDate(where),
+          alert("Die Daten wurden erfolgreich exportiert.");
         }
       );
     }
