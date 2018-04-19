@@ -210,6 +210,38 @@ module.exports.init = function() {
     );
   });
 
+  console.log('fill select options for farbringe');
+  let farbcodes = window.models.farbcodes.findWhere('', 'code')
+  console.log('farbcodes %o', farbcodes)
+
+  $.each(farbcodes, function (i, item) {
+    $('#beringung_edit_form select[id=farbring_liun]').append(
+      $('<option>', {
+        value: item.code,
+        text : item.code + ' ' + item.bezeichnung
+      })
+    );
+    $('#beringung_edit_form select[id=farbring_reun]').append(
+      $('<option>', {
+        value: item.code,
+        text : item.code + ' ' + item.bezeichnung
+      })
+    );
+    $('#beringung_edit_form select[id=farbring_liob]').append(
+      $('<option>', {
+        value: item.code,
+        text : item.code + ' ' + item.bezeichnung
+      })
+    );
+    $('#beringung_edit_form select[id=farbring_reob]').append(
+      $('<option>', {
+        value: item.code,
+        text : item.code + ' ' + item.bezeichnung
+      })
+    );
+  });
+
+
 }
 
 module.exports.searchForm = function() {
@@ -275,6 +307,7 @@ module.exports.list = function(target, filter = []) {
         beringernr: v.beringernr,
         datum: v.datum,
         uhrzeit: v.uhrzeit,
+        fundart: v.fundart,
         vogelart: v.vogelart,
         alter: v.alter,
         brutstatus: v.brutstatus,
@@ -310,6 +343,17 @@ module.exports.edit = function(id) {
   $('#beringung_edit_title').html('Änderung Beringungsdaten')
   // Zeige id
   $('#beringung_id_div').show()
+
+  
+  if (beringung.fundart == 1) {
+    $('#fundursache_und_zustand_div').hide()
+    $('#farbring_div').show()
+  }
+  else {
+    $('#fundursache_und_zustand_div').show()
+    $('#farbring_div').hide()
+  }
+
   // enable edit ringnr
   $('form#beringung_edit_form :input[id=ringnr]').prop('readonly', false)
   // Setze Speichervariante update
@@ -348,6 +392,7 @@ module.exports.newBeringung = function(uebernehmen = false) {
   }
 
   $('#beringung_beringernr_alt_div').hide()
+  $('#fundursache_und_zustand_div').hide()
   $('form#beringung_edit_form :input[id=fundart]').val(1);
   $('form#beringung_edit_form :input[id=ringnr]').prop('readonly', false).focus()
   $('#beringung_speichern_uebernehmen_button').show()

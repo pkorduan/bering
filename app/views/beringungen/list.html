@@ -3,6 +3,18 @@
     return row.datum.split('-').reverse().join('.')  + ' ' + row.uhrzeit;
   }
 
+  function fundart_formatter(value, row) {
+    if (value == 1) {
+      return 'Beringung';
+    }
+    else if (value == 2) {
+      return 'Eigenwiederfund';
+    }
+    else {
+      return 'Fremdfund';
+    }
+  }
+
   function exportiert_am_formatter(value, row) {
     if (value != null) {
       let parts = value.split(' ');
@@ -61,6 +73,13 @@
           data-sortable="true"
           data-formatter="datum_zeit_formatter"
         >Datum Zeit</th>
+        <th
+          data-field="fundart"
+          data-visible="true"
+          data-switchable="true"
+          data-sortable="true"
+          data-formatter="fundart_formatter"
+        >Fundart</th>
         <th
           data-field="vogelart"
         >Art</th>

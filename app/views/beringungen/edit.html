@@ -226,16 +226,13 @@
       <small id="skz_2HelpInline" class="col-sm-4 align-top form-text text-muted"></small>
     </div>
 
-    <div class="form-group row">
+    <div id="fundursache_und_zustand_div" class="form-group row">
       <label class="col-sm-3 col-form-label" for="fundursache">Fundursache</label>
       <select class="col-sm-4 form-control" id="fundursache">
         <option value=""></option>
       </select>
       <div class="form-control-feedback" id="fundursacheFB"></div>
       <small id="fundursacheHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
-    </div>
-
-    <div class="form-group row">
       <label class="col-sm-3 col-form-label" for="fundzustand">Fundzustand</label>
       <select class="col-sm-4 form-control" id="fundzustand">
         <option value=""></option>
@@ -244,11 +241,46 @@
       <small id="skz_2HelpInline" class="col-sm-4 align-top form-text text-muted"></small>
     </div>
 
-    <div class="form-group row">
-      <label class="col-sm-3 col-form-label" for="farbring">Farbring</label>
-      <input class="col-sm-4 form-control" type="text" id="farbring" aria-describedby="farbringHelpInline">
-      <div class="form-control-feedback" id="farbringFB"></div>
-      <small id="farbringHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
+    <div id="farbring_und_inschrift_div">
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="farbring"></label>
+        Ringe mit <a id="farbring_codierung_link" href="#" class="col-sm-2" onclick="
+          $('#farbring_codierung_link').hide();
+          $('#farbring_inschrift_link').show();
+          $('#farbring_codierung_div').show();
+          $('#farbring_inschrift_div').hide();">Farbcodes</a>&nbsp;
+        <a id="farbring_inschrift_link" href="#" class="col-sm-2" onclick="
+          $('#farbring_codierung_link').show();
+          $('#farbring_inschrift_link').hide();
+          $('#farbring_codierung_div').hide();
+          $('#farbring_inschrift_div').show();">Inschrift</a>
+      </div>
+      <div id="farbring_codierung_div" style="display: none">
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label" for="farbring">Farbcodes</label>
+          <select class="col-sm-2 form-control" id="farbring_liob">
+            <option value="">links oben</option>
+          </select>
+          <select class="col-sm-2 form-control" id="farbring_reob">
+            <option value="">rechts oben</option>
+          </select>
+        </div>
+        <div  class="form-group row">
+          <label class="col-sm-3 col-form-label" for="farbring"></label>
+          <select class="col-sm-2 form-control" id="farbring_liun">
+            <option value="">links unten</option>
+          </select>
+          <select class="col-sm-2 form-control" id="farbring_reun">
+            <option value="">rechts unten</option>
+          </select>
+        </div>
+      </div>
+      <div id="farbring_inschrift_div" class="form-group row" style="display: none">
+        <label class="col-sm-3 col-form-label" for="farbring">Inschrift</label>
+        <input class="col-sm-4 form-control" type="text" id="farbring_inschrift" aria-describedby="farbringHelpInline">
+        <div class="form-control-feedback" id="farbringFB"></div>
+        <small id="farbringHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
+      </div>
     </div>
 
     <div class="form-group row">
