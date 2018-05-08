@@ -241,6 +241,16 @@ module.exports.init = function() {
     );
   });
 
+  console.log('register change on skz_1 and skz2 select fields')
+  $('#skz_1, #skz_2').on(
+    'change',
+    {
+      context: this
+    },
+    function(evt) {
+      evt.data.context.openFarbringAndInschrift($(evt.target))
+    }
+  )
 
 }
 
@@ -393,6 +403,7 @@ module.exports.newBeringung = function(uebernehmen = false) {
 
   $('#beringung_beringernr_alt_div').hide()
   $('#fundursache_und_zustand_div').hide()
+  $('#farbring_und_inschrift_div').hide()
   $('form#beringung_edit_form :input[id=fundart]').val(1);
   $('form#beringung_edit_form :input[id=ringnr]').prop('readonly', false).focus()
   $('#beringung_speichern_uebernehmen_button').show()
@@ -561,4 +572,21 @@ module.exports.allValid = function() {
   )
 
   return all_valid
+}
+
+module.exports.openFarbringAndInschrift = function(field) {
+  console.log('field: ' + field.attr('id') + ' ' + field.val());
+  let otherField = (field.attr('id') == 'skz_1' ? $('#skz_2') : $('#skz_1'))
+  if (field.val() != '' && otherField.val() != '') {
+    $('#farbring_und_inschrift_div').show()
+    $('#farbring_codierung_link').hide();
+    $('#farbring_inschrift_link').show();
+    $('#farbring_codierung_div').show();
+    $('#farbring_inschrift_div').hide();
+
+  }
+  else {
+    $('#farbring_und_inschrift_div').hide()
+    $('#farbring_liob, #farbring_liun, #farbring_reob, #farbring_reun').val('')
+  }
 }
