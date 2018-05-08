@@ -16,7 +16,7 @@ module.exports.calculateSpaces = function (strOrNumber, lengthField) {
 module.exports.exportBering = function (beringernr, pfad, year, notExportedYet) {
   //to call function in if statement, cf. https://stackoverflow.com/a/21769487
   var self = this;
-  console.log('Model export.exportBering');
+  log('Model export.exportBering');
 
   var where = "beringernr = '"+beringernr+"'";
   this.calculateSpaces(200.8, 7);
@@ -41,8 +41,8 @@ module.exports.exportBering = function (beringernr, pfad, year, notExportedYet) 
       if (notExportedYet==false) {
         //Check year
         if (new Date(beringung.datum).getFullYear()==year) {
-          //console.log(beringung);
-          // console.log("Gewicht: "+beringung.gewicht);
+          //log(beringung);
+          // log("Gewicht: "+beringung.gewicht);
           //Gewicht von 0 muss als "0.0" in der Exportdatei gespeichert werden
           if (beringung.gewicht==0) beringung.gewicht = "0.0";
           //\u0020=normal space; \n=LF; \r=CR; ô = \u00f4
@@ -54,8 +54,8 @@ module.exports.exportBering = function (beringernr, pfad, year, notExportedYet) 
       if (beringung.exportiert==0) {
         //Check year
         if (new Date(beringung.datum).getFullYear()==year) {
-            //console.log(beringung);
-            // console.log("Gewicht: "+beringung.gewicht);
+            //log(beringung);
+            // log("Gewicht: "+beringung.gewicht);
             //Gewicht von 0 muss als "0.0" in der Exportdatei gespeichert werden
             if (beringung.gewicht==0) beringung.gewicht = "0.0";
             //\u0020=normal space; \n=LF; \r=CR; ô = \u00f4
@@ -67,11 +67,11 @@ module.exports.exportBering = function (beringernr, pfad, year, notExportedYet) 
     }
   //Dateiende: ^Z = \u001a
   strWrite+='\u001a';
-  // console.log(strWrite);
+  // log(strWrite);
 
 
   if (window.models.settings.checkPath(pfad)) {
-    console.log('checkPath ok');
+    log('checkPath ok');
   fs.writeFile(path.join(pfad, 'test1.sdf'), strWrite, (err) => {
         if(err){
             alert("An error ocurred creating the file "+ err.message)

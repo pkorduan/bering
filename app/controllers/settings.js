@@ -2,23 +2,23 @@
 'use strict'
 
 module.exports.init = function() {
-  console.log('controllers.settings.init');
+  log('controllers.settings.init');
 
   // register event handler
 
-  console.log('register click on select_sicherung_verzeichnis_button');
+  log('register click on select_sicherung_verzeichnis_button');
   $('#select_sicherung_verzeichnis_button').on(
     'click',
     {
       context: this
     },
     function (evt) {
-      console.log('Funktion ist noch nicht eingebaut.');
+      log('Funktion ist noch nicht eingebaut.');
 //        $('#sicherung_verzeichnis').val(fileNames[0])
     }
   )
 
-  console.log('register click on settings_edit_link')
+  log('register click on settings_edit_link')
   $('#settings_edit_link').on(
     'click',
     {
@@ -172,10 +172,10 @@ module.exports.init = function() {
         },
         function (dirname) {
           if (dirname === undefined) {
-            console.log("No destination folder selected");
+            log("No destination folder selected");
           }
           else {
-            console.log('Ausgewähltes Verzeichnis: ', dirname);
+            log('Ausgewähltes Verzeichnis: ', dirname);
               dir_field.val(dirname.toString()).change()
           }
         }
@@ -186,7 +186,7 @@ module.exports.init = function() {
 }
 
 module.exports.saveBeringungsort = function(beringungsort, beringungsort_position, beringungsort_kreis, zentrale) {
-  console.log('controllers.settings.saveBerinungsort')
+  log('controllers.settings.saveBerinungsort')
   let setting;
 
   window.models.setting.update({
@@ -211,7 +211,7 @@ module.exports.saveBeringungsort = function(beringungsort, beringungsort_positio
 }
 
 module.exports.saveSicherungsort = function(sicherung_verzeichnis, sicherung_dateiname) {
-  console.log('controllers.settings.saveSicherungsort')
+  log('controllers.settings.saveSicherungsort')
   let setting;
 
   window.models.setting.update({
@@ -228,7 +228,7 @@ module.exports.saveSicherungsort = function(sicherung_verzeichnis, sicherung_dat
 }
 
 module.exports.saveExportort = function(export_verzeichnis) {
-  console.log('controllers.settings.saveExportort')
+  log('controllers.settings.saveExportort')
   let setting;
 
   window.models.setting.update({
@@ -241,7 +241,7 @@ module.exports.saveExportort = function(export_verzeichnis) {
 }
 
 module.exports.saveAdminFunctions = function(admin_settings) {
-  console.log('controllers.settings.saveAdminFunctions')
+  log('controllers.settings.saveAdminFunctions')
 
   $.each(
     admin_settings,
@@ -260,7 +260,7 @@ module.exports.saveAdminFunctions = function(admin_settings) {
 }
 
 module.exports.edit = function(evt) {
-  console.log('controllers.settings.edit');
+  log('controllers.settings.edit');
 
   let rows = window.models.setting.findWhere('','bezeichnung'),
       settings = {};
@@ -273,14 +273,14 @@ module.exports.edit = function(evt) {
       $('#settings_edit_form input[name=' + v.bezeichnung + ']').prop('checked', true)
     }
   })
-  console.log('settings: %o', settings)
+  log('settings: %o', settings)
 
   $('section').hide();
   $('#settings_edit_section').show()
 }
 
 module.exports.info = function(evt) {
-  console.log('controllers.settings.info');
+  log('controllers.settings.info');
   let converter = new showdown.Converter(),
       readme = fs.readFileSync(path.join(app.getAppPath(), 'README.md'), 'utf8')
 
@@ -290,8 +290,8 @@ module.exports.info = function(evt) {
 }
 
 module.exports.checkPath = function (pfad) {
-  console.log('Controllers settings.checkPath')
-  // console.log('Pfad: '+pfad)
+  log('Controllers settings.checkPath')
+  // log('Pfad: '+pfad)
 
   const remote = require('electron').remote;
   const dialog = remote.dialog;
@@ -299,13 +299,13 @@ module.exports.checkPath = function (pfad) {
   //https://stackoverflow.com/questions/4482686/check-synchronously-if-file-directory-exists-in-node-js
   var fs = require('fs');
   if (fs.existsSync(pfad)) {
-    console.log('Pfad '+pfad+' existiert');
+    log('Pfad '+pfad+' existiert');
     //dialog.showMessageBox({message: 'Pfad '+pfad+' existiert', buttons: ["OK"]});
     return true;
   }
   else {
-    console.log('FEHLER setPath: Pfad '+pfad+'existiert nicht!')
-   dialog.showErrorBox('FEHLER setPath', 'Pfad '+pfad+' existiert nicht!');
+    log('FEHLER setPath: Pfad '+pfad+'existiert nicht!')
+    dialog.showErrorBox('FEHLER setPath', 'Pfad '+pfad+' existiert nicht!');
     return false;
   }
 }

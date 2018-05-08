@@ -2,7 +2,7 @@
 'use strict'
 
 module.exports.init = function() {
-  console.log('controllers.export.init');
+  log('controllers.export.init');
 
   // register event handler
 
@@ -58,7 +58,7 @@ module.exports.init = function() {
 }
 
 module.exports.show = function() {
-  console.log('controllers.export.show');
+  log('controllers.export.show');
 
   let rows = window.models.setting.findWhere("bezeichnung = 'export_verzeichnis'"),
       export_verzeichnis = rows[0],
@@ -88,7 +88,7 @@ module.exports.show = function() {
 }
 
 module.exports.showExportPathEdit = function() {
-  console.log('controllers.export.showExportPathEdit');
+  log('controllers.export.showExportPathEdit');
 
   $('.setting_div').hide();
   $('#exportort_div').toggle();
@@ -110,14 +110,14 @@ module.exports.lpad = function (value, length = value.length, fillChar = ' ') {
 
 module.exports.rpad = function (value, length = value.length, fillChar = ' ') {
   value = value || '';
-  console.log('value: ' + value + ' length: ' + length + ' fillChar: ' + fillChar);
+  log('value: ' + value + ' length: ' + length + ' fillChar: ' + fillChar);
   let fillLength = length - (value).toString().length;
   if (fillLength < -1) fillLength = 0;
   return (value + Array(fillLength + 1).join(fillChar)).substr(0, length);
 }
 
 module.exports.export = function(filter = []) {
-  console.log('controllers.exports.export filter: ', filter);
+  log('controllers.exports.export filter: ', filter);
   let fundart = filter[0].slice(-1),
       select = "*",
       where = filter.concat(
@@ -304,7 +304,7 @@ module.exports.export = function(filter = []) {
 
       file_name += window.session.beringernr + '_' + date.getFullYear() + '-' + this.lpad(date.getMonth() + 1, 2, '0') + '-' + this.lpad(date.getDay(), 2, '0') + '_' + date.getHours() + '-' + date.getMinutes() + '-' + date.getSeconds()
       file_name += '.sdf'
-      console.log('Write export file to: ', path.join(export_verzeichnis, file_name));
+      log('Write export file to: ', path.join(export_verzeichnis, file_name));
 
       fs.writeFile(
         path.join(export_verzeichnis, file_name),

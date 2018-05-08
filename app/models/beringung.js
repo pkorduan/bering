@@ -2,7 +2,7 @@
 'use strict'
 
 module.exports.findWhere = function (select = '*', where = '', group = '', order = '`datum`, `uhrzeit` DESC', limit = '') {
-  console.log('Model Beringung.findWhere')
+  log('Model Beringung.findWhere')
   let db = SQL.dbOpen(window.model.db),
       rows = {};
 
@@ -12,16 +12,16 @@ module.exports.findWhere = function (select = '*', where = '', group = '', order
     if (group != '') query += ' GROUP BY ' + group
     if (order != '') query += ' ORDER BY ' + order
     if (limit != '') query += ' LIMIT ' + limit
-    console.log('query: ' + query);
+    log('query: ' + query);
 
     try {
       let result = db.exec(query)
-      console.log('query result: %o', result);
+      log('query result: %o', result);
       if (result !== undefined && result.length > 0) {
         rows = window.models.dbMapper.rowsFromSqlDataObject(result[0])
       }
     } catch (error) {
-      console.log('Fehler: ', error.message)
+      log('Fehler: ', error.message)
     } finally {
       SQL.dbClose(db, window.model.db)
     }
@@ -30,7 +30,7 @@ module.exports.findWhere = function (select = '*', where = '', group = '', order
 }
 
 module.exports.findByRingnr = function (ringnr) {
-  console.log('Model Beringung.findByRingnr')
+  log('Model Beringung.findByRingnr')
   let beringung = {}
 
   if (ringnr != '') {
@@ -45,7 +45,7 @@ module.exports.findByRingnr = function (ringnr) {
 }
 
 module.exports.findById = function (id) {
-  console.log('Model Beringung.findById')
+  log('Model Beringung.findById')
   let beringung = {}
 
   if (id > 0) {
@@ -60,7 +60,7 @@ module.exports.findById = function (id) {
 }
 
 module.exports.insert = function (kvps, uebernehmen = false) {
-	console.log('Model beringung.insert kvps: ', kvps);
+	log('Model beringung.insert kvps: ', kvps);
   let success = false;
 
   if (kvps.hasOwnProperty('ringnr')) {
@@ -84,7 +84,7 @@ module.exports.insert = function (kvps, uebernehmen = false) {
           ).join(', ') + "\
         )\
       ";
-      console.log('query: ', query)
+      log('query: ', query)
 
       try {
         let result = db.exec(query)
@@ -103,10 +103,10 @@ module.exports.insert = function (kvps, uebernehmen = false) {
 
         }
         else {
-          console.log('Fehler: ', 'Query failed for', kvps)
+          log('Fehler: ', 'Query failed for', kvps)
         }
       } catch (error) {
-        console.log('model.saveFormData', error.message)
+        log('model.saveFormData', error.message)
       }
       if (!success) SQL.dbClose(db, window.model.db)
     }
@@ -114,7 +114,7 @@ module.exports.insert = function (kvps, uebernehmen = false) {
 }
 
 module.exports.update = function (kvps) {
-	console.log('Model beringung.update');
+	log('Model beringung.update');
   let db = SQL.dbOpen(window.model.db),
       success = false
 
@@ -132,7 +132,7 @@ module.exports.update = function (kvps) {
       WHERE\
         id = " + kvps.id + "\
     ";
-    console.log('query: ', query)
+    log('query: ', query)
 
     try {
       let result = db.exec(query)
@@ -144,22 +144,22 @@ module.exports.update = function (kvps) {
         })
 
         myNotification.onclick = () => {
-          console.log('Notification clicked')
+          log('Notification clicked')
         }
         window.controllers.beringungen.list($('#list_all_data_menue_link'))
       }
       else {
-        console.log('Fehler: ', 'Query failed for', kvps)
+        log('Fehler: ', 'Query failed for', kvps)
       }
     } catch (error) {
-      console.log('Fehler: ', error.message)
+      log('Fehler: ', error.message)
     }
     if (!success) SQL.dbClose(db, window.model.db)
   }
 }
 
 module.exports.updateExportDate = function(where) {
-  console.log('Update export date with where: ', where);
+  log('Update export date with where: ', where);
 }
 
 module.exports.validate = function (field) {

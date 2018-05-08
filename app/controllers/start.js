@@ -1,9 +1,9 @@
 'use strict'
 
 module.exports.init = function() {
-  console.log('start_controller.init');
+  log('start_controller.init');
 
-  console.log('register click on save_database_button')
+  log('register click on save_database_button')
   $('#save_database_button').on(
     'click',
     {
@@ -16,7 +16,7 @@ module.exports.init = function() {
 }
 
 module.exports.start = function() {
-  console.log('start_controller.show')
+  log('start_controller.show')
 
   $('.row .placeholders').hide();
   if (window.session.angemeldet) {
@@ -35,11 +35,11 @@ module.exports.start = function() {
 }
 
 module.exports.backupDb = function () {
-  console.log('controllers.start.backupDb');
+  log('controllers.start.backupDb');
   let src = window.model.db,
       dst = window.models.setting.findByBezeichnung('sicherung_verzeichnis').wert + '/' +
             window.models.setting.findByBezeichnung('sicherung_dateiname').wert
-  console.log('Save Database ' + src + ' to ' + dst)
+  log('Save Database ' + src + ' to ' + dst)
 
   fs.createReadStream(src).pipe(fs.createWriteStream(dst));
 }

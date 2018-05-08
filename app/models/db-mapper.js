@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports.rowsFromSqlDataObject = function (dataObject) {
-  console.log('Model DbMapper.rowsFromSqlDataObject %o', dataObject);
+  log('Model DbMapper.rowsFromSqlDataObject %o', dataObject);
   let rows = {}
   let i = 0
   let j = 0
@@ -27,7 +27,7 @@ module.exports.getFormFieldValues = function (formId) {
 }
 
 module.exports.getFormFieldKVPs = function (formId) {
-  console.log('Model dbMapper.getFormFieldKVPs');
+  log('Model dbMapper.getFormFieldKVPs');
   let kvps = {}
   $('#' + formId).find('select, input:visible, textarea:visible').each(
     function (idx, field) {
@@ -35,7 +35,7 @@ module.exports.getFormFieldKVPs = function (formId) {
         kvps[field.id] = field.value
     }
   )
-  console.log('kvps', kvps)
+  log('kvps', kvps)
   return kvps
 }
 

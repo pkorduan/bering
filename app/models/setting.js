@@ -2,7 +2,7 @@
 'use strict'
 
 module.exports.findByBezeichnung = function (bezeichnung) {
-  console.log('Model Setting.findByBezeichnung')
+  log('Model Setting.findByBezeichnung')
   let settings = {},
       setting;
 
@@ -21,7 +21,7 @@ module.exports.findByBezeichnung = function (bezeichnung) {
 }
 
 module.exports.findWhere = function (where = '', order = '`bezeichnung`') {
-  console.log('Model setting.findWhere')
+  log('Model setting.findWhere')
   let db = SQL.dbOpen(window.model.db),
       rows = {};
 
@@ -29,16 +29,16 @@ module.exports.findWhere = function (where = '', order = '`bezeichnung`') {
     let query = 'SELECT * FROM `Einstellungen`'
     if (where != '') query += ' WHERE ' + where
     if (order != '') query += ' ORDER BY ' + order
-    console.log('query: ' + query);
+    log('query: ' + query);
 
     try {
       let result = db.exec(query)
-      console.log('query result: %o', result);
+      log('query result: %o', result);
       if (result !== undefined && result.length > 0) {
         rows = window.models.dbMapper.rowsFromSqlDataObject(result[0])
       }
     } catch (error) {
-      console.log('Fehler: ', error.message)
+      log('Fehler: ', error.message)
     } finally {
       SQL.dbClose(db, window.model.db)
     }
@@ -47,11 +47,11 @@ module.exports.findWhere = function (where = '', order = '`bezeichnung`') {
 }
 
 module.exports.insert = function (tableName, kvps, callback) {
-  console.log('Model setting.saveformData');
+  log('Model setting.saveformData');
 }
 
 module.exports.update = function (kvps) {
-  console.log('Model setting.update');
+  log('Model setting.update');
   let db = SQL.dbOpen(window.model.db),
       success = false
     
@@ -69,7 +69,7 @@ module.exports.update = function (kvps) {
       WHERE\
         bezeichnung = '" + kvps.bezeichnung + "'\
     ";
-    console.log('query: ', query)
+    log('query: ', query)
     let result = db.exec(query)
     try {
       if (result !== undefined) {
@@ -77,15 +77,15 @@ module.exports.update = function (kvps) {
         SQL.dbClose(db, window.model.db)
       }
       else {
-        console.log('Fehler: ', 'Query failed for', kvps.values)
+        log('Fehler: ', 'Query failed for', kvps.values)
       }
     } catch (error) {
-      console.log('Fehler: ', error.message)
+      log('Fehler: ', error.message)
     }
     if (!success) SQL.dbClose(db, window.model.db)
   }
 }
 
 module.exports.validate = function (field) {
-  console.log('Model setting.validate');
+  log('Model setting.validate');
 }

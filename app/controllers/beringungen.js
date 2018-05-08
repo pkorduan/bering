@@ -2,7 +2,7 @@
 'use strict'
 
 module.exports.init = function() {
-  console.log('controllers.beringungen.init');
+  log('controllers.beringungen.init');
 
   $('#beringung_datepicker input').datepicker({
       format: "dd.mm.yyyy",
@@ -15,7 +15,7 @@ module.exports.init = function() {
 */
   // register event handler
 
-  console.log('register click on beringung_link')
+  log('register click on beringung_link')
   $('#beringung_link').on(
     'click',
     {
@@ -28,7 +28,7 @@ module.exports.init = function() {
     }
   )
 
-  console.log('register click on fund_link')
+  log('register click on fund_link')
   $('#fund_link').on(
     'click',
     {
@@ -41,7 +41,7 @@ module.exports.init = function() {
     }
   )
 
-  console.log('register click on beringung_search_button')
+  log('register click on beringung_search_button')
   $('#beringung_search_button').on(
     'click',
     {
@@ -52,7 +52,7 @@ module.exports.init = function() {
     }
   )
 
-  console.log('register click on list_all_data_menue_link')
+  log('register click on list_all_data_menue_link')
   $('#list_all_data_menue_link').on(
     'click',
     {
@@ -63,7 +63,7 @@ module.exports.init = function() {
     }
   )
 
-  console.log('register click on list_all_beringungen_menue_link')
+  log('register click on list_all_beringungen_menue_link')
   $('#list_all_beringungen_menue_link').on(
     'click',
     {
@@ -74,7 +74,7 @@ module.exports.init = function() {
     }
   )
 
-  console.log('register click on list_meine_beringungen_menue_link')
+  log('register click on list_meine_beringungen_menue_link')
   $('#list_meine_beringungen_menue_link').on(
     'click',
     {
@@ -85,7 +85,7 @@ module.exports.init = function() {
     }
   )
 
-  console.log('register click on list_meine_wiederfunde_menue_link')
+  log('register click on list_meine_wiederfunde_menue_link')
   $('#list_meine_wiederfunde_menue_link').on(
     'click',
     {
@@ -96,7 +96,7 @@ module.exports.init = function() {
     }
   )
 
-  console.log('register click on list_alle_wiederfunde_menue_link')
+  log('register click on list_alle_wiederfunde_menue_link')
   $('#list_alle_wiederfunde_menue_link').on(
     'click',
     {
@@ -107,7 +107,7 @@ module.exports.init = function() {
     }
   )
 
-  console.log('register click on list_fremdfunde_menue_link')
+  log('register click on list_fremdfunde_menue_link')
   $('#list_fremdfunde_menue_link').on(
     'click',
     {
@@ -118,7 +118,7 @@ module.exports.init = function() {
     }
   )
 
-  console.log('register click on beringung_speichern_button')
+  log('register click on beringung_speichern_button')
   $('#beringung_speichern_button').on(
     'click',
     {
@@ -134,7 +134,7 @@ module.exports.init = function() {
     }
   )
 
-  console.log('register click on beringung_speichern_uebernehmen_button')
+  log('register click on beringung_speichern_uebernehmen_button')
   $('#beringung_speichern_uebernehmen_button').on(
     'click',
     {
@@ -145,9 +145,9 @@ module.exports.init = function() {
     }
   )
 
-  console.log('fill select option for alter');
+  log('fill select option for alter');
   let altersangaben = window.models.vogelalter.findWhere()
-  console.log('vogelalter %o', altersangaben)
+  log('vogelalter %o', altersangaben)
 
   $.each(altersangaben, function (i, item) {
     $('#beringung_edit_form select[id=alter]').append(
@@ -158,9 +158,9 @@ module.exports.init = function() {
     );
   });
 
-  console.log('fill select option for vogelarten');
+  log('fill select option for vogelarten');
   let vogelarten = window.models.vogelarten.findWhere('', 'arname')
-  console.log('vogelarten %o', vogelarten)
+  log('vogelarten %o', vogelarten)
 
   $.each(vogelarten, function (i, item) {
     $('#beringung_edit_form select[id=vogelart]').append(
@@ -171,9 +171,9 @@ module.exports.init = function() {
     );
   });
 
-  console.log('fill select option for fundzustaende');
+  log('fill select option for fundzustaende');
   let fundzustaende = window.models.fundzustand.findWhere('', 'bezeichnung')
-  console.log('fundzustaende %o', fundzustaende)
+  log('fundzustaende %o', fundzustaende)
 
   $.each(fundzustaende, function (i, item) {
     $('#beringung_edit_form select[id=fundzustand]').append(
@@ -184,9 +184,9 @@ module.exports.init = function() {
     );
   });
 
-  console.log('fill select option for fundursache');
+  log('fill select option for fundursache');
   let fundursachen = window.models.fundursache.findWhere('', 'bezeichnung_de')
-  console.log('fundursachen %o', fundursachen)
+  log('fundursachen %o', fundursachen)
 
   $.each(fundursachen, function (i, item) {
     $('#beringung_edit_form select[id=fundursache]').append(
@@ -197,9 +197,9 @@ module.exports.init = function() {
     );
   });
 
-  console.log('fill select option for brutstati');
+  log('fill select option for brutstati');
   let brutstati = window.models.brutstatus.findWhere('', 'beschreibung')
-  console.log('brutstati %o', brutstati)
+  log('brutstati %o', brutstati)
 
   $.each(brutstati, function (i, item) {
     $('#beringung_edit_form select[id=brutstatus]').append(
@@ -210,9 +210,9 @@ module.exports.init = function() {
     );
   });
 
-  console.log('fill select options for farbringe');
+  log('fill select options for farbringe');
   let farbcodes = window.models.farbcodes.findWhere('', 'code')
-  console.log('farbcodes %o', farbcodes)
+  log('farbcodes %o', farbcodes)
 
   $.each(farbcodes, function (i, item) {
     $('#beringung_edit_form select[id=farbring_liun]').append(
@@ -241,7 +241,7 @@ module.exports.init = function() {
     );
   });
 
-  console.log('register change on skz_1 and skz2 select fields')
+  log('register change on skz_1 and skz2 select fields')
   $('#skz_1, #skz_2').on(
     'change',
     {
@@ -255,7 +255,7 @@ module.exports.init = function() {
 }
 
 module.exports.searchForm = function() {
-  console.log('controllers.beringungen.controllers.start');
+  log('controllers.beringungen.controllers.start');
 
   $('.sidebar').hide()
   $('#beringungen_menu').show()
@@ -267,7 +267,7 @@ module.exports.searchForm = function() {
 }
 
 module.exports.search = function(evt) {
-  console.log('controllers.beringungen.search');
+  log('controllers.beringungen.search');
   let ringnr = $('#beringung_search_form :input[id=ringnr]').val(),
       beringung = window.models.beringung.findByRingnr(ringnr)
 
@@ -293,7 +293,7 @@ module.exports.search = function(evt) {
 }
 
 module.exports.list = function(target, filter = []) {
-  console.log('controllers.beringungen.list');
+  log('controllers.beringungen.list');
 
   let loesch_funktion_an =  window.models.setting.findByBezeichnung('loesch_funktion_an'),
       nur_nicht_exportierte_an =  window.models.setting.findByBezeichnung('nur_nicht_exportierte_an'),
@@ -333,7 +333,7 @@ module.exports.list = function(target, filter = []) {
       })
     }
   )
-  //console.log('rows: ', rows);
+  //log('rows: ', rows);
   table.bootstrapTable('load', rows)
   $('.fixed-table-loading').hide()
 
@@ -345,7 +345,7 @@ module.exports.list = function(target, filter = []) {
 }
 
 module.exports.edit = function(id) {
-  console.log('controller beringungen.edit id:' + id);
+  log('controller beringungen.edit id:' + id);
 
   let beringung = window.models.beringung.findById(id)
   this.setValuesToForm(beringung);
@@ -376,7 +376,7 @@ module.exports.edit = function(id) {
 }
 
 module.exports.newBeringung = function(uebernehmen = false) {
-  console.log('controller beringungen.newBerinung uebernehmen:', uebernehmen);
+  log('controller beringungen.newBerinung uebernehmen:', uebernehmen);
   let beringung = {}
 
   if (uebernehmen) {
@@ -411,7 +411,7 @@ module.exports.newBeringung = function(uebernehmen = false) {
 }
 
 module.exports.newFund = function(beringung) {
-  console.log('controller beringungen.newFund %o', beringung);
+  log('controller beringungen.newFund %o', beringung);
 
   // Formular erstmal komplett leeren
   $('form#beringung_edit_form :input').each(
@@ -475,16 +475,16 @@ module.exports.openNewForm = function() {
 }
 
 module.exports.delete = function(id) {
-  console.log('controller beringungen.delete id:' + id);
+  log('controller beringungen.delete id:' + id);
 }
 
 module.exports.setValuesToForm = function(beringung) {
-  console.log('Controller beringungen.setValuesToForm %o', beringung)
+  log('Controller beringungen.setValuesToForm %o', beringung)
 
   $.each(
     beringung,
     function(index, value) {
-      console.log('index: ' + index + ' value: ' + value);
+      log('index: ' + index + ' value: ' + value);
       $('form#beringung_edit_form :input[id=' + index + ']').val(value)
     }
   )
@@ -493,7 +493,7 @@ module.exports.setValuesToForm = function(beringung) {
 }
 
 module.exports.setDateAndTimeToForm = function(d) {
-  console.log('setDateAndTimeToForm d: ', d.toLocaleDateString(), d.toLocaleTimeString())
+  log('setDateAndTimeToForm d: ', d.toLocaleDateString(), d.toLocaleTimeString())
   $('form#beringung_edit_form :input[id=datum]').val(d.toLocaleDateString())
   $('form#beringung_edit_form :input[id=uhrzeit]').val(d.toLocaleTimeString())
 }
@@ -503,7 +503,7 @@ module.exports.setDateAndTimeToForm = function(d) {
 * beringungsort und koordinaten werden aus Einstellungen übernommen.
 */
 module.exports.insert = function(evt, uebernehmen = false) {
-  console.log('Controller beringungen.insert uebernehmen', uebernehmen);
+  log('Controller beringungen.insert uebernehmen', uebernehmen);
   let all_valid = true,
       validation,
       callback
@@ -511,7 +511,7 @@ module.exports.insert = function(evt, uebernehmen = false) {
   this.formatDateToEn()
 
   if (this.allValid()) {
-    console.log('Alle Eingabenn valide!')
+    log('Alle Eingabenn valide!')
     let kvps = window.models.dbMapper.getFormFieldKVPs('beringung_edit_form')
 
     kvps['beringungsort'] = window.models.setting.findByBezeichnung('beringungsort').wert
@@ -526,14 +526,14 @@ module.exports.insert = function(evt, uebernehmen = false) {
 }
 
 module.exports.update = function(evt) {
-  console.log('Controller beringungen.update')
+  log('Controller beringungen.update')
   let all_valid = true,
       validation
 
   this.formatDateToEn()
 
   if (this.allValid()) {
-    console.log('Alle Eingabenn valide!')
+    log('Alle Eingabenn valide!')
     let kvps = window.models.dbMapper.getFormFieldKVPs('beringung_edit_form')
 
     window.models.beringung.update(kvps)
@@ -575,7 +575,7 @@ module.exports.allValid = function() {
 }
 
 module.exports.openFarbringAndInschrift = function(field) {
-  console.log('field: ' + field.attr('id') + ' ' + field.val());
+  log('field: ' + field.attr('id') + ' ' + field.val());
   let otherField = (field.attr('id') == 'skz_1' ? $('#skz_2') : $('#skz_1'))
   if (field.val() != '' && otherField.val() != '') {
     $('#farbring_und_inschrift_div').show()

@@ -11,11 +11,11 @@ module.exports.getNutzer = function () {
       let row = db.exec(query)
       if (row !== undefined && row.length > 0) {
         row = _rowsFromSqlDataObject(row[0])
-		console.log('getNutzer Ergebnis:', row)
+		log('getNutzer Ergebnis:', row)
         view.showNutzer(row)
       }
     } catch (error) {
-      console.log('model.getNutzer', error.message)
+      log('model.getNutzer', error.message)
     } finally {
       SQL.dbClose(db, window.model.db)
     }
@@ -24,7 +24,7 @@ module.exports.getNutzer = function () {
 */
 
 module.exports.findByLoginName = function (loginname) {
-  console.log('Model Beringung.findByLoginName')
+  log('Model Beringung.findByLoginName')
   let users = {},
       user;
 
@@ -43,7 +43,7 @@ module.exports.findByLoginName = function (loginname) {
 }
 
 module.exports.findWhere = function (where = '', order = '`name`') {
-  console.log('Model user.findWhere')
+  log('Model user.findWhere')
   let db = SQL.dbOpen(window.model.db),
       rows = {};
 
@@ -51,16 +51,16 @@ module.exports.findWhere = function (where = '', order = '`name`') {
     let query = 'SELECT * FROM `Nutzer`'
     if (where != '') query += ' WHERE ' + where
     if (order != '') query += ' ORDER BY ' + order
-    console.log('query: ' + query);
+    log('query: ' + query);
 
     try {
       let result = db.exec(query)
-      console.log('query result: %o', result);
+      log('query result: %o', result);
       if (result !== undefined && result.length > 0) {
         rows = window.models.dbMapper.rowsFromSqlDataObject(result[0])
       }
     } catch (error) {
-      console.log('Fehler: ', error.message)
+      log('Fehler: ', error.message)
     } finally {
       SQL.dbClose(db, window.model.db)
     }
@@ -69,7 +69,7 @@ module.exports.findWhere = function (where = '', order = '`name`') {
 }
 
 module.exports.isAuthorized = function(loginname, passwort) {
-  console.log('Model user.isAuthorized');
+  log('Model user.isAuthorized');
   let db = SQL.dbOpen(window.model.db),
       rows = {},
       authorized = false;
@@ -86,17 +86,17 @@ module.exports.isAuthorized = function(loginname, passwort) {
         loginname = '" + loginname + "' AND\
         passwort = '" + SHA256(passwort) + "'\
     ";
-    console.log('query: ' + query);
-        console.log('passwort: %o %o', passwort, SHA256(passwort))
+    log('query: ' + query);
+        log('passwort: %o %o', passwort, SHA256(passwort))
     try {
       let result = db.exec(query)
-      console.log('query result: %o', result);
+      log('query result: %o', result);
       if (result !== undefined && result.length > 0) {
         rows = window.models.dbMapper.rowsFromSqlDataObject(result[0])
         authorized = true
       }
     } catch (error) {
-      console.log('Fehler: ', error.message)
+      log('Fehler: ', error.message)
     } finally {
       SQL.dbClose(db, window.model.db)
     }
@@ -105,11 +105,11 @@ module.exports.isAuthorized = function(loginname, passwort) {
 }
 
 module.exports.insert = function (tableName, kvps, callback) {
-  console.log('Model user.saveformData');
+  log('Model user.saveformData');
 }
 
 module.exports.update = function (kvps) {
-  console.log('Model user.update');
+  log('Model user.update');
   let db = SQL.dbOpen(window.model.db),
       success = false
     
@@ -127,7 +127,7 @@ module.exports.update = function (kvps) {
       WHERE\
         loginname = '" + kvps.loginname + "'\
     ";
-    console.log('query: ', query)
+    log('query: ', query)
     let result = db.exec(query)
     try {
       if (result !== undefined) {
@@ -135,15 +135,15 @@ module.exports.update = function (kvps) {
         SQL.dbClose(db, window.model.db)
       }
       else {
-        console.log('Fehler: ', 'Query failed for', kvps.values)
+        log('Fehler: ', 'Query failed for', kvps.values)
       }
     } catch (error) {
-      console.log('Fehler: ', error.message)
+      log('Fehler: ', error.message)
     }
     if (!success) SQL.dbClose(db, window.model.db)
   }
 }
 
 module.exports.validate = function (field) {
-  console.log('Model user.validate');
+  log('Model user.validate');
 }

@@ -2,11 +2,11 @@
 'use strict'
 
 module.exports.init = function() {
-  console.log('controllers.users.init');
+  log('controllers.users.init');
 
   // register event handler
 
-  console.log('register click on users_list_link')
+  log('register click on users_list_link')
   $('#users_list_link').on(
     'click',
     {
@@ -17,7 +17,7 @@ module.exports.init = function() {
     }
   )
 
-  console.log('register click on users_change_passwort_button')
+  log('register click on users_change_passwort_button')
   $('#change_user_passwort_button').on(
     'click',
     {
@@ -35,7 +35,7 @@ module.exports.init = function() {
 }
 
 module.exports.saveChangedPasswort = function(oldPwd, newPwd1, newPwd2) {
-  console.log('controllers.users.saveChangedPasswort');
+  log('controllers.users.saveChangedPasswort');
 
   let user = window.models.user.findByLoginName(window.session.loginname),
       help_text = ''
@@ -72,7 +72,7 @@ module.exports.saveChangedPasswort = function(oldPwd, newPwd1, newPwd2) {
 }
 
 module.exports.list = function(evt) {
-  console.log('controllers.users.list')
+  log('controllers.users.list')
   let users = window.models.user.findWhere(),
       t = $('<table id="user-list-table">');
 

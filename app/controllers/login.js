@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports.init = function() {
-  console.log('controllers.login.init');
+  log('controllers.login.init');
 
   // register event handler
   $('#login_button').on(
@@ -20,17 +20,17 @@ module.exports.init = function() {
 }
 
 module.exports.login = function(loginname, passwort, passwort2) {
-  console.log('controllers.login.login für Nutzer: ' + loginname);
+  log('controllers.login.login für Nutzer: ' + loginname);
   
   let user = window.models.user.findByLoginName(loginname),
       admin_passwort_hint = '';
-  console.log('controllers.login.login found user %o', user);
+  log('controllers.login.login found user %o', user);
 
   if (user.loginname == 'admin' && user.passwort == '') {
     if (passwort2 != '') {
-      console.log('Neues Passwort gesendet.');
+      log('Neues Passwort gesendet.');
       if (passwort == passwort2) {
-        console.log('Passwortwiederholung passt.')
+        log('Passwortwiederholung passt.')
         //Trage neues Passwort ein
         user.passwort = SHA256(passwort);
         window.models.user.update(user)
@@ -42,7 +42,7 @@ module.exports.login = function(loginname, passwort, passwort2) {
       }
     }
     else {
-      console.log('User Admin hat noch kein Passwort!');      
+      log('User Admin hat noch kein Passwort!');      
       admin_passwort_hint = 'Das Passwort vom Nutzer "admin" wurde noch nicht vergeben. Bitte geben Sie ein Passwort für den Administrator an.'
     }
     if (admin_passwort_hint != '') {
@@ -67,7 +67,7 @@ module.exports.login = function(loginname, passwort, passwort2) {
 }
 
 module.exports.logout = function(evt) {
-  console.log('controllers.login.logout');
+  log('controllers.login.logout');
   window.session.angemeldet = false
   window.session.loginname = ''
   window.session.beringernr = ''

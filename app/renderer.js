@@ -8,6 +8,7 @@ const dbfParser = require('node-dbf')
 const showdown = require('showdown')
 const SHA256 = require('crypto-js/sha256')
 const dialog = require('electron').remote.dialog
+const debug = false
 
 window.$ = window.jQuery = require('jquery')
 window.Tether = require('tether')
@@ -90,8 +91,7 @@ let dom = O.html()
 $('body').html(dom)
 
 $('document').ready(function () {
-  console.log('document is ready');
-  console.log((window.session.angemeldet ? 'angemeldet als ' + window.session.loginname : 'Kein Nutzer angemeldet'));
+  log('document is ready');
   window.controllers.help.init();
   window.controllers.settings.init();
   window.controllers.users.init();
@@ -100,6 +100,7 @@ $('document').ready(function () {
   window.controllers.start.init();
   window.controllers.start.start();
   window.controllers.export.init();
+  log((window.session.angemeldet ? 'angemeldet als ' + window.session.loginname : 'Kein Nutzer angemeldet'));
 })
 
 // Set jQuery.validate settings for bootstrap integration
@@ -120,3 +121,9 @@ jQuery.validator.setDefaults({
         }
     }
 });
+
+let log = function(msg) {
+  if (debug) {
+    console.log(msg)
+  }
+}
