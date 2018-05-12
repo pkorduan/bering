@@ -5,8 +5,8 @@ CREATE TABLE Einstellungen (
   wert        TEXT
 );
 
-INSERT INTO Einstellungen (bezeichnung, wert) VALUES ('beringungsort', 'a021insel langenwerder');
-INSERT INTO Einstellungen (bezeichnung, wert) VALUES ('beringungsort_position', '540200n0113000e');
+INSERT INTO Einstellungen (bezeichnung, wert) VALUES ('beringungsort', 'A021INSEL LANGENWERDER');
+INSERT INTO Einstellungen (bezeichnung, wert) VALUES ('beringungsort_position', '540200N0113000E');
 INSERT INTO Einstellungen (bezeichnung, wert) VALUES ('beringungsort_kreis', 'NWM');
 
 INSERT INTO Einstellungen (bezeichnung, wert) VALUES ('loesch_funktion_an', 'aus');

@@ -20,7 +20,7 @@ module.exports.findWhere = function (where = '', order = '`code`') {
 
     try {
       let result = db.exec(query)
-      log('query result: %o', result);
+      log('query result: ' + JSON.stringify(result));
       if (result !== undefined && result.length > 0) {
         rows = window.models.dbMapper.rowsFromSqlDataObject(result[0])
       }

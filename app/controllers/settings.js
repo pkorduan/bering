@@ -79,6 +79,35 @@ module.exports.init = function() {
     }
   )
 
+  log('fill select option for sicherung_anzahl');
+  for (var i = 1; i <= 20; i++) {
+    $('#settings_edit_form select[name=sicherung_anzahl]').append(
+      $('<option>', {
+        value: i,
+        text : i
+      })
+    );
+  };
+
+  $('#sicherung_anzahl_select').on(
+    'change',
+    function(evt) {
+      $('#save_sicherung_anzahl_button').show()
+    }
+  )
+
+  $('#save_sicherung_anzahl_button').on(
+    'click',
+    {
+      context: this
+    },
+    function(evt) {
+      evt.data.context.saveSicherungAnzahl(
+        $('#settings_edit_form [name=sicherung_anzahl]').val()
+      )
+    }
+  )
+
   $('#change_sicherungsort_button').on(
     'click',
     {
@@ -187,7 +216,6 @@ module.exports.init = function() {
 
 module.exports.saveBeringungsort = function(beringungsort, beringungsort_position, beringungsort_kreis, zentrale) {
   log('controllers.settings.saveBerinungsort')
-  let setting;
 
   window.models.setting.update({
     'bezeichnung' : 'beringungsort',
@@ -212,7 +240,6 @@ module.exports.saveBeringungsort = function(beringungsort, beringungsort_positio
 
 module.exports.saveSicherungsort = function(sicherung_verzeichnis, sicherung_dateiname) {
   log('controllers.settings.saveSicherungsort')
-  let setting;
 
   window.models.setting.update({
     'bezeichnung' : 'sicherung_verzeichnis',
@@ -227,9 +254,20 @@ module.exports.saveSicherungsort = function(sicherung_verzeichnis, sicherung_dat
   $('#sicherungsort_div').fadeOut(1000)
 }
 
+module.exports.saveSicherungAnzahl = function(sicherung_anzahl) {
+  log('controllers.settings.saveSicherungAnzahl')
+
+  window.models.setting.update({
+    'bezeichnung' : 'sicherung_anzahl',
+    'wert' : sicherung_anzahl
+  })
+
+  $('#save_sicherung_anzahl_button').hide()
+  $('#sicherung_anzahl_div').fadeOut(1000)
+}
+
 module.exports.saveExportort = function(export_verzeichnis) {
   log('controllers.settings.saveExportort')
-  let setting;
 
   window.models.setting.update({
     'bezeichnung' : 'export_verzeichnis',
@@ -268,9 +306,9 @@ module.exports.edit = function(evt) {
   // Fill form fields with values
   $.each(rows, function(i, v) {
     settings[v.bezeichnung] = v.wert
-    $('#settings_edit_form input[name=' + v.bezeichnung + ']').val(v.wert)
-    if ($('#settings_edit_form input[name=' + v.bezeichnung + ']').attr('type') == 'checkbox' && v.wert == 'an') {
-      $('#settings_edit_form input[name=' + v.bezeichnung + ']').prop('checked', true)
+    $('#settings_edit_form [name=' + v.bezeichnung + ']').val(v.wert)
+    if ($('#settings_edit_form [name=' + v.bezeichnung + ']').attr('type') == 'checkbox' && v.wert == 'an') {
+      $('#settings_edit_form [name=' + v.bezeichnung + ']').prop('checked', true)
     }
   })
   log('settings: %o', settings)

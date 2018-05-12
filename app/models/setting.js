@@ -38,7 +38,7 @@ module.exports.findWhere = function (where = '', order = '`bezeichnung`') {
         rows = window.models.dbMapper.rowsFromSqlDataObject(result[0])
       }
     } catch (error) {
-      log('Fehler: ', error.message)
+      log('Fehler: ' + error.message)
     } finally {
       SQL.dbClose(db, window.model.db)
     }
@@ -69,7 +69,7 @@ module.exports.update = function (kvps) {
       WHERE\
         bezeichnung = '" + kvps.bezeichnung + "'\
     ";
-    log('query: ', query)
+    log('query: ' + query)
     let result = db.exec(query)
     try {
       if (result !== undefined) {
@@ -77,10 +77,10 @@ module.exports.update = function (kvps) {
         SQL.dbClose(db, window.model.db)
       }
       else {
-        log('Fehler: ', 'Query failed for', kvps.values)
+        log('Fehler: Query failed for: ' + JSON.stringify(kvps.values))
       }
     } catch (error) {
-      log('Fehler: ', error.message)
+      log('Fehler: ' + error.message)
     }
     if (!success) SQL.dbClose(db, window.model.db)
   }

@@ -16,12 +16,11 @@ module.exports.findWhere = function (select = '*', where = '', group = '', order
 
     try {
       let result = db.exec(query)
-      log('query result: %o', result);
       if (result !== undefined && result.length > 0) {
         rows = window.models.dbMapper.rowsFromSqlDataObject(result[0])
       }
     } catch (error) {
-      log('Fehler: ', error.message)
+      log('Fehler: ' + error.message)
     } finally {
       SQL.dbClose(db, window.model.db)
     }
@@ -60,7 +59,7 @@ module.exports.findById = function (id) {
 }
 
 module.exports.insert = function (kvps, uebernehmen = false) {
-	log('Model beringung.insert kvps: ', kvps);
+	log('Model beringung.insert kvps: ' + JSON.stringify(kvps));
   let success = false;
 
   if (kvps.hasOwnProperty('ringnr')) {
@@ -84,7 +83,7 @@ module.exports.insert = function (kvps, uebernehmen = false) {
           ).join(', ') + "\
         )\
       ";
-      log('query: ', query)
+      log('query: ' + query)
 
       try {
         let result = db.exec(query)
@@ -103,10 +102,10 @@ module.exports.insert = function (kvps, uebernehmen = false) {
 
         }
         else {
-          log('Fehler: ', 'Query failed for', kvps)
+          log('Fehler: Query failed for: ' + JSON.stringify(kvps))
         }
       } catch (error) {
-        log('model.saveFormData', error.message)
+        log('model.saveFormData: ' + error.message)
       }
       if (!success) SQL.dbClose(db, window.model.db)
     }
@@ -132,7 +131,7 @@ module.exports.update = function (kvps) {
       WHERE\
         id = " + kvps.id + "\
     ";
-    log('query: ', query)
+    log('query: ' + query)
 
     try {
       let result = db.exec(query)
@@ -149,17 +148,84 @@ module.exports.update = function (kvps) {
         window.controllers.beringungen.list($('#list_all_data_menue_link'))
       }
       else {
-        log('Fehler: ', 'Query failed for', kvps)
+        log('Fehler: Query failed for: ' + JSON.stringify(kvps))
       }
     } catch (error) {
-      log('Fehler: ', error.message)
+      log('Fehler: ' + error.message)
+    }
+    if (!success) SQL.dbClose(db, window.model.db)
+  }
+}
+
+module.exports.delete = function(id, listType = 'list_all_data_menue_link') {
+	log('Model beringung.delete');
+  let db = SQL.dbOpen(window.model.db),
+      success = false
+
+  if (db !== null) {
+    let query = "\
+      DELETE FROM\
+        `Daten`\
+      WHERE\
+        id = " + id + "\
+    ";
+    log('query: ' + query)
+
+    try {
+      let result = db.exec(query)
+      if (result !== undefined) {
+        success = true
+        SQL.dbClose(db, window.model.db)
+        let myNotification = new Notification('Datenbank', {
+          body: 'Datensatz erfolgreich gelöscht.'
+        })
+
+        myNotification.onclick = () => {
+          log('Notification clicked')
+        }
+        window.controllers.beringungen.list($('#' + listType))
+      }
+      else {
+        log('Fehler bei Ausführung von Anfrage: ' + query)
+      }
+    } catch (error) {
+      log('Fehler: ' + error.message)
     }
     if (!success) SQL.dbClose(db, window.model.db)
   }
 }
 
 module.exports.updateExportDate = function(where) {
-  log('Update export date with where: ', where);
+  log('models.berinung.updateExportData');
+  let db = SQL.dbOpen(window.model.db),
+      success = false
+
+  if (db !== null) {
+    let query = "\
+      UPDATE\
+        Daten\
+      SET\
+        exportiert_am = current_timestamp\
+      WHERE\
+        " + where + "\
+    ";
+    log('query: ' + query)
+
+    try {
+      let result = db.exec(query)
+      if (result !== undefined) {
+        success = true
+        SQL.dbClose(db, window.model.db)
+        log('Datensätze erfolgreich aktualisiert')
+      }
+      else {
+        log('Fehler: Query failed for: ' + JSON.stringify(kvps))
+      }
+    } catch (error) {
+      log('Fehler: ' + error.message)
+    }
+    if (!success) SQL.dbClose(db, window.model.db)
+  }
 }
 
 module.exports.validate = function (field) {

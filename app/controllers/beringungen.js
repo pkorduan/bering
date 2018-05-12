@@ -329,7 +329,7 @@ module.exports.list = function(target, filter = []) {
         bemerkung: v.bemerkung,
         exportiert_am: v.exportiert_am,
         edit: (v.beringernr == window.session.beringernr ? '<a href="#" onclick="window.controllers.beringungen.edit(' + v.id + ')"><i class="fa fa-pencil" aria-hidden="true"></i></a>' : '&nbsp;'),
-        delete: (v.beringernr == window.session.beringernr && loesch_funktion_an.wert == 'an' ? '<a href="#" onclick="window.controllers.beringungen.delete(' + v.id + ')"><i class="fa fa-trash" aria-hidden="true"></i></a>' : '&nbsp;')
+        delete: (v.beringernr == window.session.beringernr && loesch_funktion_an.wert == 'an' ? '<a href="javascript:void(0)" onclick="window.controllers.beringungen.delete(' + v.id + ')"><i class="fa fa-trash" aria-hidden="true"></i></a>' : '&nbsp;')
       })
     }
   )
@@ -362,6 +362,25 @@ module.exports.edit = function(id) {
   else {
     $('#fundursache_und_zustand_div').show()
     $('#farbring_div').hide()
+  }
+
+  if ($('#skz_1').val() != '' && $('#skz_2').val() != '') {
+    $('#farbring_und_inschrift_div').show()
+    if ($('#inschrift').val() != '') {
+      $('#farbring_codierung_link').show();
+      $('#inschrift_link').hide();
+      $('#farbring_codierung_div').hide();
+      $('#inschrift_div').show();
+    }
+    else {
+      $('#farbring_codierung_link').hide();
+      $('#inschrift_link').show();
+      $('#farbring_codierung_div').show();
+      $('#inschrift_div').hide();
+    }
+  }
+  else {
+    $('#farbring_und_inschrift_div').hide()
   }
 
   // enable edit ringnr
@@ -476,6 +495,22 @@ module.exports.openNewForm = function() {
 
 module.exports.delete = function(id) {
   log('controller beringungen.delete id:' + id);
+  let result = dialog.showMessageBox({
+    title: 'Datenbank',
+    message: 'Datensatz wirklich löschen?',
+    type: 'question',
+    buttons: ['Nein', 'Ja']
+  })
+  if (result == 1) {
+    log('Lösche Datensatz id: ' + id)
+
+    window.controllers.start.backupDb()
+
+    window.models.beringung.delete(id)
+  }
+  else {
+    log('Löschen abbrechen.')
+  }
 }
 
 module.exports.setValuesToForm = function(beringung) {
@@ -518,6 +553,8 @@ module.exports.insert = function(evt, uebernehmen = false) {
     kvps['koordinaten'] = window.models.setting.findByBezeichnung('beringungsort_position').wert
     kvps['zentrale'] = window.models.setting.findByBezeichnung('zentrale').wert
 
+    window.controllers.start.backupDb()
+
     window.models.beringung.insert(kvps, uebernehmen)
   }
   else {
@@ -534,8 +571,10 @@ module.exports.update = function(evt) {
 
   if (this.allValid()) {
     log('Alle Eingabenn valide!')
-    let kvps = window.models.dbMapper.getFormFieldKVPs('beringung_edit_form')
 
+    window.controllers.start.backupDb()
+
+    let kvps = window.models.dbMapper.getFormFieldKVPs('beringung_edit_form')
     window.models.beringung.update(kvps)
   }
 }
@@ -580,9 +619,9 @@ module.exports.openFarbringAndInschrift = function(field) {
   if (field.val() != '' && otherField.val() != '') {
     $('#farbring_und_inschrift_div').show()
     $('#farbring_codierung_link').hide();
-    $('#farbring_inschrift_link').show();
+    $('#inschrift_link').show();
     $('#farbring_codierung_div').show();
-    $('#farbring_inschrift_div').hide();
+    $('#inschrift_div').hide();
 
   }
   else {

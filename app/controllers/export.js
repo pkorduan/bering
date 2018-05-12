@@ -68,13 +68,16 @@ module.exports.show = function() {
       ",
       where = "\
         beringernr = '" + window.session.beringernr + "' AND\
-        datum > date('now', 'start of year')\
+        datum > date('now', 'start of year') AND\
+        exportiert_am IS NULL\
       ",
       group = "fundart",
       order = "datum, uhrzeit",
       beringungen = window.models.beringung.findWhere(select, where, group, order)
 
   $('#export_verzeichnis_span').html(export_verzeichnis.wert);
+  
+  $('#anzahl_art_1, #anzahl_art_2, #anzahl_art_3').html('0');
 
   $.each(
     beringungen,
@@ -129,12 +132,19 @@ module.exports.export = function(filter = []) {
       beringungen = window.models.beringung.findWhere(select, where, '', order),
       export_verzeichnis = window.models.setting.findByBezeichnung('export_verzeichnis').wert,
       beringungsort_kreis = window.models.setting.findByBezeichnung('beringungsort_kreis').wert,
-      date = new Date(),
       file_name = '',
       lines = [],
       strWrite = '';
 
-    if (window.controllers.settings.checkPath(export_verzeichnis)) {
+      console.log(beringungen)
+
+  if (window.controllers.settings.checkPath(export_verzeichnis)) {
+    if (Object.keys(beringungen).length == 0) {
+      // keine zum Export vorhanden
+
+      dialog.showErrorBox('Warnung', 'Es stehen keine Datensätze dieser Fundart zum Export zur Verfügung!');
+    }
+    else {
       switch (fundart) {
         case '1': {
           file_name = 'B'
@@ -302,8 +312,8 @@ module.exports.export = function(filter = []) {
       strWrite  = lines.join('\r\n') // join lines
       strWrite += '\r\n\u001a' //Dateiende: ^Z = \u001a
 
-      file_name += window.session.beringernr + '_' + date.getFullYear() + '-' + this.lpad(date.getMonth() + 1, 2, '0') + '-' + this.lpad(date.getDay(), 2, '0') + '_' + date.getHours() + '-' + date.getMinutes() + '-' + date.getSeconds()
-      file_name += '.sdf'
+      file_name += window.session.beringernr + '_' + this.dateTimeFormatted() + '.sdf'
+
       log('Write export file to: ', path.join(export_verzeichnis, file_name));
 
       fs.writeFile(
@@ -313,10 +323,20 @@ module.exports.export = function(filter = []) {
           if (err) {
             alert("Fehler beim Speichern der Exportdatei: " + err.message)
           }
-          window.models.beringung.updateExportDate(where),
-          alert("Die Daten wurden erfolgreich exportiert.");
+          window.models.beringung.updateExportDate(where)
+          window.controllers.export.show()
+          dialog.showMessageBox({
+            title: 'Datenbank',
+            message: 'Die Daten wurden erfolgreich exportiert nach\n' + path.join(export_verzeichnis + '/' + file_name),
+            type: 'question',
+            buttons: ['ok']
+          })
         }
       );
     }
+  }
+}
 
+module.exports.dateTimeFormatted = function(d = new Date()) {
+  return d.getFullYear() + '-' + this.lpad(d.getMonth() + 1, 2, '0') + '-' + this.lpad(d.getDate(), 2, '0') + '_' + this.lpad(d.getHours(), 2, '0') + '-' + this.lpad(d.getMinutes(), 2, '0') + '-' + this.lpad(d.getSeconds(), 2, '0')
 }

@@ -1,4 +1,14 @@
 <h2><span id="help_title">Hilfe</span></h2>
 <div id="help_container" class="container">
-Hier folgt eine Beschreibung der einzelnen Funktionen und Menüs!
+  <h3>Sicherungen</h3>
+  <h4>Sicherungen anlegen</h4>
+  Wenn Sie vor jeder Änderung an der Datenbank automatisch eine Sicherungskopie anlegen möchten, wählen Sie unter Einstellungen ein Verzeichnis, z.B. C:\Benutzer und ein Dateinamen z.B. sicherung_bering aus uns stellen Sie die Anzahl der Sicherungen ein.<br>
+  Ist die Anzahl höher als 0, wird die aktuelle Datenbank in dem gegegebenen Verzeichnis mit einem Zeitstempel kopiert, z.B. sicherung_bering_2018-05-12_12:34:21.db Übersteigt die Anzahl der Kopien die vorgegebene Anzahl, werden die jeweils die ältesten gelöscht.<br>Ist z.B. die Anzahl auf 10 festgelegt, kann man genau 10 Änderungen rückgängig machen.
+  <h4>Sicherungen wiederherstellen</h4>
+  Zur Wiederherstellung einer gesicherten Datenbank ist die Anwendung zu schließen und die Datei bering.db durch die Sicherungsdatei z.B. sicherung_bering_2018-05-12_12:34:21.db zu ersetzen. Anschließend kann die Anwendung wieder gestartet werden und der Stand der Sicherung ist aktuell.
+  <h3>Export</h3>
+  Zum Exportieren von Daten muss vorher unter Einstellungen ein Verzeichnis angegben werden.<br>
+  Der Export erfolgt unter dem gleichnamigen Menüpunkt durch klick auf die Fundart. In Runden Klammern ist angegeben wie viele neue Datensätze vorhanden sind, bzw. exportiert werden können.<br>
+  Nach dem erfolgreichen Export wird der vergebene Dateiname angezeigt. Die Dateinamen setzen sich wie folgt zusammen:<br>
+  Kürzel für Fundart (B Beringung, W Wiederfunde, F Fremdfunde), Beringernummer, Datum, Zeit, .sdf
 </div>

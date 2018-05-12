@@ -35,7 +35,7 @@ module.exports.getFormFieldKVPs = function (formId) {
         kvps[field.id] = field.value
     }
   )
-  log('kvps', kvps)
+  log('kvps' + JSON.stringify(kvps))
   return kvps
 }
 
