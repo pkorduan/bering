@@ -1,0 +1,133 @@
+<script>
+  function datum_zeit_formatter(value, row) {
+    return row.datum.split('-').reverse().join('.')  + ' ' + row.uhrzeit;
+  }
+
+  function fundart_formatter(value, row) {
+    if (value == 1) {
+      return 'Beringung';
+    }
+    else if (value == 2) {
+      return 'Eigenwiederfund';
+    }
+    else {
+      return 'Fremdfund';
+    }
+  }
+
+  function exportiert_am_formatter(value, row) {
+    if (value != null) {
+      let parts = value.split(' ');
+      return parts[0].split('-').reverse().join('.') + ' ' + parts[1];
+    }
+    else {
+      return value;
+    }
+  }
+</script>
+<h2 id="beringungen_list_title">Alle Daten</h2>
+<div id="beringungen_list" class="container">
+  <div id="toolbar">
+
+  </div>
+  <table
+    id="beringungen_list_table"
+    class="table table-striped table-hover"
+    data-detail-view="false"
+    data-id-field="id"
+    data-export_types=['json', 'xml', 'csv', 'txt', 'sql']
+    data-minimum-count-columns="1"
+    data-pagination="true"
+    data-page-list="[10, 25, 50, 100, 500, ALL]"
+    data-page-size="20"
+    data-query-params="queryParams"
+    data-toggle="table"
+    data-toolbar="#toolbar"
+    data-sort-name="datum"
+    data-show-toggle="false"
+    data-search="true"
+    data-show-columns="true"
+    data-show-footer="true"
+    data-show-toggle="true"
+    data-show-export="false"
+    data-show-columns="true"
+    data-show-pagination-switch="false"
+  >
+    <thead>
+      <tr>
+        <th
+          data-field="id"
+          data-switchable="true"
+          data-sortable="true"
+        >Id</th>
+        <th
+          data-field="ringnr"
+          data-switchable="true"
+          data-sortable="true"
+        >Ringnr</th>
+        <th
+          data-field="beringernr"
+        >Beringernr</th>
+        <th
+          data-field="datum"
+          data-sortable="true"
+          data-formatter="datum_zeit_formatter"
+        >Datum Zeit</th>
+        <th
+          data-field="fundart"
+          data-visible="true"
+          data-switchable="true"
+          data-sortable="true"
+          data-formatter="fundart_formatter"
+        >Fundart</th>
+        <th
+          data-field="vogelart"
+        >Art</th>
+        <th
+          data-field="alter"
+        >Alter</th>
+        <th
+          data-field="brutstatus"
+          data-visible="false"
+        >Brutstatus</th>
+        <th
+          data-field="skz_1"
+          data-visible="false"
+        >SKZ 1</th>
+        <th
+          data-field="skz_2"
+          data-visible="false"
+        >SKZ 2</th>
+        <th
+          data-field="fundursache"
+          data-visible="false"
+        >Fundursache</th>
+        <th
+          data-field="fundzustand"
+          data-visible="false"
+        >Fundzustand</th>
+        <th
+          data-field="farbring"
+          data-visible="false"
+        >Farbring</th>
+        <th
+          data-field="bemerkung"
+        >Bemerkung</th>
+        <th
+          data-field="exportiert_am"
+          data-sortable="true"
+          data-visible="false"
+          data-formatter="exportiert_am_formatter"
+        >Exportiert am</th>
+        <th
+          data-field="edit"
+        ><i class="fa fa-pencil" aria-hidden="true"></i></th>
+        <th
+          data-field="delete"
+        ><i class="fa fa-trash" aria-hidden="true"></i></th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</div>

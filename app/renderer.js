@@ -5,190 +5,102 @@ const path = require('path')
 const app = require('electron').remote.app
 const cheerio = require('cheerio')
 const dbfParser = require('node-dbf')
+const showdown = require('showdown')
+const SHA256 = require('crypto-js/sha256')
+const dialog = require('electron').remote.dialog
+const debug = false
 
 window.$ = window.jQuery = require('jquery')
 window.Tether = require('tether')
 window.Bootstrap = require('bootstrap')
+window.BootstrapTable = require('bootstrap-table')
+
 //window.BootstrapDatetimepicker = require('bootstrap-datetimepicker')
 
 let webRoot = path.dirname(__dirname)
 require(path.join(webRoot, 'jquery.validate.min.js'))
-// require(path.join(webRoot, 'bootstrap-datetimepicker.min.js'))
 require(path.join(webRoot, 'bootstrap-datepicker.min.js'))
 require(path.join(webRoot, 'bootstrap-datepicker.de.min.js'))
+require(path.join(webRoot, 'bootstrap-timepicker.min.js'))
+require(path.join(webRoot,'../node_modules/bootstrap-table/dist/extensions/export/bootstrap-table-export.js'))
 
-window.view = require(path.join(webRoot, 'view.js'))
+window.session = {
+  'angemeldet' : false,
+  'beringernr' : '',
+  'loginname' : ''
+}
+
+// load controllers
+let controllersPath = path.join(app.getAppPath(), 'app', 'controllers')
+window.controllers = {}
+window.controllers.settings = require(path.join(controllersPath, 'settings.js'))
+window.controllers.users = require(path.join(controllersPath, 'users.js'))
+window.controllers.help = require(path.join(controllersPath, 'help.js'))
+window.controllers.beringungen = require(path.join(controllersPath, 'beringungen.js'))
+window.controllers.login = require(path.join(controllersPath, 'login.js'))
+window.controllers.start = require(path.join(controllersPath, 'start.js'))
+window.controllers.export = require(path.join(controllersPath, 'export.js'))
+
 window.model = require(path.join(webRoot, 'model.js'))
-// window.model.db = path.join(app.getPath('userData'), 'example.db')
-//siehe auch model.js module.exports.initDb
-window.model.db = path.join(app.getAppPath(), '//app//db//example.db')
+window.model.db = path.join(app.getAppPath(), '//app//db//bering.db')
+
+// load models
+let modelsPath = path.join(app.getAppPath(), 'app', 'models')
+window.models = {};
+window.models.beringung = require(path.join(modelsPath, 'beringung.js'))
+window.models.dbMapper = require(path.join(modelsPath, 'db-mapper.js'))
+window.models.user = require(path.join(modelsPath, 'user.js'))
+window.models.vogelalter = require(path.join(modelsPath, 'vogelalter.js'))
+window.models.vogelarten = require(path.join(modelsPath, 'vogelarten.js'))
+window.models.farbcodes = require(path.join(modelsPath, 'farbcodes.js'))
+window.models.fundzustand = require(path.join(modelsPath, 'fundzustand.js'))
+window.models.fundursache = require(path.join(modelsPath, 'fundursache.js'))
+window.models.brutstatus = require(path.join(modelsPath, 'brutstatus.js'))
+window.models.setting = require(path.join(modelsPath, 'setting.js'))
+
+// load views
+let viewsPath = path.join(app.getAppPath(), 'app', 'views')
+window.views = {}
+window.views.body =               fs.readFileSync(path.join(viewsPath, 'body.html'), 'utf8')
+window.views.navBar =             fs.readFileSync(path.join(viewsPath, 'nav-bar.html'), 'utf8')
+window.views.help =               fs.readFileSync(path.join(viewsPath, 'help/help.html'), 'utf8')
+window.views.login =              fs.readFileSync(path.join(viewsPath, 'login/login.html'), 'utf8')
+window.views.beringungen_list =   fs.readFileSync(path.join(viewsPath, 'beringungen/list.html'), 'utf8')
+window.views.beringungen_edit =   fs.readFileSync(path.join(viewsPath, 'beringungen/edit.html'), 'utf8')
+window.views.beringungen_menu =   fs.readFileSync(path.join(viewsPath, 'beringungen/menu.html'), 'utf8')
+window.views.beringungen_search = fs.readFileSync(path.join(viewsPath, 'beringungen/search.html'), 'utf8')
+window.views.settings_edit =      fs.readFileSync(path.join(viewsPath, 'settings/edit.html'), 'utf8')
+window.views.settings_info =      fs.readFileSync(path.join(viewsPath, 'settings/info.html'), 'utf8')
+window.views.export =             fs.readFileSync(path.join(viewsPath, 'export/export.html'), 'utf8')
 
 // Compose the DOM from separate HTML concerns; each from its own file.
-let htmlPath = path.join(app.getAppPath(), 'app', 'html')
-let body = fs.readFileSync(path.join(htmlPath, 'body.html'), 'utf8')
-let navBar = fs.readFileSync(path.join(htmlPath, 'nav-bar.html'), 'utf8')
-let menu = fs.readFileSync(path.join(htmlPath, 'menu.html'), 'utf8')
-let people = fs.readFileSync(path.join(htmlPath, 'people.html'), 'utf8')
-//Hinzufügen Navbarelement: wichtig!
-let tables = fs.readFileSync(path.join(htmlPath, 'tables.html'), 'utf8')
-let login = fs.readFileSync(path.join(htmlPath, 'login.html'), 'utf8')
-let nutzer = fs.readFileSync(path.join(htmlPath, 'nutzer.html'), 'utf8')
-let useNutzer = fs.readFileSync(path.join(htmlPath, 'use-nutzer.html'), 'utf8')
-let editPerson = fs.readFileSync(path.join(htmlPath, 'edit-person.html'), 'utf8')
-
-let O = cheerio.load(body)
-O('#nav-bar').append(navBar)
-O('#menu').append(menu)
-O('#people').append(people)
-//Hinzufügen Navbarelement: wichtig!
-O('#tables').append(tables)
-O('#login').append(login)
-O('#nutzer').append(nutzer)
-O('#use-nutzer').append(useNutzer)
-O('#edit-person').append(editPerson)
+let O = cheerio.load(window.views.body)
+O('#nav-bar').append(window.views.navBar)
+O('#beringungen_menu').append(window.views.beringungen_menu)
+O('#beringungen_list_section').append(window.views.beringungen_list)
+O('#beringungen_edit_section').append(window.views.beringungen_edit)
+O('#beringungen_search_section').append(window.views.beringungen_search)
+O('#help_section').append(window.views.help)
+O('#settings_edit_section').append(window.views.settings_edit)
+O('#settings_info_section').append(window.views.settings_info)
+O('#login').append(window.views.login)
+O('#export_section').append(window.views.export)
 
 // Pass the DOM from Cheerio to jQuery.
 let dom = O.html()
 $('body').html(dom)
 
 $('document').ready(function () {
-	$( "#use-nutzer-form" ).validate( {
-	rules: {
-		bemerkung: {
-			required: true,
-			minlength: 5
-		},
-		lastname: "required",
-		username: {
-			required: true,
-			minlength: 2
-		},
-		password: {
-			required: true,
-			minlength: 5
-		},
-		confirm_password: {
-			required: true,
-			minlength: 5,
-			equalTo: "#password"
-		},
-		email: {
-			required: true,
-			email: true
-		},
-		agree: "required"
-	},
-	messages: {
-		bemerkung: {
-			required: "Please enter a username",
-			minlength: "Your username must consist of at least 2 characters"
-		},
-		lastname: "Please enter your lastname",
-		username: {
-			required: "Please enter a username",
-			minlength: "Your username must consist of at least 2 characters"
-		},
-		password: {
-			required: "Please provide a password",
-			minlength: "Your password must be at least 5 characters long"
-		},
-		confirm_password: {
-			required: "Please provide a password",
-			minlength: "Your password must be at least 5 characters long",
-			equalTo: "Please enter the same password as above"
-		},
-		email: "Please enter a valid email address",
-		agree: "Please accept our policy"
-	},
-	errorElement: "em",
-	errorPlacement: function ( error, element ) {
-		// Add the `help-block` class to the error element
-		error.addClass( "help-block" );
-		if ( element.prop( "type" ) === "checkbox" ) {
-			error.insertAfter( element.parent( "label" ) );
-		} else {
-			error.insertAfter( element );
-		}
-	},
-	highlight: function ( element, errorClass, validClass ) {
-		$('#bemerkungFB').html("Testxxx");
-		$( element ).parents( ".col-sm-5" ).addClass( "has-danger" ).removeClass( "has-success" );
-	},
-	unhighlight: function (element, errorClass, validClass) {
-		$( element ).parents( ".col-sm-5" ).addClass( "has-success" ).removeClass( "has-danger" );
-	}
-} );
-	//Einstiegspunkt in die App.
-  // window.model.getPeople()
-  window.model.getNutzer();
-  window.model.parseDBF("ARTEN.DBF");
-  //window.model.parseDBF("bayarea_zipcodes.dbf");
-  //Echte Buttons bzw. deren Funktion
-  //Edit/Add User
-  $('#edit-person-submit').click(function (e) {
-    e.preventDefault()
-    let ok = true
-    $('#first_name, #last_name').each(function (idx, obj) {
-      if ($(obj).val() === '') {
-        $(obj).parent().removeClass('has-success').addClass('has-danger')
-        ok = false
-      } else {
-        $(obj).parent().addClass('has-success').removeClass('has-danger')
-      }
-    })
-    if (ok) {
-      let formId = $(e.target).parents('form').attr('id')
-      let keyValue = window.view.getFormFieldValues(formId)
-      window.model.saveFormData('people', keyValue, function () {
-        window.model.getPeople()
-      })
-    }
-  })
-  $('#use-nutzer-submit').click(function (e) {
-    e.preventDefault()
-    let ok = true
-    $('#bemerkung, #zentrale, #vogelart, #datum, #uhrzeit, #alter, #geschlecht, #fluegellaenge, #teilfederlaenge, #schnabellaenge, #schnabel_kopflaenge, #lauf, #gewicht, #brutstaus, #beringungsort, #koordinaten, #skz_1, #skz_2, #farbring').each(function (idx, obj) {
-		// if (jQuery("#use-nutzer-form").valid()) {
-			//$(obj).parent().removeClass('has-success').addClass('has-error')
-			// ok = false
-      // if ($(obj).val() === 'x') {
-      if ($(obj).val().length < 4) {
-		  //Leere alles? TODO
-		  //Alternative: Helptexte nicht vergewaltigen
-		  // $("#use-nutzer" ).load("use-nutzer.html" );
-		  //console.log("Valid?: "+JSON.stringify(jQuery("#use-nutzer-form").validate()));
-		  // console.log("Problem: "+$(obj).parent().attr('id')+"???");
-        $(obj).parent().removeClass('has-success').addClass('has-danger')
-		// $(obj).parent().next().removeClass('has-success').addClass('has-danger')
-		$(obj).next().html("&nbsp;&nbsp;&nbsp; Bitte mehr als 3 Buchstaben eingeben");
-		$(obj).next().next().html("");
-		// $(obj).parent().prev().html("Test");
-		// $('#bemerkungFB').html("Test");
-        ok = false
-      } else {
-        $(obj).parent().addClass('has-success').removeClass('has-danger')
-      }
-    })
-    if (ok) {
-      let formId = $(e.target).parents('form').attr('id')
-      let keyValue = window.view.getFormFieldValues(formId)
-      window.model.saveFormData('Daten', keyValue, function () {
-		  //keyValue.values[0] = Beringernr
-		  console.log(keyValue.values[0]);
-		  window.view.useNutzerBeringernr(keyValue.values[0]);
-		  // window.view.useNutzer(keyValue.values[0]);
-        //window.model.getNutzer()
-      })
-    }
-  });
-	$(function () {
-		// $('#datetimepicker1').datetimepicker();
-		// $('#datetimepicker1').datepicker();
-		$('#datetimepicker1').datepicker({
-			language: 'de'
-		});
-		console.log("datepicker");
-	});
+  log('document is ready');
+  window.controllers.help.init();
+  window.controllers.settings.init();
+  window.controllers.users.init();
+  window.controllers.login.init();
+  window.controllers.beringungen.init();
+  window.controllers.start.init();
+  window.controllers.start.start();
+  window.controllers.export.init();
+  log((window.session.angemeldet ? 'angemeldet als ' + window.session.loginname : 'Kein Nutzer angemeldet'));
 })
 
 // Set jQuery.validate settings for bootstrap integration
@@ -210,3 +122,8 @@ jQuery.validator.setDefaults({
     }
 });
 
+let log = function(msg) {
+  if (debug) {
+    console.log(msg)
+  }
+}

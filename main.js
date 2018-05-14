@@ -9,6 +9,7 @@ const config = require(path.join(__dirname, 'package.json'))
 const model = require(path.join(__dirname, 'app', 'model.js'))
 const BrowserWindow = electron.BrowserWindow
 const dbPath = '//app/db';
+const dbName = 'bering.db';
 
 app.setName(config.productName)
 var mainWindow = null
@@ -17,24 +18,24 @@ app.on('ready', function () {
     backgroundColor: 'lightgray',
     title: config.productName,
     show: false,
-	width: 1600,
-	height: 1500,
+    width: 1600,
+    height: 1500,
+    icon: path.join(__dirname, 'assets/icons/png/64x64.png'),
     webPreferences: {
       nodeIntegration: true
     }
   })
 
-  //C:\Users\seip\AppData\Roaming\Local SQLite Example -> wg. ""productName": "Local SQLite Example"," in package.json
-  //model.initDb(app.getPath('userData'),
-  //Im Ordner der App
-  // console.log('Rufe in main.js model.initDb auf');
-  model.initDb(app.getAppPath()+dbPath,
+  model.migrateDb(
+    app.getAppPath() + dbPath,
+    dbName,
     // Load a DOM stub here. See renderer.js for the fully composed DOM.
-    mainWindow.loadURL(`file://${__dirname}/app/html/index.html`)
+    mainWindow.loadURL(`file://${__dirname}/app/views/index.html`)
   )
+
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
-  
+  //mainWindow.webContents.openDevTools()
+
   // Enable keyboard shortcuts for Developer Tools on various platforms.
   let platform = os.platform()
   if (platform === 'darwin') {

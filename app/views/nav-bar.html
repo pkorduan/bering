@@ -1,0 +1,30 @@
+<button class="navbar-toggler navbar-toggler-right hidden-lg-up" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+<span class="navbar-brand" href="#">Beringungsprogramm Langenwerder</span> <span style="font-size: 60%">Version 1.0.0</span>
+<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+      <a id="settings_edit_link" class="nav-link" href="#">Einstellungen</a>
+    </li>
+    <li class="nav-item">
+      <a id="export_show_link" class="nav-link" href="#">Export</a>
+    </li>
+    <li class="nav-item">
+      <a id="help_show_link" class="nav-link" href="#">Hilfe</a>
+    </li>
+    <li class="nav-item">
+      <a id="settings_info_link" class="nav-link" href="#">Über</a>
+    </li>
+    <li id="login_link" class="nav-item">
+      <a class="nav-link" href="#" onclick="window.view.showLogin(this)">Login <i class="fa fa-sign-in" aria-hidden="true"></i></a>
+    </li>
+    <li id="logout_link" class="nav-item">
+      <a class="nav-link" href="#" onclick="window.controllers.login.logout()">Abmelden <i class="fa fa-sign-out" aria-hidden="true"></i></a>
+    </li>
+  </ul>
+  <!--<form class="form-inline mt-2 mt-md-0">
+    <input class="form-control mr-sm-2" type="text" placeholder="Search">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+  </form>-->
+</div>

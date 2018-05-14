@@ -23,6 +23,52 @@ h2 {
 #people-list img {
   margin: 0 0.5em;
 }
- #date{
-   width : 107px;
- }
+#date{
+  width : 107px;
+}
+
+#list-table tr td{
+  /*width: 100%;*/
+  /*border: 1px solid gray;*/
+  padding: 2px;
+}
+
+.form-control {
+  display: inline;
+  margin-bottom: 5px;
+}
+
+.menue-selected {
+  background-color: lightblue;
+  cursor: default;
+}
+
+.nav-item {
+  cursor: pointer;
+}
+
+.nav-item :hover {
+  background-color: lightgray;
+}
+
+.nav-button {
+  width: 90%;
+  margin: 5px 0px 5px 10px;
+  border-radius: 4px
+}
+
+.dir-button {
+  cursor: pointer;
+  color: gray;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  background-color: #ededed;
+  padding-top: 6px;
+  padding-left: 10px;
+  padding-bottom: 6px;
+  padding-right: 7px;
+}
+
+.form-group {
+  margin-bottom: 0px;
+}

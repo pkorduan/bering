@@ -1,0 +1,298 @@
+<script>
+  function setOneNumberDecimal(value, min = 0.1, max = 20000) {
+    var value = value;
+
+    // Replace , by .
+    value = value.replace(',', '.');
+
+    // convert to float type
+    value = parseFloat(value);
+
+    if (isNaN(value)) {
+      // remove text if it is not number
+      value = '';
+    }
+    else {
+      // round to one digit
+      value = value.toFixed(1)
+
+      // make always positive
+      value = Math.abs(value);
+
+      // make not larger than 5000
+      value = (value > max ? max : value);
+
+      // make not smaller than 1
+      value = (value < min ? min : value);
+
+      return value;
+    }
+
+    return value;
+  }
+</script>
+<h2><span id="beringung_edit_title">Beringung Ändern</span></h2>
+<div id="beringung_edit" class="container">
+  <form id="beringung_edit_form">
+    <div class="container-fluid">
+      <div id="beringung_id_div" class="form-group row">
+        <label class="col-sm-3 col-form-label" for="id">Id</label>
+        <input class="col-sm-4 form-control" type="text" id="id" aria-describedby="idHelpInline" readonly>
+        <div class="form-control-feedback" id="idFB"></div>
+        <small id="idHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
+      </div>
+
+      <div id="beringung_beringernr_alt_div" class="form-group row" style="display: none">
+        <label class="col-sm-3 col-form-label" for="beringernr_alt">ursprünglich beringt von</label>
+        <span id="beringernr_alt" style="margin-top: 5px"></span>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="beringernr">Beringernr</label>
+        <input class="col-sm-4 form-control" type="text" id="beringernr" aria-describedby="beringerInfo" readonly>
+        <!-- <small id="personIdHelpInline" class="col-sm-4 align-top form-text text-muted"> -->
+        <!-- The number assigned to the person below.</small> -->
+        <small id="beringerInfo"  class="col-sm-4 align-top form-text text-muted">(<span id="beringung_beringername"></span>)</small>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="beringernr">Fundart</label>
+        <select class="col-sm-4 form-control" type="text" id="fundart" aria-describedby="fundartInfo" disabled>
+          <option value="1">Neue Berinung</option>
+          <option value="2">Eigenwiederfund (EWF)</option>
+          <option value="3">Fremdfund</option>
+        </select>
+        <!-- <small id="personIdHelpInline" class="col-sm-4 align-top form-text text-muted"> -->
+        <!-- The number assigned to the person below.</small> -->
+        <small id="beringerInfo"  class="col-sm-4 align-top form-text text-muted">nicht auswählbar</small>
+      </div>
+
+      <!--
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="vorname">Vorname: </label>
+      <label class="col-sm-3 col-form-label" id="vornameLabel">no value</label>
+      <input class="col-sm-4 form-control" type="text" id="vorname"
+          aria-describedby="firstNameHelpInline" readonly>
+        <small id="firstNameHelpInline" class="col-sm-4 align-top form-text text-muted">
+          A person's first name or given name (Christian name).</small>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="name">Name</label>
+        <input class="col-sm-4 form-control" type="text" id="name"
+          aria-describedby="lastNameHelpInline" readonly>
+        <small id="lastNameHelpInline" class="col-sm-4 align-top form-text text-muted">
+          A person's last name or surname (family name).</small>
+      </div>
+    -->
+
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label" for="ringnr">Ringnummer</label>
+      <input class="col-sm-4 form-control" type="text" id="ringnr" aria-describedby="ringnrHelpInline">
+      <div class="form-control-feedback" id="ringnrFB"></div>
+      <small id="ringnrHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label" for="vogelart">Vogelart</label>
+      <select class="col-sm-4 form-control" id="vogelart">
+        <option value=""></option>
+      </select>
+      <div class="form-control-feedback" id="vogelartFB"></div>
+      <small id="vogelartHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
+    </div>
+
+    <div class="form-group row"  id="beringung_datepicker">
+      <label class="col-sm-3 col-form-label" for="datum">Datum</label>
+      <!-- <input type='text' class="form-control"  id="datum" -->
+      <input class="col-sm-4 form-control" type='text' id="datum" aria-describedby="datumHelpInline"/>
+      <span id="input_pick" class="input-group-addon" style="display:none">
+        <span class="glyphicon glyphicon-calendar"></span>
+      </span>
+      <small id="datumHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
+    </div>
+
+    <!-- <div class="form-group row"> -->
+        <!-- <label class="col-sm-3 col-form-label" for="datum">Datum</label> -->
+        <!-- <input class="col-sm-4 form-control" type="text" id="datum" -->
+          <!-- aria-describedby="datumHelpInline"> -->
+        <!-- <small id="datumHelpInline" class="col-sm-4 align-top form-text text-muted"> -->
+          <!-- Datum.</small> -->
+      <!-- </div> -->
+    <div class="form-group row bootstrap-timepicker timepicker" id="beringung_timepicker">
+        <label class="col-sm-3 col-form-label" for="uhrzeit">Uhrzeit</label>
+        <input class="col-sm-4 form-control" type="text" id="uhrzeit"
+          aria-describedby="uhrzeitHelpInline">
+      <div class="form-control-feedback" id="uhrzeitFB"></div>
+        <small id="uhrzeitHelpInline" class="col-sm-4 align-top form-text text-muted">(Exportiert wird volle Stunde)</small>
+      </div>
+
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label" for="alter">Alter</label>
+      <select class="col-sm-4 form-control" id="alter">
+        <option value=""></option>
+      </select>
+      <div class="form-control-feedback" id="alterFB"></div>
+      <small id="alterHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label" for="geschlecht">Geschlecht</label>
+      <select class="col-sm-4 form-control" id="geschlecht">
+        <option value=""></option>
+        <option value="F">female (F)</option>
+        <option value="M">male (M)</option>
+      </select>
+      <div class="form-control-feedback" id="geschlechtFB"></div>
+      <small id="geschlechtHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="fluegellaenge">Flügellänge</label>
+        <input class="col-sm-4 form-control" type="text" id="fluegellaenge" onchange="this.value = setOneNumberDecimal(this.value, 10.0, 2000);">
+      <div class="form-control-feedback" id="fluegellaengeFB"></div>
+        <small id="fluegellaengeHelpInline" class="col-sm-4 align-top form-text text-muted">mm</small>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="teilfederlaenge">Teilfederlänge</label>
+        <input class="col-sm-4 form-control" type="text" id="teilfederlaenge" onchange="this.value = setOneNumberDecimal(this.value, 1.0, 1000);">
+      <div class="form-control-feedback" id="teilfederlaengeFB"></div>
+        <small id="teilfederlaengeHelpInline" class="col-sm-4 align-top form-text text-muted">mm</small>
+      </div>
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="schnabellaenge">Schnabellänge</label>
+        <input class="col-sm-4 form-control" type="text" id="schnabellaenge"  onchange="this.value = setOneNumberDecimal(this.value, 0.1, 1000);">
+      <div class="form-control-feedback" id="schnabellaengeFB"></div>
+        <small id="schnabellaengeHelpInline" class="col-sm-4 align-top form-text text-muted">mm</small>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="schnabel_kopflaenge">Schnabel+Kopflänge</label>
+        <input class="col-sm-4 form-control" type="text" id="schnabel_kopflaenge" onchange="this.value = setOneNumberDecimal(this.value, 0.2, 2000);">
+      <div class="form-control-feedback" id="schnabel_kopflaengeFB"></div>
+        <small id="schnabel_kopflaengeHelpInline" class="col-sm-4 align-top form-text text-muted">mm</small>
+      </div>
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="lauf">Lauf</label>
+        <input class="col-sm-4 form-control" type="text" id="lauf" onchange="this.value = setOneNumberDecimal(this.value, 0.5, 2000);">
+      <div class="form-control-feedback" id="laufFB"></div>
+        <small id="laufHelpInline" class="col-sm-4 align-top form-text text-muted">mm</small>
+      </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label" for="gewicht">Gewicht</label>
+      <input class="col-sm-4 form-control" type="text" id="gewicht" onchange="this.value = setOneNumberDecimal(this.value, 1.0, 20000);">
+      <div class="form-control-feedback" id="gewichtFB"></div>
+      <small id="gewichtHelpInline" class="col-sm-4 align-top form-text text-muted">g</small>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label" for="brutstatus">Brutstatus</label>
+      <select class="col-sm-4 form-control" id="brutstatus">
+        <option value=""></option>
+      </select>
+      <div class="form-control-feedback" id="brutstausFB"></div>
+      <small id="brutstausHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label" for="skz_1">SKZ 1</label>
+      <select class="col-sm-4 form-control" id="skz_1">
+        <option value=""></option>
+        <option value="1">1 Metallring über Intertarsal</option>
+        <option value="2">2 Farb. Ring/zusätzl. Farbring</option>
+        <option value="3">3 Farb. Ring über Intertarsal</option>
+        <option value="4">4 Flügelmarke</option>
+        <option value="5">5 Spezielle Markierung</option>
+        <option value="6">6 Markierung mit Halsring</option>
+        <option value="7">7 Gefieder gefärbt</option>
+        <option value="8">8 Gefieder gefärbt + Spezialmark.</option>
+        <option value="9">9 Besondere Markierung</option>
+      </select>
+      <div class="form-control-feedback" id="skz_1FB"></div>
+        <small id="skz_1HelpInline" class="col-sm-4 align-top form-text text-muted"></small>
+      </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label" for="skz_2">SKZ 2</label>
+      <select class="col-sm-4 form-control" id="skz_2">
+        <option value=""></option>
+        <option value="0">0 + Farbmarkierung</option>
+        <option value="1">1 indiv. Farbkombination</option>
+        <option value="2">2 Ort codiert</option>
+        <option value="3">3 Jahr codiert</option>
+        <option value="4">4 Ort u. Jahr codiert</option>
+        <option value="5">5 Individueller Code (Inschrift)</option>
+        <option value="6">6 Beringungsjahr + -ort codiert</option>
+        <option value="7">7 mit Sender versehen</option>
+      </select>
+      <div class="form-control-feedback" id="skz_2FB"></div>
+      <small id="skz_2HelpInline" class="col-sm-4 align-top form-text text-muted"></small>
+    </div>
+
+    <div id="farbring_und_inschrift_div">
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label" for="farbring"></label>
+        Ringe mit <a id="farbring_codierung_link" href="javascript:void(0);" class="col-sm-2" onclick="
+          $('#farbring_codierung_link').hide();
+          $('#inschrift_link').show();
+          $('#farbring_codierung_div').show();
+          $('#inschrift_div').hide();">Farbcodes</a>&nbsp;
+        <a id="inschrift_link" href="javascript:void(0);" class="col-sm-2" onclick="
+          $('#farbring_codierung_link').show();
+          $('#inschrift_link').hide();
+          $('#farbring_codierung_div').hide();
+          $('#inschrift_div').show();">Inschrift</a>
+      </div>
+      <div id="farbring_codierung_div" style="display: none">
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label" for="farbring">Farbcodes</label>
+          <select class="col-sm-2 form-control" id="farbring_liob">
+            <option value="">links oben</option>
+          </select>
+          <select class="col-sm-2 form-control" id="farbring_reob">
+            <option value="">rechts oben</option>
+          </select>
+        </div>
+        <div  class="form-group row">
+          <label class="col-sm-3 col-form-label" for="farbring"></label>
+          <select class="col-sm-2 form-control" id="farbring_liun">
+            <option value="">links unten</option>
+          </select>
+          <select class="col-sm-2 form-control" id="farbring_reun">
+            <option value="">rechts unten</option>
+          </select>
+        </div>
+      </div>
+      <div id="inschrift_div" class="form-group row" style="display: none">
+        <label class="col-sm-3 col-form-label" for="farbring">Inschrift</label>
+        <input class="col-sm-4 form-control" type="text" id="inschrift" aria-describedby="farbringHelpInline">
+        <div class="form-control-feedback" id="farbringFB"></div>
+        <small id="farbringHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
+      </div>
+    </div>
+
+    <div id="fundursache_und_zustand_div" class="form-group row">
+      <label class="col-sm-3 col-form-label" for="fundursache">Fundursache</label>
+      <select class="col-sm-4 form-control" id="fundursache">
+        <option value=""></option>
+      </select>
+      <div class="form-control-feedback" id="fundursacheFB"></div>
+      <small id="fundursacheHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
+      <label class="col-sm-3 col-form-label" for="fundzustand">Fundzustand</label>
+      <select class="col-sm-4 form-control" id="fundzustand">
+        <option value=""></option>
+      </select>
+      <div class="form-control-feedback" id="fundzustandFB"></div>
+      <small id="skz_2HelpInline" class="col-sm-4 align-top form-text text-muted"></small>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label" for="bemerkung">Bemerkung</label>
+      <textarea cols="80" rows="5" class="col-sm-4 form-control" id="bemerkung" aria-describedby="bemerkungHelpInline"></textarea>
+      <div class="form-control-feedback" id="bemerkungFB"></div>
+      <small id="bemerkungHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
+    </div>
+    <!-- <small id="bemerkungFB" class="form-control-feedback"></small> -->
+
+    <div class="form-group row offset-sm-1">
+      <button class="col-sm-auto m-1 btn btn-primary justify-content-start p-0.5" id="beringung_speichern_button" type="button" value="Update" style="margin-left: 50px">Speichern</button> <button class="col-sm-auto m-1 btn btn-primary justify-content-start p-0.5" id="beringung_speichern_uebernehmen_button" type="button" value="Update">Speichern und Übernehmen</button>
+    </div>
+  </form>
+</div>

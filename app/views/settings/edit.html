@@ -1,0 +1,83 @@
+<h2><span id="settings_edit_title">Einstellungen</span></h2>
+<div id="settings_edit" class="container">
+  <form id="settings_edit_form">
+    <div class="container-fluid">
+
+      <a id="users_passwort_link" class="setting_link" href="#">Passwort ändern</a>
+      <div id="users_change_passwort_div" class="setting_div" style="display: none">
+        Neues Passwort vergeben<br>
+        <div id="change_passwort_help_text" style="display: none"></div>
+        <input class="col-sm-4 form-control" type="password" name="old_passwort" placeholder="Altes Passwort">
+        <small id="beringungsort_kreisHelpInline" class="col-sm-4 text-muted">Altes Passwort</small><br>
+        <input class="col-sm-4 form-control" type="password" name="new_passwort1" placeholder="Neues Passwort">
+        <small id="beringungsort_kreisHelpInline" class="col-sm-4 text-muted">Neues Passwort</small><br>
+        <input class="col-sm-4 form-control" type="password" name="new_passwort2" placeholder="Wiederholung">
+        <small id="beringungsort_kreisHelpInline" class="col-sm-4 text-muted">Neues Passwort Wiederholung</small><br>
+        <button id="change_user_passwort_button" type="button" class="login-button">Speichern</button>
+      </div>
+      <br>
+
+      <a id="users_list_link" class="setting_link" href="#">Nutzer anzeigen</a>
+      <div id="beringer_list_div" class="setting_div" style="display: none">
+      </div>
+      <br>
+
+      <a id="beringungsort_link" class="setting_link" href="#">Beringungsort</a>
+      <div id="beringungsort_div" class="setting_div" style="display: none">
+        <input class="col-sm-4 form-control" type="text" name="beringungsort" placeholder="Beringungsort">
+        <small id="beringungsort_kreisHelpInline" class="col-sm-4 text-muted">Bezeichnung</small><br>
+        <input class="col-sm-4 form-control" type="text" name="beringungsort_position" placeholder="Position">
+        <small id="beringungsort_kreisHelpInline" class="col-sm-4 text-muted">Koordinaten</small><br>
+        <input class="col-sm-4 form-control" type="text" name="beringungsort_kreis" placeholder="Landkreis">
+        <small id="beringungsort_kreisHelpInline" class="col-sm-4 text-muted">Landkreis</small><br>
+        <input class="col-sm-4 form-control" type="text" name="zentrale" placeholder="Zentrale">
+        <small id="zentraleHelpInline" class="col-sm-4 text-muted">Vogelwarte</small><br>
+        <button id="change_beringungsort_button" type="button" class="button" style="display: none">Speichern</button>
+      </div>
+      <br>
+
+      <a id="sicherung_link" class="setting_link" href="#">Speicherort der Sicherung</a>
+      <div id="sicherungsort_div" class="setting_div" style="display: none">
+        <input class="col-sm-8 form-control" type="text" name="sicherung_verzeichnis" placeholder="Speicherort">
+        <button id="select_sicherung_verzeichnis_button" type="button" class="dir-button">
+          <i class="fa fa-folder-open" aria-hidden="true"></i>
+        </button>
+
+        <small id="verzeichnisHelpInline" class="col-sm-4 text-muted">Verzeichnis</small><br>
+        <input class="col-sm-6 form-control" type="text" name="sicherung_dateiname" placeholder="Dateiname">
+        <small id="dateinameHelpInline" class="col-sm-4 text-muted">Dateiname</small><br>
+        <button id="change_sicherungsort_button" type="button" class="button" style="margin-bottom: 10px; display: none">Speichern</button><br>
+        <button id="save_database_button" type="button" class="button">Datenbank jetzt sichern</button>
+      </div>
+      <br>
+
+      <a id="sicherung_anzahl_link" class="setting_link" href="javascript:void(0);">Anzahl Sicherungen</a>
+      <div id="sicherung_anzahl_div" class="setting_div" style="display: none">
+        <select id="sicherung_anzahl_select" class="col-sm-8 form-control" name="sicherung_anzahl" title="Anzahl Sicherungen">
+          <option value="0">keine</option>
+        </select><br>
+        <button id="save_sicherung_anzahl_button" type="button" class="button" style="display:none;">Speichern</button>
+      </div>
+      <br>
+
+      <a id="export_link" class="setting_link" href="#">Speicherort für Exporte</a>
+      <div id="exportort_div" class="setting_div" style="display: none">
+        <input class="col-sm-8 form-control" type="text" name="export_verzeichnis" placeholder="Speicherort">
+        <button id="select_export_verzeichnis_button" type="button" class="dir-button">
+          <i class="fa fa-folder-open" aria-hidden="true"></i>
+        </button>
+        <small id="verzeichnisHelpInline" class="col-sm-4 text-muted">Verzeichnis</small><br>
+        <button id="change_exportort_button" type="button" class="button" style="display: none">Speichern</button>
+      </div>
+      <br>
+
+      <a id="admin_functions_link" class="setting_link" href="#">Änderungsfunktionen</a>
+      <div id="admin_functions_div" class="setting_div" style="display: none">
+        <input type="checkbox" class="admin_setting_input" name="loesch_funktion_an"> Datensätze löschen<br>
+        <input type="checkbox" class="admin_setting_input" name="nur_nicht_exportierte_an"> Nur noch nicht exportierte Datensätze anzeigen<br>
+        <button id="change_admin_functions_button" type="button" class="button" style="display: none">Speichern</button>
+      </div>
+
+    </div>
+  </form>
+</div>
