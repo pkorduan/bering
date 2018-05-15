@@ -8,7 +8,7 @@ const dbfParser = require('node-dbf')
 const showdown = require('showdown')
 const SHA256 = require('crypto-js/sha256')
 const dialog = require('electron').remote.dialog
-const debug = false
+const debug = true
 
 window.$ = window.jQuery = require('jquery')
 window.Tether = require('tether')

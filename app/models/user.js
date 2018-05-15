@@ -39,6 +39,9 @@ module.exports.findByLoginName = function (loginname) {
       user = false
     }
   }
+  else {
+    log('loginname ist leer!')
+  }
   return user
 }
 
@@ -55,7 +58,7 @@ module.exports.findWhere = function (where = '', order = '`name`') {
 
     try {
       let result = db.exec(query)
-      log('query result: %o', result);
+      log('query result: ' + JSON.stringify(result));
       if (result !== undefined && result.length > 0) {
         rows = window.models.dbMapper.rowsFromSqlDataObject(result[0])
       }
