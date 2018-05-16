@@ -18,10 +18,9 @@ window.BootstrapTable = require('bootstrap-table')
 //window.BootstrapDatetimepicker = require('bootstrap-datetimepicker')
 
 let webRoot = path.dirname(__dirname)
-require(path.join(webRoot, 'jquery.validate.min.js'))
-require(path.join(webRoot, 'bootstrap-datepicker.min.js'))
-require(path.join(webRoot, 'bootstrap-datepicker.de.min.js'))
-require(path.join(webRoot, 'bootstrap-timepicker.min.js'))
+// require(path.join(webRoot, 'jquery.validate.min.js'))
+require(path.join(webRoot, '../node_modules/jquery-validation/dist/jquery.validate.min.js'))
+require(path.join(webRoot,'../node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js'))
 require(path.join(webRoot,'../node_modules/bootstrap-table/dist/extensions/export/bootstrap-table-export.js'))
 
 window.session = {

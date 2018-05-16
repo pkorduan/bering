@@ -2,7 +2,7 @@
 app/db/bering.db
 
 # 3rdParties
-3rdparties/*
+#3rdparties/*
 
 # Logs
 logs
