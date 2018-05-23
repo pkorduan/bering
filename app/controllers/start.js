@@ -24,6 +24,12 @@ module.exports.start = function() {
     $('.nav-item').show();
     $('#login_link').hide();
     $('#logout_link').show();
+    if (window.session.rolle == 'admin') {
+      $('#admin_help_div').show();
+    }
+    else {
+      $('#admin_help_div').hide();
+    }
     window.controllers.beringungen.list($('#list_all_data_menue_link'));
   } else {
     $('#menu').hide();

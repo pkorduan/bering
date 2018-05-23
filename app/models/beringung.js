@@ -2,7 +2,7 @@
 'use strict'
 
 module.exports.findWhere = function (select = '*', where = '', group = '', order = '`datum`, `uhrzeit` DESC', limit = '') {
-  log('Model Beringung.findWhere')
+  log('Model Beringung.findWhere: ' + where)
   let db = SQL.dbOpen(window.model.db),
       rows = {};
 

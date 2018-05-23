@@ -11,4 +11,15 @@
   Der Export erfolgt unter dem gleichnamigen Menüpunkt durch klick auf die Fundart. In Runden Klammern ist angegeben wie viele neue Datensätze vorhanden sind, bzw. exportiert werden können.<br>
   Nach dem erfolgreichen Export wird der vergebene Dateiname angezeigt. Die Dateinamen setzen sich wie folgt zusammen:<br>
   Kürzel für Fundart (B Beringung, W Wiederfunde, F Fremdfunde), Beringernummer, Datum, Zeit, .sdf
+  <div id="admin_help_div" style="display: none">
+    <h3>Datenbank-Verwaltung</h3>
+    Das Anlegen neuer Nutzer erfolgt direkt in der Datenbank. Zur Verwaltung der Daten in der Datenbank wird das Programm SQLLiteStudio verwendet. Es kann <a href="https://sqlitestudio.pl/index.rvt?act=download" target="_blank">hier</a> heruntergeladen werden. Nach der Installation und dem Start des Programmes muss man eine neue Datenbankverbindung zur bering-Datenbank herstellen. Dazu wählt man den Menüpunkt <b>Datenbank / Datenbank hinzufügen</b><br>
+    <img src="../img/Datenbankverbindung_herstellen.png" alt="Datenbankverbindung herstellen"/><br>
+    Anschließend kann man die Datei mit der Datenbank auswählen. Mit einem Klick auf den Ordner-Icon unter Datei gelangt man in Datei-Dialog. Die Datei bering.db befindet sich in dem Verzeichnis in dem das bering Programm entpackt wurde und in dem Verzeichnis unter <b>resources/app/app/db</b>. Ist die Datei ausgewählt kann man die Verbindung testen und dann OK klicken.<br>
+    <img src="../img/Datenbank_bering_auswaehlen.png" alt="Datenbank bering auswählen"/><br>Die Datenbank bering sollte jetzt im Linken Fenster von SQLLiteStudio zu sehen sein und kann durch doppelklick aufgeklappt werden. Klappen Sie auch Tabellen auf. Ein Doppelklick auf Nutzer öffnet die Entwurfsansicht der Tabelle. Um die Daten zu sehen und bearbeiten zu können im rechten Fenster den Reiter Daten auswählen.<br>
+    <img src="../img/Nutzertabelle_auswaehlen.png" alt="Nutzertabelle auswählen"/><br>
+    Über den grünen Plus-Button kann nun ein neuer Nutzer hinzugefügt werden. Als Passwort sollte per Paste + Copy zunächst das gleiche wie von Admin verwendet werden. Es kann später durch den Nutzer geändert werden.<br>
+    <img src="../img/Neuen_Nutzer_erfassen.png" alt="Neuen Nutzer erfassen"/>
+  </div>
+
 </div>

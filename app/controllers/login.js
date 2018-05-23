@@ -60,7 +60,7 @@ module.exports.login = function(loginname, passwort, passwort2) {
           }
         }
         else {
-          log('User Admin hat noch kein Passwort!');      
+          log('User Admin hat noch kein Passwort!');
           admin_passwort_hint = 'Das Passwort vom Nutzer "admin" wurde noch nicht vergeben. Bitte geben Sie ein Passwort für den Administrator an.'
         }
         if (admin_passwort_hint != '') {
@@ -75,6 +75,7 @@ module.exports.login = function(loginname, passwort, passwort2) {
           window.session.loginname = user.loginname
           window.session.beringernr = user.beringernr
           window.session.beringername = user.vorname + ' ' + user.name
+          window.session.rolle = user.rolle
           window.controllers.start.start()
         }
         else {

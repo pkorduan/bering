@@ -154,7 +154,7 @@ module.exports.init = function() {
     }
   )
 
-  $('#change_admin_functions_button').on(
+  $('#save_change_functions_button').on(
     'click',
     {
       context: this
@@ -170,7 +170,7 @@ module.exports.init = function() {
   $('#settings_edit_form .admin_setting_input').on(
     'click',
     function(evt) {
-      $('#settings_edit_form button[id=change_admin_functions_button]').show()
+      $('#settings_edit_form button[id=save_change_functions_button]').show()
     }
   )
 
@@ -293,8 +293,8 @@ module.exports.saveAdminFunctions = function(admin_settings) {
     }
   )
 
-  $('#change_admin_functions_button').hide()
-  $('#admin_functions_div').fadeOut(1000)
+  $('#save_change_functions_button').hide()
+  $('#change_functions_div').fadeOut(1000)
 }
 
 module.exports.edit = function(evt) {

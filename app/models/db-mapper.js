@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports.rowsFromSqlDataObject = function (dataObject) {
-  log('Model DbMapper.rowsFromSqlDataObject %o', dataObject);
+  log('Model DbMapper.rowsFromSqlDataObject: ' + JSON.stringify(dataObject));
   let rows = {}
   let i = 0
   let j = 0

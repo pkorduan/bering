@@ -2,7 +2,7 @@
 Programm zur Erfassung von Vogelberingungsdaten
 
 ## Version
-0.9.0
+1.0.4
 
 ## Programmiert von
 Peter Korduan und Christian Seip
@@ -20,7 +20,7 @@ https://electronjs.org/docs/tutorial/installation
 sudo apt-get install node.js
 sudo apt-get install npm
 sudo apt-get install nodejs-legacy
-npm install electron --save-dev --save-exact -g 
+npm install electron --save-dev --save-exact -g
 cd /Verzeichnis/der/Anwendung/
 git clone https://github.com/pkorduan/bering.git
 electron .

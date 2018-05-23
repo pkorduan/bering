@@ -293,7 +293,7 @@ module.exports.search = function(evt) {
 }
 
 module.exports.list = function(target, filter = []) {
-  log('controllers.beringungen.list');
+  log('controllers.beringungen.list' + JSON.stringify(filter));
 
   let loesch_funktion_an =  window.models.setting.findByBezeichnung('loesch_funktion_an'),
       nur_nicht_exportierte_an =  window.models.setting.findByBezeichnung('nur_nicht_exportierte_an'),
@@ -354,7 +354,7 @@ module.exports.edit = function(id) {
   // Zeige id
   $('#beringung_id_div').show()
 
-  
+
   if (beringung.fundart == 1) {
     $('#fundursache_und_zustand_div').hide()
     $('#farbring_div').show()
