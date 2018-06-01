@@ -2,7 +2,7 @@
 Programm zur Erfassung von Vogelberingungsdaten
 
 ## Version
-1.0.4
+1.0.5
 
 ## Programmiert von
 Peter Korduan und Christian Seip
