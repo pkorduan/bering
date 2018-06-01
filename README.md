@@ -40,7 +40,6 @@ Anschließend werden eine Menge Dateien erzeugt, von denen man nicht alle benöt
 - d3dcompiler_47.dll
 - lib*.dll
 - LICENSE*
-- msvcp140.dll
 - pdf_viewer_resources.pak
 - ucrtbase.dll
 - ui_resources_200_percent.pak
