@@ -24,6 +24,21 @@
       return value;
     }
   }
+
+  function concat_farbcodes(value, row) {
+    let li, del_li, re, del_re, del_li_re
+
+    del_li = (row.farbring_liob && row.farbring_liun ? '/' : '')
+    li = row.farbring_liob + del_li + row.farbring_liun
+    li = li + (li ? ' (LI)' : '')
+    del_re = (row.farbring_reob && row.farbring_reun ? '/' : '')
+    re = row.farbring_reob + del_re + row.farbring_reun
+    re = re + (re ? ' (RE)' : '')
+    del_li_re = (li && re ? ', ' : '')
+
+    return li + del_li_re + re
+  }
+
 </script>
 <h2 id="beringungen_list_title">Alle Daten</h2>
 <div id="beringungen_list" class="container">
@@ -107,9 +122,13 @@
           data-visible="false"
         >Fundzustand</th>
         <th
-          data-field="farbring"
+          data-field="inschrift"
           data-visible="false"
-        >Farbring</th>
+        >Inschrift</th>
+        <th
+          data-visible="false"
+          data-formatter="concat_farbcodes"
+        >Farbringe</th>
         <th
           data-field="bemerkung"
         >Bemerkung</th>

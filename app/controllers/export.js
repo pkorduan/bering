@@ -113,14 +113,14 @@ module.exports.lpad = function (value, length = value.length, fillChar = ' ') {
 
 module.exports.rpad = function (value, length = value.length, fillChar = ' ') {
   value = value || '';
-  log('value: ' + value + ' length: ' + length + ' fillChar: ' + fillChar);
+  //log('value: ' + value + ' length: ' + length + ' fillChar: ' + fillChar);
   let fillLength = length - (value).toString().length;
   if (fillLength < -1) fillLength = 0;
   return (value + Array(fillLength + 1).join(fillChar)).substr(0, length);
 }
 
 module.exports.export = function(filter = []) {
-  log('controllers.exports.export filter: ', filter);
+  log('controllers.exports.export filter: ' + JSON.stringify(filter));
   let fundart = filter[0].slice(-1),
       select = "*",
       where = filter.concat(
@@ -136,12 +136,9 @@ module.exports.export = function(filter = []) {
       lines = [],
       strWrite = '';
 
-      console.log(beringungen)
-
   if (window.controllers.settings.checkPath(export_verzeichnis)) {
     if (Object.keys(beringungen).length == 0) {
       // keine zum Export vorhanden
-
       dialog.showErrorBox('Warnung', 'Es stehen keine Datensätze dieser Fundart zum Export zur Verfügung!');
     }
     else {
@@ -183,17 +180,18 @@ module.exports.export = function(filter = []) {
                 this.rpad(' ', 3) + // Blatt
                 this.rpad(beringung.datum.substr(0, 4)) + // Jahr
                 this.lpad(beringung.beringernr, 4) +
-                '\u00f4' + // Korrzeich
+                this.rpad(' ', 2) + // Korrzeichen, was aber ans Ende soll und hier mit Leerzeichen
                 this.rpad(' ', 7) + // Wirt
-                this.rpad(beringung.farbring, 2) + // SKFarbe
-                this.rpad(' ', 2) + // SKFarbe1
-                this.rpad(' ', 2) + // SKFarbe2
-                this.rpad(' ', 2) + // SKFarbe3
-                this.rpad(' ', 9) + // SKNummer
+                this.rpad(beringung.farbring_liob, 2) + // SKFarbe
+                this.rpad(beringung.farbring_liun, 2) + // SKFarbe1
+                this.rpad(beringung.farbring_reob, 2) + // SKFarbe2
+                this.rpad(beringung.farbring_reun, 2) + // SKFarbe3
+                this.rpad(beringung.inschrift, 9) + // SKNummer
                 this.rpad(' ', 9) + // ZNummer
                 this.rpad(' ', 3) + // ZZentrale
                 this.rpad(' ', 9) + // UNummer
-                this.rpad(' ', 3) // UZentrale
+                this.rpad(' ', 3) + // UZentrale
+                '\u00f4' + // Korrzeich
             }).bind(this)
           )
         } break;
@@ -314,7 +312,7 @@ module.exports.export = function(filter = []) {
 
       file_name += window.session.beringernr + '_' + this.dateTimeFormatted() + '.sdf'
 
-      log('Write export file to: ', path.join(export_verzeichnis, file_name));
+      log('Write export file to: ' + path.join(export_verzeichnis, file_name))
 
       fs.writeFile(
         path.join(export_verzeichnis, file_name),
