@@ -210,6 +210,32 @@ module.exports.init = function() {
     );
   });
 
+  log('fill select option for skz_1');
+  let skz1 = window.models.skz.findWhere('Sonderkennzeichen1')
+  log('skz1 %o', skz1)
+
+  $.each(skz1, function (i, item) {
+    $('#beringung_edit_form select[id=skz_1]').append(
+      $('<option>', {
+        value: item.code,
+        text : item.code + ' ' + item.bezeichnung
+      })
+    );
+  });
+
+  log('fill select option for skz_2');
+  let skz2 = window.models.skz.findWhere('Sonderkennzeichen2')
+  log('skz2 %o', skz2)
+
+  $.each(skz2, function (i, item) {
+    $('#beringung_edit_form select[id=skz_2]').append(
+      $('<option>', {
+        value: item.code,
+        text : item.code + ' ' + item.bezeichnung
+      })
+    );
+  });
+
   log('fill select options for farbringe');
   let farbcodes = window.models.farbcodes.findWhere('', 'code')
   log('farbcodes %o', farbcodes)
@@ -364,24 +390,7 @@ module.exports.edit = function(id) {
     $('#farbring_div').hide()
   }
 
-  if ($('#skz_1').val() != '' && $('#skz_2').val() != '') {
-    $('#farbring_und_inschrift_div').show()
-    if ($('#inschrift').val() != '') {
-      $('#farbring_codierung_link').show();
-      $('#inschrift_link').hide();
-      $('#farbring_codierung_div').hide();
-      $('#inschrift_div').show();
-    }
-    else {
-      $('#farbring_codierung_link').hide();
-      $('#inschrift_link').show();
-      $('#farbring_codierung_div').show();
-      $('#inschrift_div').hide();
-    }
-  }
-  else {
-    $('#farbring_und_inschrift_div').hide()
-  }
+  this.openFarbringAndInschrift()
 
   // enable edit ringnr
   $('form#beringung_edit_form :input[id=ringnr]').prop('readonly', false)
@@ -615,14 +624,16 @@ module.exports.allValid = function() {
 
 module.exports.openFarbringAndInschrift = function(field) {
   log('field: ' + field.attr('id') + ' ' + field.val());
-  let otherField = (field.attr('id') == 'skz_1' ? $('#skz_2') : $('#skz_1'))
-  if (field.val() != '' && otherField.val() != '') {
+  if ($('#skz_1').val() != '' && $('#skz_2').val() != '') {
     $('#farbring_und_inschrift_div').show()
-    $('#farbring_codierung_link').hide();
-    $('#inschrift_link').show();
-    $('#farbring_codierung_div').show();
-    $('#inschrift_div').hide();
-
+    if ($('#skz_1').val() == 2 && $('#skz_2').val() == 1) {
+      $('#inschrift_div').hide();
+      $('#farbring_codierung_div').show()
+    }
+    else {
+      $('#farbring_codierung_div').hide()
+      $('#inschrift_div').show()
+    }
   }
   else {
     $('#farbring_und_inschrift_div').hide()

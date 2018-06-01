@@ -54,6 +54,7 @@ window.models.farbcodes = require(path.join(modelsPath, 'farbcodes.js'))
 window.models.fundzustand = require(path.join(modelsPath, 'fundzustand.js'))
 window.models.fundursache = require(path.join(modelsPath, 'fundursache.js'))
 window.models.brutstatus = require(path.join(modelsPath, 'brutstatus.js'))
+window.models.skz = require(path.join(modelsPath, 'skz.js'))
 window.models.setting = require(path.join(modelsPath, 'setting.js'))
 
 // load views

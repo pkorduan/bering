@@ -1,0 +1,6 @@
+BEGIN TRANSACTION;
+
+DELETE FROM Sonderkennzeichen1 WHERE code NOT IN (2, 4, 6, 7, 9);
+DELETE FROM Sonderkennzeichen2 WHERE code NOT IN (1, 5, 7);
+
+COMMIT TRANSACTION;
