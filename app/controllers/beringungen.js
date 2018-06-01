@@ -412,7 +412,8 @@ module.exports.newBeringung = function(uebernehmen = false) {
     $('form#beringung_edit_form :input').each(
       function(i, field) {
         if (field.id == 'ringnr') {
-          $(field).val(parseInt($(field).val()) + 1)
+          // increment the number at the end of the string by 1
+          $(field).val($(field).val().replace(/\d+$/, function(n) { return ++n }))
         }
         else {
           if ($.inArray(field.id, ['vogelart', 'alter', 'beringungsart']) == -1) $(field).val('')
@@ -622,8 +623,7 @@ module.exports.allValid = function() {
   return all_valid
 }
 
-module.exports.openFarbringAndInschrift = function(field) {
-  log('field: ' + field.attr('id') + ' ' + field.val());
+module.exports.openFarbringAndInschrift = function() {
   if ($('#skz_1').val() != '' && $('#skz_2').val() != '') {
     $('#farbring_und_inschrift_div').show()
     if ($('#skz_1').val() == 2 && $('#skz_2').val() == 1) {
