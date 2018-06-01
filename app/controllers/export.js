@@ -191,7 +191,7 @@ module.exports.export = function(filter = []) {
                 this.rpad(' ', 3) + // ZZentrale
                 this.rpad(' ', 9) + // UNummer
                 this.rpad(' ', 3) + // UZentrale
-                '\u00f4' + // Korrzeich
+                '\u00f4' // Korrzeich
             }).bind(this)
           )
         } break;
