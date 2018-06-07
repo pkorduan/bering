@@ -31,6 +31,14 @@ electron .
     npm install -g electron-packager # -g um es global zu installieren, sonst beansprucht es nur unnötig platz im package (node_modules ordner)
     electron-packager . bering --platform=win32 --arch=x64 --electron-version=2.0.0 --overwrite --icon=assets/icons/ico/1024x1024.ico # --overwrite überschreibt einen eventuel schon bestehenden build
 
+für 32-Bit:
+
+    electron-packager . bering --platform=win32 --arch=ia32 --electron-version=2.0.0 --overwrite --icon=assets/icons/ico/1024x1024.ico
+
+oder für beide auf einmal:
+
+    electron-packager . bering --platform=win32 --arch=all --electron-version=2.0.0 --overwrite --icon=assets/icons/ico/1024x1024.ico
+
 **Löschen nicht benötigter Daten**
 Anschließend werden eine Menge Dateien erzeugt, von denen man nicht alle benötigt. Deshalb sind zu löschen:
 - Ordner "locales"
@@ -43,18 +51,8 @@ Anschließend werden eine Menge Dateien erzeugt, von denen man nicht alle benöt
 - pdf_viewer_resources.pak
 - ucrtbase.dll
 - ui_resources_200_percent.pak
-- vcruntime140.dll
 - version
 - views_resources_200_percent.pak
-- resources/app/node_module:
-    - bootstrap-datetimepicker
-    - dbf-parser
-    - iconv-lite
-    - readable-stream
-    - read-dbf
-    - read-pkg
-    - read-pkg-up
-    - shapefile
 
 **Beachte**
 Die Exe liegt einfach im Hauptordner und öffnet im Prinzip nur eine Chromium Instanz, die auf dem Code in `\bin\resources\app\app` arbeitet. Aus diesem Grund, kann man in resources/app/app auch alle Dateien ändern und hat diese Änderungen auch gleich beim Start der Exe.
