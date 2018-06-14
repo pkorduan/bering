@@ -57,9 +57,6 @@ Anschließend werden eine Menge Dateien erzeugt, von denen man nicht alle benöt
 **Beachte**
 Die Exe liegt einfach im Hauptordner und öffnet im Prinzip nur eine Chromium Instanz, die auf dem Code in `\bin\resources\app\app` arbeitet. Aus diesem Grund, kann man in resources/app/app auch alle Dateien ändern und hat diese Änderungen auch gleich beim Start der Exe.
 
-**Aktuelles Problem**
-Im Ordner node_modules fehlt etwas, dass zu Bootstrap/CSS-Problemen führt (TODO: 129 Ordner mit den 284 abgleichen)
-
 ## Start (Windows exe)
 * Doppelklick bering.exe
 * Speicherort DB: `\bin\resources\app\app\db`
