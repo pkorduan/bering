@@ -1,6 +1,8 @@
 // controllers export
 'use strict'
 
+const windows1252 = require('windows-1252') //TODO: das muss bestimmt noch an eine andere Stelle!
+
 module.exports.init = function() {
   log('controllers.export.init');
 
@@ -136,6 +138,8 @@ module.exports.export = function(filter = []) {
       lines = [],
       strWrite = '';
 
+   //cd F:\_dev\GDIS\Beringung\_git\export1\bering
+	  
   if (window.controllers.settings.checkPath(export_verzeichnis)) {
     if (Object.keys(beringungen).length == 0) {
       // keine zum Export vorhanden
@@ -149,17 +153,21 @@ module.exports.export = function(filter = []) {
             beringungen,
             (function(beringung) {
               if (beringung.gewicht == 0) beringung.gewicht = "0.0";
+			  var ringnr = String(beringung.ringnr);
+			  //TODO: Familienzugehörigkeit vorrübergehend fest definiert, um Position zu prüfen!
+			  var family = 'N:IA0167138+IA0167139;E:IA0131895;';
               return '' +
-                this.rpad(beringung.zentrale, 3) +
-                this.rpad(beringung.ringnr, 9) +
+                this.lpad(beringung.zentrale, 3) + //Wenn Zentrale kürzer -> füge vorn Leerzeichen ein (vorher rechts [rpad])
+                // this.rpad(beringung.ringnr, 9) +
+                ringnr.padStart(9, '0') + //Fülle die 9-stellige ringnr vorn mit 0en auf
                 this.rpad(' ', 1) + // Z
                 this.rpad(beringung.vogelart, 7) +
                 this.rpad(beringung.geschlecht, 1) +
                 this.rpad(beringung.alter, 4) +
                 this.rpad(beringung.brutstatus, 1) +
-                this.rpad(beringung.teilfederlaenge, 5) +
-                this.rpad(beringung.fluegellaenge, 5) +
-                this.rpad(beringung.gewicht, 7) +
+                this.lpad(beringung.teilfederlaenge, 5) + //vorher rechts (rpad)
+                this.lpad(beringung.fluegellaenge, 5) + //vorher rechts (rpad)
+                this.lpad(beringung.gewicht, 7) + //vorher rechts (rpad)
                 this.rpad(' ', 4) + // Habitat
                 this.rpad(' ', 4) + // Brutstatus
                 this.rpad(beringung.datum.substr(5, 2)) + // Tag
@@ -191,7 +199,9 @@ module.exports.export = function(filter = []) {
                 this.rpad(' ', 3) + // ZZentrale
                 this.rpad(' ', 9) + // UNummer
                 this.rpad(' ', 3) + // UZentrale
-                '\u00f4' // Korrzeich
+                '\u00f4' + // Korrzeich
+				this.rpad(' ', 249) + // Freifeld - soll eigentlich 250 lang sein, dann stimmt die Position der Familienzugehörigkeit aber nicht mehr
+				this.rpad(family, 250) // Familienzugehörigkeit
             }).bind(this)
           )
         } break;
@@ -316,7 +326,12 @@ module.exports.export = function(filter = []) {
 
       fs.writeFile(
         path.join(export_verzeichnis, file_name),
-        strWrite,
+        // strWrite, //alt
+       windows1252.encode(strWrite), //neu
+		// {	//NEU Anfang, s. https://stackoverflow.com/questions/14551608/list-of-encodings-that-node-js-supports
+          // encoding: "windows-1252"
+          // encoding: "binary"
+        // },  //NEU Ende
         (err) => {
           if (err) {
             alert("Fehler beim Speichern der Exportdatei: " + err.message)
