@@ -68,7 +68,6 @@ module.exports.show = function() {
       ",
       where = "\
         beringernr = '" + window.session.beringernr + "' AND\
-        datum > date('now', 'start of year') AND\
         exportiert_am IS NULL\
       ",
       group = "fundart",
