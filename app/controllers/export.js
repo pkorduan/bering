@@ -124,8 +124,7 @@ module.exports.export = function(filter = []) {
       select = "*",
       where = filter.concat(
         "beringernr = '" + window.session.beringernr + "'",
-        "exportiert_am IS NULL",
-        "datum > date('now', 'start of year')"
+        "exportiert_am IS NULL"
       ).join(' AND '),
       order = "datum, uhrzeit",
       beringungen = window.models.beringung.findWhere(select, where, '', order),
