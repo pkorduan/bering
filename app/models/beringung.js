@@ -229,6 +229,7 @@ module.exports.updateExportDate = function(where) {
 }
 
 module.exports.validate = function (field) {
+  log('models.beringung.validate');
   let result = {
     valid: true,
     message: ''
@@ -239,6 +240,10 @@ module.exports.validate = function (field) {
         result.valid = false
         result.message = 'Die Ringnummer muss angegeben werden!'
       }
+	  else if (this.findByRingnr(field.value).ringnr !== 'undefined'){
+		  result.valid = false
+          result.message = 'Die Ringnummer existiert bereits!'
+	  }
     } break
   }
   return result
