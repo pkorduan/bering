@@ -240,7 +240,9 @@ module.exports.validate = function (field) {
         result.valid = false
         result.message = 'Die Ringnummer muss angegeben werden!'
       }
-	  else if (this.findByRingnr(field.value).ringnr !== 'undefined'){
+	  //Fundart lt. Formular muss genutzt werden, da in der DB das Datensatz noch als Beringung steht und durch das Speichern ja erst zum Wiederfund wird
+	  //Merke: Beringung -> beringung.fundart = 1 | Eigenwiederfund -> beringung.fundart = 2 | Fremdwiederfund -> beringung.fundart = 3
+	  else if (typeof this.findByRingnr(field.value).ringnr !== 'undefined' && $('#fundart').val() == '1'){	  
 		  result.valid = false
           result.message = 'Die Ringnummer existiert bereits!'
 	  }
