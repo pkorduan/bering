@@ -201,70 +201,24 @@ module.exports.export = function(filter = []) {
             }).bind(this)
           )
         } break;
-        case '2': {
-          file_name = 'W'
-          lines = $.map(
-            beringungen,
-            (function(beringung) {
-              if (beringung.gewicht == 0) beringung.gewicht = "0.0";
-              return '' +
-                this.rpad(beringung.zentrale, 3) +
-                this.rpad(beringung.ringnr, 9) +
-                this.rpad(beringung.id, 3) + // Nummer
-                this.rpad(' ', 1) + // VER
-                this.rpad(' ', 1) + // Zusring
-                this.rpad(' ', 1) + // Umring
-                this.rpad(beringung.skz_1, 2) +
-                this.rpad(beringung.skz_2, 2) +
-                this.rpad(' ', 3) + // KZE
-                this.rpad(' ', 9) + // Neuring
-                this.rpad(beringung.vogelart, 7) +
-                this.rpad(beringung.geschlecht, 1) +
-                this.rpad(beringung.alter, 4) +
-                this.rpad(beringung.brutstatus, 1) +
-                this.rpad(beringung.teilfederlaenge, 5) +
-                this.rpad(beringung.fluegellaenge, 5) +
-                this.rpad(beringung.gewicht, 7) +
-                this.rpad(' ', 3) + // VEF
-                this.rpad(' ', 1) + // Genau
-                this.rpad(beringung.datum.substr(5, 2)) + // Tag
-                this.rpad(beringung.datum.substr(8, 2)) + // Monat
-                this.rpad(beringung.datum.substr(0, 4)) + // Jahr
-                this.rpad(beringung.uhrzeit.substr(0, 2)) + // Stunde
-                this.rpad(beringung.fundzustand, 1) + // Fundstatus
-                this.rpad(beringung.fundursache, 3) + // Umstand
-                this.rpad(' ', 1) + // ANS
-                this.rpad(' ', 2) + // LAN
-                this.rpad(' ', 3) + // FUZ
-                this.rpad(beringungsort_kreis, 4) +
-                this.rpad(beringung.beringungsort, 22) +
-                this.rpad(' ', 2) + // Entfernung
-                this.rpad(' ', 2) + // EntRicht
-                this.rpad(beringung.koordinaten, 15) +
-                this.rpad(' ', 4) + // Tage
-                this.rpad(' ', 2) + // Richtung
-                this.rpad(' ', 3) + // WIG
-                this.rpad(' ', 2) + // WIM
-                this.rpad(' ', 5) + // Kilometer
-                this.rpad(' ', 2) + // FZE
-                this.rpad(' ', 4) + // FBL
-                this.rpad(' ', 2) + // JGG
-                this.rpad(' ', 1) + // KJB
-                this.rpad(' ', 3) + // Programm
-                this.lpad(beringung.beringernr, 4) +
-                this.rpad(beringung.bemerkung, 30)
-            }).bind(this)
-          )
-        } break;
+        case '2': // fall through, da Eigenwiederfunde und Fremdwiederfunde identisch sind, s. a. https://stackoverflow.com/questions/6513585/test-for-multiple-cases-in-a-switch-like-an-or
         default: {
-          file_name = 'F' // im Moment genauso formatiert wie Wiederfunde
+          if (fundart == '2') file_name = 'W';
+		  else file_name = 'F';
           lines = $.map(
             beringungen,
             (function(beringung) {
               if (beringung.gewicht == 0) beringung.gewicht = "0.0";
+			  var ringnr = String(beringung.ringnr);
+			  var serie = ringnr.substring(0,2).toUpperCase();
+			  var ringnrOhneSerie = ringnr.substring(2, ringnr.length);
+			  var lebedingOderTot = ' ';
+			  if (beringung.fundzustand == '1' || beringung.fundzustand == '2' || beringung.fundzustand == '3') lebedingOderTot = '+';
+			  else if (beringung.fundzustand == '0' || beringung.fundzustand == '4' || beringung.fundzustand == '5' || beringung.fundzustand == '6' || beringung.fundzustand == '7' || beringung.fundzustand == '8' || beringung.fundzustand == '9' || beringung.fundzustand == 'A') lebedingOderTot = 'v';
               return '' +
-                this.rpad(beringung.zentrale, 3) +
-                this.rpad(beringung.ringnr, 9) +
+                this.lpad(beringung.zentrale, 3) + //Wenn Zentrale kürzer -> füge vorn Leerzeichen ein (vorher rechts [rpad])
+                serie +
+				ringnrOhneSerie.padStart(7, '0') + //Fülle die 7-stellige ringnr vorn mit 0en auf (hinten: ringnrOhneSerie.padEnd(9, '0'))
                 this.rpad(beringung.id, 3) + // Nummer
                 this.rpad(' ', 1) + // VER
                 this.rpad(' ', 1) + // Zusring
@@ -277,17 +231,22 @@ module.exports.export = function(filter = []) {
                 this.rpad(beringung.geschlecht, 1) +
                 this.rpad(beringung.alter, 4) +
                 this.rpad(beringung.brutstatus, 1) +
-                this.rpad(beringung.teilfederlaenge, 5) +
-                this.rpad(beringung.fluegellaenge, 5) +
-                this.rpad(beringung.gewicht, 7) +
+                this.lpad(beringung.teilfederlaenge, 5) +
+                this.lpad(beringung.fluegellaenge, 5) +
+                this.lpad(beringung.gewicht, 7) +
                 this.rpad(' ', 3) + // VEF
-                this.rpad(' ', 1) + // Genau
-                this.rpad(beringung.datum.substr(5, 2)) + // Tag
-                this.rpad(beringung.datum.substr(8, 2)) + // Monat
-                this.rpad(beringung.datum.substr(0, 4)) + // Jahr
+                this.rpad('0', 1) + // Genauigkeit, default mal 0 gesetzt, bis Klagen kommen ;-)
+                //this.rpad(beringung.datum.substr(5, 2)) + // Tag
+                //this.rpad(beringung.datum.substr(8, 2)) + // Monat
+                //this.rpad(beringung.datum.substr(0, 4)) + // Jahr
+                //this.rpad(beringung.uhrzeit.substr(0, 2)) + // Stunde
+				this.rpad(beringung.datum.substr(8, 2)) + // Tag
+                this.rpad(beringung.datum.substr(5, 2)) + // Monat
+				this.rpad(beringung.datum.substr(0, 4)) + // Jahr
                 this.rpad(beringung.uhrzeit.substr(0, 2)) + // Stunde
+                this.rpad(lebedingOderTot, 1) + // v = lebendig, + = tot
                 this.rpad(beringung.fundzustand, 1) + // Fundstatus
-                this.rpad(beringung.fundursache, 3) + // Umstand
+                this.rpad(beringung.fundursache, 2) + // Umstand
                 this.rpad(' ', 1) + // ANS
                 this.rpad(' ', 2) + // LAN
                 this.rpad(' ', 3) + // FUZ
@@ -307,7 +266,9 @@ module.exports.export = function(filter = []) {
                 this.rpad(' ', 1) + // KJB
                 this.rpad(' ', 3) + // Programm
                 this.lpad(beringung.beringernr, 4) +
-                this.rpad(beringung.bemerkung, 30)
+                this.rpad(beringung.bemerkung, 31) +
+				'\u00f4' + // Korrzeich
+				this.rpad(' ', 499) // Freifeld - nicht in Spezifikation, soll aber lt. Fr. Kreutzer rein
             }).bind(this)
           )
         }
