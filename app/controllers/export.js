@@ -219,7 +219,7 @@ module.exports.export = function(filter = []) {
                 this.lpad(beringung.zentrale, 3) + //Wenn Zentrale kürzer -> füge vorn Leerzeichen ein (vorher rechts [rpad])
                 serie +
 				ringnrOhneSerie.padStart(7, '0') + //Fülle die 7-stellige ringnr vorn mit 0en auf (hinten: ringnrOhneSerie.padEnd(9, '0'))
-                this.rpad(beringung.id, 3) + // Nummer
+                this.rpad(' ', 3) + // Nummer, eigentlich 'beringung.id', aber Fr. Kreutzer wollte die raus haben
                 this.rpad(' ', 1) + // VER
                 this.rpad(' ', 1) + // Zusring
                 this.rpad(' ', 1) + // Umring
@@ -260,13 +260,13 @@ module.exports.export = function(filter = []) {
                 this.rpad(' ', 3) + // WIG
                 this.rpad(' ', 2) + // WIM
                 this.rpad(' ', 5) + // Kilometer
-                this.rpad(' ', 2) + // FZE
+                this.rpad('0', 2) + // FZE
                 this.rpad(' ', 4) + // FBL
                 this.rpad(' ', 2) + // JGG
                 this.rpad(' ', 1) + // KJB
-                this.rpad(' ', 3) + // Programm
+                this.rpad(' ', 4) + // Programm - lt. Spezifikation nur 3, aber beringernr muss eins weiter nach hinten
                 this.lpad(beringung.beringernr, 4) +
-                this.rpad(beringung.bemerkung, 31) +
+                this.rpad(beringung.bemerkung, 30) +
 				'\u00f4' + // Korrzeich
 				this.rpad(' ', 499) // Freifeld - nicht in Spezifikation, soll aber lt. Fr. Kreutzer rein
             }).bind(this)
