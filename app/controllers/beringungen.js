@@ -478,6 +478,8 @@ module.exports.newFund = function(beringung) {
   $('#beringung_speichern_uebernehmen_button').hide()
 
   this.openNewForm()
+  //Bei nochmaligem Eintragen eines Funds erscheinen sonst die Felder Fundursache und Zustand nicht
+  $('#fundursache_und_zustand_div').show()
 }
 
 module.exports.date_format = function(date) {
