@@ -1,6 +1,11 @@
 # Content
 app/db/bering.db
 
+#Login, Version
+app/views/login/login.html
+app/views/nav-bar.html
+
+
 # 3rdParties
 #3rdparties/*
 
