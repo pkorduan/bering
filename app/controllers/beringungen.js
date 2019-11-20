@@ -407,6 +407,7 @@ module.exports.edit = function(id) {
   $('#beringungen_edit_section').show();
 }
 
+//Mögliches TODO: alle Warnungsmeldungen der Validierung löschen (Bsp.: Noch Meldungen im Fundformular, dan Wechsel auf Beringung)
 module.exports.newBeringung = function(uebernehmen = false) {
   log('controller beringungen.newBerinung uebernehmen:', uebernehmen);
   let beringung = {}
@@ -613,13 +614,16 @@ module.exports.allValid = function() {
         validation = window.models.beringung.validate(field)
         if (!validation.valid) {
           all_valid = false
+		  log('Feld-Typ: ' + field.type);
           $(field).parent().addClass('has-danger')
           $(field).next().html('&nbsp;&nbsp;&nbsp; ' + validation.message);
           $(field).next().next().html("");
         }
         else {
           if ($(field).parent().hasClass('has-danger')) {
-            $(field).parent().removeClass('has-danger')
+            $(field).parent().removeClass('has-danger');
+			//remove text message as well
+			$(field).next().html("");
           }
         }
       }
