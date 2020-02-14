@@ -614,7 +614,7 @@ module.exports.allValid = function() {
         validation = window.models.beringung.validate(field)
         if (!validation.valid) {
           all_valid = false
-		  log('Feld-Typ: ' + field.type);
+		  //log('Feld-Typ: ' + field.type);
           $(field).parent().addClass('has-danger')
           $(field).next().html('&nbsp;&nbsp;&nbsp; ' + validation.message);
           $(field).next().next().html("");
