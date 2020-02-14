@@ -246,63 +246,64 @@ module.exports.validate = function (field) {
 		  result.valid = false
           result.message = 'Die Ringnummer existiert bereits!'
 	  }
-    } break;
-	case (['fluegellaenge'].indexOf(field.id) > -1) : {
-		if (field.value.indexOf(".") == -1) {
-			result.valid = false
-			result.message = 'Flügellänge mit Nachkommastelle angeben!'
-		}
-    } break;
-	case (['teilfederlaenge'].indexOf(field.id) > -1) : {
-		if (field.value.indexOf(".") == -1) {
-			result.valid = false
-			result.message = 'Teilfederlänge mit Nachkommastelle angeben!'
-		}
-    } break;
-	case (['lauf'].indexOf(field.id) > -1) : {
-		if (field.value.indexOf(".") == -1) {
-			result.valid = false
-			result.message = 'Der Lauf muss mit Nachkommastelle angegeben werden!'
-		}
-    } break;
+	} break;
+	case (['vogelart'].indexOf(field.id) > -1) : {
+      if (field.value == '') {
+        result.valid = false
+        result.message = 'Die Vogelart muss angegeben werden!'
+      }
+	} break;
 	case (['uhrzeit'].indexOf(field.id) > -1) : {
-		log('Uhrzeit-Ende: '+field.value.substr(-2, 2));
 		if (field.value == '') {
 			result.valid = true
       }
 		else if (field.value.indexOf(":") == -1 || field.value.substr(-2, 2).indexOf(":") != -1) {
 			result.valid = false
-			result.message = 'Die Uhrzeit muss mit Minuten angegeben werden!'
+			result.message = 'Uhrzeit muss mit Minuten angegeben werden!'
+		}
+		else if (field.value.substr(-2, 2) >59) {
+			result.valid = false
+			result.message = 'Minuten bzw. Sekunden dürfen nicht größer 59 sein!'
+		}
+    } break;
+	case (['alter'].indexOf(field.id) > -1) : {
+      if (field.value == '') {
+        result.valid = false
+        result.message = 'Das Alter muss angegeben werden!'
+      }
+	} break;
+	case (['fluegellaenge'].indexOf(field.id) > -1) : {
+	  if (field.value == '') {
+			result.valid = true
+      }
+		else if (field.value.indexOf(".") == -1) {
+			result.valid = false
+			result.message = 'Flügellänge muss mit Nachkommastelle angegeben werden!'
+		}
+    } break;
+	case (['teilfederlaenge'].indexOf(field.id) > -1) : {
+		if (field.value == '') {
+			result.valid = true
+      }
+		else if (field.value.indexOf(".") == -1) {
+			result.valid = false
+			result.message = 'Teilfederlänge muss mit Nachkommastelle angegeben werden!'
 		}
     } break;
 	case (['gewicht'].indexOf(field.id) > -1) : {
-		//TODO: anderes Feld übergeben + Überprüfen, ob Uhrzeit leer
-		if (field.value != '') {
+		if (field.value != '' && $("#uhrzeit").val() == '') {
 			result.valid = false
 			result.message = 'Die Uhrzeit muss angegeben werden!'
-			result.field='uhrzeit'
 		}
       } break;
-	case (['skz_1'].indexOf(field.id) > -1) : {
-		if (field.value == '') {
-			result.valid = false
-			result.message = 'Die SKZ 1 muss angegeben werden!'
-      }
-    } break;
-	case (['skz_2'].indexOf(field.id) > -1) : {
-		if (field.value == '') {
-			result.valid = false
-			result.message = 'Die SKZ 2 muss angegeben werden!'
-      }
-    } break;
 	case (['fundursache'].indexOf(field.id) > -1) : {
-		if (field.value == '') {
+		if (field.value == '' && !$("#fundursache").is(":hidden")) {
 			result.valid = false
 			result.message = 'Fundursache muss angegeben werden!'
       }
     } break;
 	case (['fundzustand'].indexOf(field.id) > -1) : {
-		if (field.value == '') {
+		if (field.value == '' && !$("#fundzustand").is(":hidden")) {
 			result.valid = false
 			result.message = 'Fundzustand muss angegeben werden!'
       }

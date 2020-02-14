@@ -25,13 +25,14 @@
       // make not smaller than 0,1?
       value = (value < min ? min : value);
 
-      return toNumberString(value);
+	  return value;
+      //return toNumberString(value);
     }
 
     return value;
   }
   
-  //To alow e. g. "10.0" or "10" entries
+  //To alow automatic e. g. "10.0" or "10" entries (added .0 automatically)
   function toNumberString(num) { 
 	  if (Number.isInteger(num)) { 
 		return num + ".0"
@@ -102,7 +103,7 @@
     </div>
 
     <div class="form-group row">
-      <label class="col-sm-3 col-form-label" for="vogelart">Vogelart</label>
+      <label class="col-sm-3 col-form-label font-weight-bold" for="vogelart">Vogelart</label>
       <select class="col-sm-4 form-control" id="vogelart">
         <option value=""></option>
       </select>
@@ -111,7 +112,7 @@
     </div>
 
     <div class="form-group row"  id="beringung_datepicker">
-      <label class="col-sm-3 col-form-label" for="datum">Datum</label>
+      <label class="col-sm-3 col-form-label font-weight-bold" for="datum">Datum</label>
       <!-- <input type='text' class="form-control"  id="datum" -->
       <input class="col-sm-4 form-control" type='text' id="datum" aria-describedby="datumHelpInline"/>
       <span id="input_pick" class="input-group-addon" style="display:none">
@@ -128,7 +129,7 @@
           <!-- Datum.</small> -->
       <!-- </div> -->
     <div class="form-group row bootstrap-timepicker timepicker" id="beringung_timepicker">
-        <label class="col-sm-3 col-form-label" for="uhrzeit">Uhrzeit</label>
+        <label class="col-sm-3 col-form-label font-weight-bold" for="uhrzeit">Uhrzeit</label>
         <input class="col-sm-4 form-control" type="text" id="uhrzeit"
           aria-describedby="uhrzeitHelpInline">
       <div class="form-control-feedback" id="uhrzeitFB"></div>
@@ -136,7 +137,7 @@
       </div>
 
     <div class="form-group row">
-      <label class="col-sm-3 col-form-label" for="alter">Alter</label>
+      <label class="col-sm-3 col-form-label font-weight-bold" for="alter">Alter</label>
       <select class="col-sm-4 form-control" id="alter">
         <option value=""></option>
       </select>
