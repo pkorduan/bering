@@ -458,6 +458,8 @@ module.exports.newFund = function(beringung) {
   $('form#beringung_edit_form :input[id=fundart]').val(beringung.fundart)
   $('form#beringung_edit_form :input[id=ringnr]').val(beringung.ringnr).prop('readonly', true)
   $('form#beringung_edit_form :input[id=vogelart]').val(beringung.vogelart)
+  $('form#beringung_edit_form :input[id=fundursache]').val(22)
+  $('form#beringung_edit_form :input[id=fundzustand]').val(6)
 
   if (beringung.fundart == 2) {
     $('#beringung_edit_title').html('Eigener Wiederfund (letzte Daten übernommen)')
@@ -499,8 +501,14 @@ module.exports.openNewForm = function() {
   $('form#beringung_edit_form :input[id=beringernr]').val(window.session.beringernr);
   $('#beringung_beringername').html(window.session.beringername);
   // aktuellen Zeitstempel setzen
-  $('form#beringung_edit_form :input[id=datum]').val(this.date_format(d));
-  $('form#beringung_edit_form :input[id=uhrzeit]').val(d.toLocaleTimeString());
+  let auto_datum_uhrzeit =  window.models.setting.findByBezeichnung('auto_datum_uhrzeit');
+  log('auto_datum_uhrzeit: ' + auto_datum_uhrzeit.wert);
+  //beringungen = window.models.beringung.findWhere(
+   //(nur_nicht_exportierte_an.wert == 'an' ? filter.concat('exportiert_am IS NULL') : filter).join(' AND ')
+   if (auto_datum_uhrzeit.wert == 'an' ) {
+	  $('form#beringung_edit_form :input[id=datum]').val(this.date_format(d));
+	  $('form#beringung_edit_form :input[id=uhrzeit]').val(d.toLocaleTimeString());
+   }
   // Als insert form markieren
   $('#beringung_speichern_button').val('Insert')
   // Auf view umschalten.

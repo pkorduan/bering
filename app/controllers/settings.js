@@ -162,7 +162,8 @@ module.exports.init = function() {
     function(evt) {
       evt.data.context.saveAdminFunctions([
           'loesch_funktion_an',
-          'nur_nicht_exportierte_an'
+          'nur_nicht_exportierte_an',
+		  'auto_datum_uhrzeit'
       ])
     }
   )
