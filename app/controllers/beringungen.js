@@ -153,7 +153,7 @@ module.exports.init = function() {
     $('#beringung_edit_form select[id=alter]').append(
       $('<option>', {
         value: item.code,
-        text : item.bezeichnung_de
+        text : item.bezeichnung_de+" ("+item.code+")"
       })
     );
   });

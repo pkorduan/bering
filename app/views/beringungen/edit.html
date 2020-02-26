@@ -6,7 +6,7 @@
     value = value.replace(',', '.');
 
     // convert to float type
-    value = parseFloat(value);
+    value = parseFloat(value).toFixed(1);
 
     if (isNaN(value)) {
       // remove text if it is not number
@@ -14,10 +14,10 @@
     }
     else {
       // round to one digit
-      value = value.toFixed(1)
+      //value = value.toFixed(1)
 
       // make always positive
-      value = Math.abs(value);
+      //value = Math.abs(value);
 
       // make not larger than 20000?
       value = (value > max ? max : value);
@@ -189,6 +189,7 @@
     <div class="form-group row">
       <label class="col-sm-3 col-form-label" for="gewicht">Gewicht</label>
       <input class="col-sm-4 form-control" type="text" id="gewicht" onchange="this.value = setOneNumberDecimal(this.value, 1.0, 20000);">
+     <!--<input class="col-sm-4 form-control" type="text" id="gewicht">-->
       <div class="form-control-feedback" id="gewichtFB"></div>
       <small id="gewichtHelpInline" class="col-sm-4 align-top form-text text-muted">g</small>
     </div>
