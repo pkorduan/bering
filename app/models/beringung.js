@@ -295,6 +295,9 @@ module.exports.validate = function (field) {
 			result.valid = false
 			result.message = 'Die Uhrzeit muss angegeben werden!'
 		}
+		if (field.value == '') {
+			result.valid = true
+        }
 		else if (field.value.indexOf(".") == -1) {
 			result.valid = false
 			result.message = 'Gewicht muss mit Nachkommastelle angegeben werden!'
