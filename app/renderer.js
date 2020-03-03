@@ -13,6 +13,8 @@ window.$ = window.jQuery = require('jquery')
 window.Tether = require('tether')
 window.Bootstrap = require('bootstrap')
 window.BootstrapTable = require('bootstrap-table')
+window.TableExport = require('tableexport.jquery.plugin')
+window.XLSX = require('xlsx')
 
 //window.BootstrapDatetimepicker = require('bootstrap-datetimepicker')
 
