@@ -38,30 +38,53 @@
 
     return li + del_li_re + re
   }
+  
+  //Copied from http://jsfiddle.net/ggywebtech/apseb49f/2/
+  //cf. https://forums.asp.net/t/2130579.aspx?export+with+bootstrap+
+  $(function () {
+	var $table = $('#beringungen_list_table')
+	$('#toolbar').find('select').change(function () {
+    $table.bootstrapTable('refreshOptions', {
+      exportDataType: $(this).val()
+    });
+  });
+});
 
 </script>
 <h2 id="beringungen_list_title">Alle Daten</h2>
 <div id="beringungen_list" class="container">
-  <div id="toolbar">
+<style>
+#toolbar {
+  margin: 0;
+}
+</style>
 
-  </div>
+<div id="toolbar" class="select">
+  <select class="form-control">
+    <option value="">Exportiere akt. Ansicht</option>
+    <option value="all">Exportiere alle</option>
+    <option value="selected">Exportiere selektierte</option>
+  </select>
+</div>
   <table
     id="beringungen_list_table"
     class="table table-striped table-hover"
     data-detail-view="false"
     data-id-field="id"
-    data-export_types=['json', 'xml', 'csv', 'txt', 'sql']
+    data-show-export="true"
+    data-export-types=['csv','txt','excel','xlsx']
+    data-click-to-select="true"
+    data-toolbar="#toolbar"
     data-minimum-count-columns="1"
     data-pagination="true"
     data-page-list="[10, 25, 50, 100, 500, ALL]"
     data-page-size="20"
     data-query-params="queryParams"
     data-toggle="table"
-    data-toolbar="#toolbar"
     data-sort-name="datum"
-	data-sort-order="desc"
-	data-sortable="true"	
-    data-show-toggle="false"
+    data-sort-order="desc"
+    data-sortable="true"	
+    data-show-toggle="true"
     data-search="true"
     data-show-columns="true"
     data-show-footer="true"
@@ -69,14 +92,29 @@
     data-show-export="false"
     data-show-columns="true"
     data-show-pagination-switch="false"
+    data-locale="de-DE"
+    data-export-options='{
+         "fileName": "bering_export", 
+         "ignoreColumn": ["edit","delete","state"]
+       }'
+
   >
     <thead>
       <tr>
+	    <th
+		  data-field="state"
+		  data-checkbox="true"
+	    ></th>
         <th
           data-field="id"
           data-switchable="true"
           data-sortable="true"
         >Id</th>
+        <th
+          data-field="zentrale"
+          data-visible="false"
+          data-sortable="true"
+        >Zentrale</th>
         <th
           data-field="ringnr"
           data-switchable="true"
@@ -107,10 +145,45 @@
 		  data-sortable="true"
         >Alter</th>
         <th
+          data-field="geschlecht"
+		  data-sortable="true"
+          data-visible="false"
+        >Geschlecht</th>
+        <th
           data-field="brutstatus"
 		  data-sortable="true"
           data-visible="false"
         >Brutstatus</th>
+        <th
+          data-field="fluegellaenge"
+		  data-sortable="true"
+          data-visible="false"
+        >Flügellänge</th>
+        <th
+          data-field="teilfederlaenge"
+		  data-sortable="true"
+          data-visible="false"
+        >Teilfederlänge</th>
+        <th
+          data-field="schnabellaenge"
+		  data-sortable="true"
+          data-visible="false"
+        >Schnabellänge</th>
+        <th
+          data-field="schnabel_kopflaenge"
+		  data-sortable="true"
+          data-visible="false"
+        >Schnabel-Kopflänge</th>
+        <th
+          data-field="lauf"
+		  data-sortable="true"
+          data-visible="false"
+        >Lauf</th>
+        <th
+          data-field="gewicht"
+		  data-sortable="true"
+          data-visible="false"
+        >Gewicht</th>
         <th
           data-field="skz_1"
 		  data-sortable="true"
@@ -140,6 +213,16 @@
           data-visible="false"
           data-formatter="concat_farbcodes"
         >Farbringe</th>
+        <th
+          data-field="beringungsort"
+		  data-sortable="true"
+		  data-visible="false"
+        >Beringungsort</th>
+        <th
+          data-field="koordinaten"
+		  data-sortable="true"
+		  data-visible="false"
+        >Koordinaten</th>
         <th
           data-field="bemerkung"
 		  data-sortable="true"
