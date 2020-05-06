@@ -15,9 +15,9 @@
     }
   }
 
-  function exportiert_am_formatter(value, row) {
+  function exportiert_am_formatter(value, row) {	
     if (value != null) {
-      let parts = value.split(' ');
+      let parts = value.toString().split(' ');
       return parts[0].split('-').reverse().join('.') + ' ' + parts[1];
     }
     else {
@@ -59,6 +59,8 @@
     data-toggle="table"
     data-toolbar="#toolbar"
     data-sort-name="datum"
+	data-sort-order="desc"
+	data-sortable="true"	
     data-show-toggle="false"
     data-search="true"
     data-show-columns="true"
@@ -82,6 +84,7 @@
         >Ringnr</th>
         <th
           data-field="beringernr"
+		  data-sortable="true"
         >Beringernr</th>
         <th
           data-field="datum"
@@ -97,32 +100,40 @@
         >Fundart</th>
         <th
           data-field="vogelart"
+		  data-sortable="true"
         >Art</th>
         <th
           data-field="alter"
+		  data-sortable="true"
         >Alter</th>
         <th
           data-field="brutstatus"
+		  data-sortable="true"
           data-visible="false"
         >Brutstatus</th>
         <th
           data-field="skz_1"
+		  data-sortable="true"
           data-visible="false"
         >SKZ 1</th>
         <th
           data-field="skz_2"
+		  data-sortable="true"
           data-visible="false"
         >SKZ 2</th>
         <th
           data-field="fundursache"
+		  data-sortable="true"
           data-visible="false"
         >Fundursache</th>
         <th
           data-field="fundzustand"
+		  data-sortable="true"
           data-visible="false"
         >Fundzustand</th>
         <th
           data-field="inschrift"
+		  data-sortable="true"
           data-visible="false"
         >Inschrift</th>
         <th
@@ -131,6 +142,7 @@
         >Farbringe</th>
         <th
           data-field="bemerkung"
+		  data-sortable="true"
         >Bemerkung</th>
         <th
           data-field="exportiert_am"
@@ -140,9 +152,11 @@
         >Exportiert am</th>
         <th
           data-field="edit"
+		  data-sortable="true"
         ><i class="fa fa-pencil" aria-hidden="true"></i></th>
         <th
           data-field="delete"
+		  data-sortable="true"
         ><i class="fa fa-trash" aria-hidden="true"></i></th>
       </tr>
     </thead>
