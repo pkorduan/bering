@@ -2,7 +2,7 @@
 Programm zur Erfassung von Vogelberingungsdaten
 
 ## Version
-1.0.5
+1.0.11
 
 ## Programmiert von
 Peter Korduan und Christian Seip
@@ -64,3 +64,19 @@ Die Exe liegt einfach im Hauptordner und öffnet im Prinzip nur eine Chromium In
 ## Migrations
 Zum Ausführen einer neuen Migration eine neue SQL-Datei in den Ordner app/db/migrations ablegen und die Anwendung neu Starten.
 Jede erfolgreich durchgeführte Migration wird in der Tabelle Migrationen abgelegt. Um eine Migration nochmal auszuführen, einfach den Eintrag in Migrationen löschen, alle Änderuengen in der Datenbank rückgängig machen, die bereits durch die vorherige gemacht wurden und die Anwendung neu starten.
+
+## Releas Notes
+**1.0.11**
+* Fehlermeldung wenn bei Flügel, Teilfeder und/oder Gewicht ein Wert ohne Nachkommastelle eingegeben wird
+* Fehlermeldung wenn bei Uhrzeit ein Wert ohne Minuten eingegeben wird
+* Fehlermeldung wenn bei Wiederfunden Fundzustand und Fundursache nicht eingegeben wurden
+* Fehlermeldung, wenn bei allen Datensätzen Gewicht angegeben wird, MUSS die Uhrzeit angegeben werden
+* Suchfunktion, Sortiermöglichkeit und Anzeige nach Ringnummer und/oder Art, auf- oder abwärts usw., damit man nicht immer alle Beringungen/Wiederfunde auf der Seite hat, sondern sagen kann: "Ich möchte alle Alpenstrandläufer, deren Ringserie mit OC beginnt"
+* Sortierungsmöglickeiten in Tabellen
+* Filterung: so dass man nach Art und/oder Ringnummer und/oder Datum (vlt. da nur Monat/Jahr) filtern kann. Anzeige aller Attribute muss möglich sein, wenn nicht gewünscht, sollten dies händisch auszublenden sein. Na die Übersicht zeigt jetzt nur einen Teilbereich, ich möchte quasi auswählen können, welche mir angezeigt werden. So ist für manche das Schnabelmaß entscheidend, ich will aber eher Flügel und Gewicht sehen, andere wiederum alles
+* Vorausfüllung/Defaultwert: Fundumstände "gefangen mit spez. Methode" und "kontrolliert von Beringer"/„lebend und frei von Beringer“
+* Pflichtfelder beim Ausfüllen Beringung: Ringnummer, Art, Alter, Datum, Uhrzeit, bei Funden: Ringnummer, Art, Alter, Datum, Uhrzeit, Fundursache und Fundzustand.
+* Änderungen an bestehenden Datensätzen müssen auch möglich sein, wenn ein Export der Daten des Beringers bereits erfolgte
+* Datum und die Uhrzeit nicht automatisch setzen, also einen Button, dass das automatische "Mitlaufen" deaktiviert
+**1.0.5**
+* Basisversion
