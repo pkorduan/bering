@@ -121,7 +121,8 @@ module.exports.rpad = function (value, length = value.length, fillChar = ' ') {
 module.exports.export = function(filter = []) {
   log('controllers.exports.export filter: ' + JSON.stringify(filter));
   let fundart = filter[0].slice(-1),
-      select = "*",
+      //select = "*",
+      select = "id, beringernr, zentrale, ringnr, bemerkung, vogelart, datum, uhrzeit, geschlecht, \"alter\", printf(\"%.1f\", fluegellaenge) AS fluegellaenge, printf(\"%.1f\", teilfederlaenge) AS teilfederlaenge, printf(\"%.1f\", schnabellaenge) AS schnabellaenge, printf(\"%.1f\", schnabel_kopflaenge) AS schnabel_kopflaenge, printf(\"%.1f\", lauf) AS lauf, printf(\"%.1f\", gewicht) AS gewicht, brutstatus, beringungsort, koordinaten, skz_1, skz_2, farbring_liun, farbring_liob, farbring_reun, farbring_reob, inschrift, fundart, fundzustand, fundursache, exportiert_am",
       where = filter.concat(
         "beringernr = '" + window.session.beringernr + "'",
         "exportiert_am IS NULL"
