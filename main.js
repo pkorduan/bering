@@ -34,7 +34,7 @@ app.on('ready', function () {
   )
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  //mainWindow.webContents.openDevTools()
 
   // Enable keyboard shortcuts for Developer Tools on various platforms.
   let platform = os.platform()
