@@ -30,7 +30,11 @@ module.exports.start = function() {
     else {
       $('#admin_help_div').hide();
     }
+    //Quick and Dirty: Unnötiger Scrollbalken verschwindet sonst nur beim ersten Klick auf eines der Menüelemente links (Alle Beringungen etc.)
+	//hängt mit dem Wunsch nach fixem Tabellenkopf zusammen!
+	window.resizeTo(1600, 500);
     window.controllers.beringungen.list($('#list_all_data_menue_link'));
+	window.resizeTo(1600, 1020);
   } else {
     $('#menu').hide();
     $('.nav-item').hide();

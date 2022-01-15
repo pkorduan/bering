@@ -127,7 +127,8 @@ module.exports.export = function(filter = []) {
         "beringernr = '" + window.session.beringernr + "'",
         "exportiert_am IS NULL"
       ).join(' AND '),
-      order = "datum, uhrzeit",
+      //order = "datum, uhrzeit",
+	  order = "ringnr",
       beringungen = window.models.beringung.findWhere(select, where, '', order),
       export_verzeichnis = window.models.setting.findByBezeichnung('export_verzeichnis').wert,
       beringungsort_kreis = window.models.setting.findByBezeichnung('beringungsort_kreis').wert,

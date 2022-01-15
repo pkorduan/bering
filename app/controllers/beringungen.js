@@ -281,7 +281,7 @@ module.exports.init = function() {
 }
 
 module.exports.searchForm = function() {
-  log('controllers.beringungen.controllers.start');
+  log('controllers.beringungen.searchForm');
 
   $('.sidebar').hide()
   $('#beringungen_menu').show()
@@ -491,6 +491,7 @@ module.exports.newFund = function(beringung) {
   $('#beringung_speichern_uebernehmen_button').hide()
 
   this.openNewForm()
+  //this.searchForm()
   //Bei nochmaligem Eintragen eines Funds erscheinen sonst die Felder Fundursache und Zustand nicht
   $('#fundursache_und_zustand_div').show()
 }

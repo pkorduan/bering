@@ -19,7 +19,7 @@ app.on('ready', function () {
     title: config.productName,
     show: false,
     width: 1600,
-    height: 1500,
+    height: 1020,
     icon: path.join(__dirname, 'assets/icons/png/64x64.png'),
     webPreferences: {
       nodeIntegration: true
@@ -34,7 +34,7 @@ app.on('ready', function () {
   )
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  //mainWindow.webContents.openDevTools()
 
   // Enable keyboard shortcuts for Developer Tools on various platforms.
   let platform = os.platform()
