@@ -48,6 +48,7 @@ module.exports.init = function() {
     function(evt) {
       evt.data.context.saveBeringungsort(
         $('#settings_edit_form input[name=beringungsort]').val(),
+        $('#settings_edit_form input[name=beringungsort_id]').val(),
         $('#settings_edit_form input[name=beringungsort_position]').val(),
         $('#settings_edit_form input[name=beringungsort_kreis]').val(),
         $('#settings_edit_form input[name=zentrale]').val()
@@ -55,6 +56,12 @@ module.exports.init = function() {
     }
   )
   $('#settings_edit_form input[name=beringungsort]').on(
+    'keyup',
+    function(evt) {
+      $('#settings_edit_form button[id=change_beringungsort_button]').show()
+    }
+  )
+  $('#settings_edit_form input[name=beringungsort_id]').on(
     'keyup',
     function(evt) {
       $('#settings_edit_form button[id=change_beringungsort_button]').show()
@@ -215,12 +222,16 @@ module.exports.init = function() {
 
 }
 
-module.exports.saveBeringungsort = function(beringungsort, beringungsort_position, beringungsort_kreis, zentrale) {
+module.exports.saveBeringungsort = function(beringungsort, beringungsort_id, beringungsort_position, beringungsort_kreis, zentrale) {
   log('controllers.settings.saveBerinungsort')
 
   window.models.setting.update({
     'bezeichnung' : 'beringungsort',
     'wert' : beringungsort
+  })
+  window.models.setting.update({
+    'bezeichnung' : 'beringungsort_id',
+    'wert' : beringungsort_id
   })
   window.models.setting.update({
     'bezeichnung' : 'beringungsort_position',

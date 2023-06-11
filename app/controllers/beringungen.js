@@ -364,6 +364,7 @@ module.exports.list = function(target, filter = []) {
         farbring_reob: v.farbring_reob,
         farbring_reun: v.farbring_reun,
         inschrift: v.inschrift,
+		ortid: v.ortid,
         beringungsort: v.beringungsort,
         koordinaten: v.koordinaten,
         bemerkung: v.bemerkung,
@@ -585,6 +586,7 @@ module.exports.insert = function(evt, uebernehmen = false) {
     log('Alle Eingabenn valide!')
     let kvps = window.models.dbMapper.getFormFieldKVPs('beringung_edit_form')
 
+    kvps['ortid'] = window.models.setting.findByBezeichnung('beringungsort_id').wert
     kvps['beringungsort'] = window.models.setting.findByBezeichnung('beringungsort').wert
     kvps['koordinaten'] = window.models.setting.findByBezeichnung('beringungsort_position').wert
     kvps['zentrale'] = window.models.setting.findByBezeichnung('zentrale').wert
