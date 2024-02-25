@@ -2,7 +2,7 @@
 Programm zur Erfassung von Vogelberingungsdaten
 
 ## Version
-1.0.5
+1.0.13
 
 ## Programmiert von
 Peter Korduan und Christian Seip
@@ -41,7 +41,6 @@ oder für beide auf einmal:
 
 **Löschen nicht benötigter Daten**
 Anschließend werden eine Menge Dateien erzeugt, von denen man nicht alle benötigt. Deshalb sind zu löschen:
-- Ordner "locales"
 - api*.dll
 - blink_image_resources_200_percent.pak
 - content_resources_200_percent.pak
