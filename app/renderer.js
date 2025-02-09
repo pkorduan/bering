@@ -2,11 +2,13 @@
 
 const fs = require('fs')
 const path = require('path')
-const app = require('electron').remote.app
+//const app = require('electron').remote.app
+const remote = require('@electron/remote')
+const { app, dialog } = remote
+//Anpassung neue Remote-Version Ende
 const cheerio = require('cheerio')
 const showdown = require('showdown')
 const SHA256 = require('crypto-js/sha256')
-const dialog = require('electron').remote.dialog
 const debug = true
 
 window.$ = window.jQuery = require('jquery')

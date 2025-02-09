@@ -26,6 +26,10 @@
     "sql.js": "^0.4.0",
     "tether": "^1.4.0"
   },
+  "devDependencies": {
+    "electron": "^30.0.1",
+    "@electron/remote": "^2.1.2"
+  },
   "standard": {
     "globals": [
       "$"
