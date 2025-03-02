@@ -48,13 +48,25 @@ module.exports.init = function() {
     function(evt) {
       evt.data.context.saveBeringungsort(
         $('#settings_edit_form input[name=beringungsort]').val(),
+		$('#settings_edit_form input[name=beringungsort_id]').val(),
         $('#settings_edit_form input[name=beringungsort_position]').val(),
         $('#settings_edit_form input[name=beringungsort_kreis]').val(),
-        $('#settings_edit_form input[name=zentrale]').val()
+        $('#settings_edit_form input[name=zentrale]').val(),
+		$('#settings_edit_form input[name=beringungsort_zwei]').val(),
+		$('#settings_edit_form input[name=beringungsort_zwei_id]').val(),
+        $('#settings_edit_form input[name=beringungsort_position_zwei]').val(),
+        $('#settings_edit_form input[name=beringungsort_kreis_zwei]').val(),
+        $('#settings_edit_form input[name=zentrale_zwei]').val()
       )
     }
   )
   $('#settings_edit_form input[name=beringungsort]').on(
+    'keyup',
+    function(evt) {
+      $('#settings_edit_form button[id=change_beringungsort_button]').show()
+    }
+  )
+  $('#settings_edit_form input[name=beringungsort_id]').on(
     'keyup',
     function(evt) {
       $('#settings_edit_form button[id=change_beringungsort_button]').show()
@@ -76,6 +88,46 @@ module.exports.init = function() {
     'keyup',
     function(evt) {
       $('#settings_edit_form button[id=change_beringungsort_button]').show()
+    }
+  )
+  
+  $('#settings_edit_form input[name=beringungsort_zwei]').on(
+    'keyup',
+    function(evt) {
+      $('#settings_edit_form button[id=change_beringungsort_button]').show()
+    }
+  )
+  $('#settings_edit_form input[name=beringungsort_zwei_id]').on(
+    'keyup',
+    function(evt) {
+      $('#settings_edit_form button[id=change_beringungsort_button]').show()
+    }
+  )
+  $('#settings_edit_form input[name=beringungsort_position_zwei]').on(
+    'keyup',
+    function(evt) {
+      $('#settings_edit_form button[id=change_beringungsort_button]').show()
+    }
+  )
+  $('#settings_edit_form input[name=beringungsort_kreis_zwei]').on(
+    'keyup',
+    function(evt) {
+      $('#settings_edit_form button[id=change_beringungsort_button]').show()
+    }
+  )
+  $('#settings_edit_form input[name=zentrale_zwei]').on(
+    'keyup',
+    function(evt) {
+      $('#settings_edit_form button[id=change_beringungsort_button]').show()
+    }
+  )  
+
+  $('#settings_edit_form input[name=beringungsort_zwei_nutzen').on(
+    'click',
+    function(evt) {
+	  log('Klick auf beringungsort_zwei_nutzen')
+      $('#settings_edit_form div[id=beringungsort_zwei_div]').show()
+	  $('#settings_edit_form button[id=change_beringungsort_button]').show()
     }
   )
 
@@ -177,12 +229,15 @@ module.exports.init = function() {
   $('.setting_link').on(
     'click',
     function (evt) {
+		//log('Klick auf Settings-Überschrift')
+		let beringungsort_zwei_nutzen_wert = ($('#settings_edit_form input[name=beringungsort_zwei_nutzen]').is(':checked') ? 'an' : 'aus')
       if ($(evt.target).next().is(':visible')) {
         $(evt.target).next().hide()
       }
       else {
         $('.setting_div').hide()
         $(evt.target).next().toggle()
+		if (beringungsort_zwei_nutzen_wert == "an" && evt.target.id == 'beringungsort_link') $('#settings_edit_form div[id=beringungsort_zwei_div]').show()
       }
     }
   )
@@ -214,12 +269,16 @@ module.exports.init = function() {
 
 }
 
-module.exports.saveBeringungsort = function(beringungsort, beringungsort_position, beringungsort_kreis, zentrale) {
+module.exports.saveBeringungsort = function(beringungsort, beringungsort_id, beringungsort_position, beringungsort_kreis, zentrale, beringungsort_zwei, beringungsort_zwei_id, beringungsort_position_zwei, beringungsort_kreis_zwei, zentrale_zwei) {
   log('controllers.settings.saveBerinungsort')
 
   window.models.setting.update({
     'bezeichnung' : 'beringungsort',
     'wert' : beringungsort
+  })
+  window.models.setting.update({
+    'bezeichnung' : 'beringungsort_id',
+    'wert' : beringungsort_id
   })
   window.models.setting.update({
     'bezeichnung' : 'beringungsort_position',
@@ -232,6 +291,33 @@ module.exports.saveBeringungsort = function(beringungsort, beringungsort_positio
   window.models.setting.update({
     'bezeichnung' : 'zentrale',
     'wert' : zentrale
+  })
+  
+    window.models.setting.update({
+    'bezeichnung' : 'beringungsort_zwei',
+    'wert' : beringungsort_zwei
+  })
+  window.models.setting.update({
+    'bezeichnung' : 'beringungsort_zwei_id',
+    'wert' : beringungsort_zwei_id
+  })
+  window.models.setting.update({
+    'bezeichnung' : 'beringungsort_position_zwei',
+    'wert' : beringungsort_position_zwei
+  })
+  window.models.setting.update({
+    'bezeichnung' : 'beringungsort_kreis_zwei',
+    'wert' : beringungsort_kreis_zwei
+  })
+  window.models.setting.update({
+    'bezeichnung' : 'zentrale_zwei',
+    'wert' : zentrale_zwei
+  })
+  
+  let wert = ($('#settings_edit_form input[name=beringungsort_zwei_nutzen]').is(':checked') ? 'an' : 'aus')
+  window.models.setting.update({
+	'bezeichnung' : 'beringungsort_zwei_nutzen',
+	'wert' : wert
   })
 
   $('#change_beringungsort_button').hide()

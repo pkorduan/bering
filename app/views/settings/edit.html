@@ -26,12 +26,27 @@
       <div id="beringungsort_div" class="setting_div" style="display: none">
         <input class="col-sm-4 form-control" type="text" name="beringungsort" placeholder="Beringungsort">
         <small id="beringungsort_kreisHelpInline" class="col-sm-4 text-muted">Bezeichnung</small><br>
+		<input class="col-sm-4 form-control" type="text" name="beringungsort_id" id="beringungsort_id" placeholder="Beringungsort ID">
+        <small id="beringungsort_kreisHelpInline" class="col-sm-4 text-muted">OrtID</small><br>
         <input class="col-sm-4 form-control" type="text" name="beringungsort_position" placeholder="Position">
         <small id="beringungsort_kreisHelpInline" class="col-sm-4 text-muted">Koordinaten</small><br>
         <input class="col-sm-4 form-control" type="text" name="beringungsort_kreis" placeholder="Landkreis">
         <small id="beringungsort_kreisHelpInline" class="col-sm-4 text-muted">Landkreis</small><br>
         <input class="col-sm-4 form-control" type="text" name="zentrale" placeholder="Zentrale">
         <small id="zentraleHelpInline" class="col-sm-4 text-muted">Vogelwarte</small><br>
+		<input type="checkbox" class="admin_setting_input" name="beringungsort_zwei_nutzen"> Zweiten Beringungsort angeben und verwenden<br>
+		<div id="beringungsort_zwei_div" class="setting_div" style="display: none">
+			<input class="col-sm-4 form-control" type="text" name="beringungsort_zwei" placeholder="2. Beringungsort">
+			<small id="beringungsort_kreisHelpInline" class="col-sm-4 text-muted">Bezeichnung 2. Ort</small><br>
+			<input class="col-sm-4 form-control" type="text" name="beringungsort_zwei_id" id="beringungsort_zwei_id" placeholder="2. Beringungsort ID">
+        	<small id="beringungsort_kreisHelpInline" class="col-sm-4 text-muted">OrtID</small><br>
+			<input class="col-sm-4 form-control" type="text" name="beringungsort_position_zwei" placeholder="Position 2. Beringungsort">
+			<small id="beringungsort_kreisHelpInline" class="col-sm-4 text-muted">Koordinaten</small><br>
+			<input class="col-sm-4 form-control" type="text" name="beringungsort_kreis_zwei" placeholder="Landkreis 2. Beringungsort">
+			<small id="beringungsort_kreisHelpInline" class="col-sm-4 text-muted">Landkreis</small><br>
+			<input class="col-sm-4 form-control" type="text" name="zentrale_zwei" placeholder="Zentrale 2. Beringungsort">
+			<small id="zentraleHelpInline" class="col-sm-4 text-muted">Vogelwarte</small><br>
+		</div>
         <button id="change_beringungsort_button" type="button" class="button" style="display: none">Speichern</button>
       </div>
       <br>
