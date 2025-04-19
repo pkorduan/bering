@@ -50,9 +50,11 @@ s. [Context Isolation](https://stackoverflow.com/questions/57807459/how-to-use-p
 
 ## Installation
 Voraussetzung: Installation von node.js
+```
 cd /Verzeichnis/der/Anwendung/
 git clone https://github.com/pkorduan/bering.git
 node start
+```
 
 ## Build und Pack
 **Electron-Packager**
