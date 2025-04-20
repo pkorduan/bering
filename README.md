@@ -2,7 +2,7 @@
 Programm zur Erfassung von Vogelberingungsdaten
 
 ## Version
-1.0.5
+1.5 - ProRing
 
 ## Programmiert von
 Peter Korduan und Christian Seip
@@ -14,16 +14,47 @@ GDI-Service Rostock (gdi-service.de)
 - Unterscheidung zwischen Neu-, Wieder- und Fremdfunden.
 - Export in Daten pro Beringer für das BERIHID Programm.
 
+## Anpassungen aktuelle Node und Electron Versionen (Context Isolation)
+- app/renderer.js
+```
+const remote = require('@electron/remote')
+const { app, dialog } = remote
+```
+statt
+```
+const app = require('electron').remote.app
+const dialog = require('electron').remote.dialog
+```
+- main.js
+
+-- neu zusätzlich:
+```
+require('@electron/remote/main').initialize()
+require("@electron/remote/main").enable(mainWindow.webContents)
+```
+-- webPreferences Einstellungen so:
+```
+nodeIntegration: true,
+contextIsolation: false
+```
+s. [Context Isolation](https://stackoverflow.com/questions/57807459/how-to-use-preload-js-properly-in-electron)
+
+- package.json
+```
+ "devDependencies": {
+     "electron": "^30.0.1",
+     "@electron/remote": "^2.1.2"
+   },
+```
+(damit Ablösung globaler Electron-Installation)
+
 ## Installation
-Installation von node.js und electron
-https://electronjs.org/docs/tutorial/installation
-sudo apt-get install node.js
-sudo apt-get install npm
-sudo apt-get install nodejs-legacy
-npm install electron --save-dev --save-exact -g
+Voraussetzung: Installation von node.js
+```
 cd /Verzeichnis/der/Anwendung/
 git clone https://github.com/pkorduan/bering.git
-electron .
+node start
+```
 
 ## Build und Pack
 **Electron-Packager**
@@ -41,7 +72,6 @@ oder für beide auf einmal:
 
 **Löschen nicht benötigter Daten**
 Anschließend werden eine Menge Dateien erzeugt, von denen man nicht alle benötigt. Deshalb sind zu löschen:
-- Ordner "locales"
 - api*.dll
 - blink_image_resources_200_percent.pak
 - content_resources_200_percent.pak
