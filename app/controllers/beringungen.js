@@ -586,10 +586,27 @@ module.exports.insert = function(evt, uebernehmen = false) {
     log('Alle Eingabenn valide!')
     let kvps = window.models.dbMapper.getFormFieldKVPs('beringung_edit_form')
 
-    kvps['ortid'] = window.models.setting.findByBezeichnung('beringungsort_id').wert
-    kvps['beringungsort'] = window.models.setting.findByBezeichnung('beringungsort').wert
-    kvps['koordinaten'] = window.models.setting.findByBezeichnung('beringungsort_position').wert
-    kvps['zentrale'] = window.models.setting.findByBezeichnung('zentrale').wert
+    //kvps['ortid'] = window.models.setting.findByBezeichnung('beringungsort_id').wert
+    //kvps['beringungsort'] = window.models.setting.findByBezeichnung('beringungsort').wert
+    //kvps['koordinaten'] = window.models.setting.findByBezeichnung('beringungsort_position').wert
+    //kvps['zentrale'] = window.models.setting.findByBezeichnung('zentrale').wert
+	
+	let beringungsort_zwei_nutzen =  window.models.setting.findByBezeichnung('beringungsort_zwei_nutzen').wert
+	
+	log('beringungsort_zwei_nutzen: ' + beringungsort_zwei_nutzen)
+	
+	if (beringungsort_zwei_nutzen == "aus") {
+        kvps['beringungsort'] = window.models.setting.findByBezeichnung('beringungsort').wert
+		kvps['ortid'] = window.models.setting.findByBezeichnung('beringungsort_id').wert
+        kvps['koordinaten'] = window.models.setting.findByBezeichnung('beringungsort_position').wert
+        kvps['zentrale'] = window.models.setting.findByBezeichnung('zentrale').wert
+	}
+	else {
+		kvps['beringungsort'] = window.models.setting.findByBezeichnung('beringungsort_zwei').wert
+		kvps['ortid'] = window.models.setting.findByBezeichnung('beringungsort_zwei_id').wert
+        kvps['koordinaten'] = window.models.setting.findByBezeichnung('beringungsort_position_zwei').wert
+        kvps['zentrale'] = window.models.setting.findByBezeichnung('zentrale_zwei').wert
+	}
 
     window.controllers.start.backupDb()
 
