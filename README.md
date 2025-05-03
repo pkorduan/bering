@@ -53,7 +53,7 @@ Voraussetzung: Installation von node.js
 ```
 cd /Verzeichnis/der/Anwendung/
 git clone https://github.com/pkorduan/bering.git
-node start
+npm start
 ```
 
 ## Build und Pack

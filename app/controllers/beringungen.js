@@ -472,8 +472,11 @@ module.exports.newFund = function(beringung) {
   $('form#beringung_edit_form :input[id=fundursache]').val(22)
   $('form#beringung_edit_form :input[id=fundzustand]').val(6)
 
+  var funddatum = new Date(beringung.datum)
+  var options = {year: "numeric", month: "long", day: "numeric"};
+  
   if (beringung.fundart == 2) {
-    $('#beringung_edit_title').html('Eigener Wiederfund (letzte Daten übernommen)')
+    $('#beringung_edit_title').html('Eigener Wiederfund (letzte Daten übernommen) vom '+funddatum.toLocaleString("de-DE", options)+' '+beringung.uhrzeit.substr(0, 5)+' Uhr')
     $('#beringung_beringernr_alt_div').hide()
   }
   else {
