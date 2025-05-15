@@ -229,6 +229,7 @@ module.exports.updateExportDate = function(where) {
 }
 
 module.exports.validate = function (field) {
+  log('models.beringung.validate');
   let result = {
     valid: true,
     message: ''
@@ -238,6 +239,80 @@ module.exports.validate = function (field) {
       if (field.value == '') {
         result.valid = false
         result.message = 'Die Ringnummer muss angegeben werden!'
+      }
+	  //Fundart lt. Formular muss genutzt werden, da in der DB das Datensatz noch als Beringung steht und durch das Speichern ja erst zum Wiederfund wird
+	  //Merke: Beringung -> beringung.fundart = 1 | Eigenwiederfund -> beringung.fundart = 2 | Fremdwiederfund -> beringung.fundart = 3
+	  else if (typeof this.findByRingnr(field.value).ringnr !== 'undefined' && $('#fundart').val() == '1' && document.getElementById('beringung_edit_title').innerHTML != 'Änderung Beringungsdaten'){
+		  result.valid = false
+          result.message = 'Die Ringnummer existiert bereits!'
+	  }
+	} break;
+	case (['vogelart'].indexOf(field.id) > -1) : {
+      if (field.value == '') {
+        result.valid = false
+        result.message = 'Die Vogelart muss angegeben werden!'
+      }
+	} break;
+	case (['uhrzeit'].indexOf(field.id) > -1) : {
+		if (field.value == '') {
+			result.valid = true
+      }
+		else if (field.value.indexOf(":") == -1 || field.value.substr(-2, 2).indexOf(":") != -1) {
+			result.valid = false
+			result.message = 'Uhrzeit muss mit Minuten angegeben werden!'
+		}
+		else if (field.value.substr(-2, 2) >59) {
+			result.valid = false
+			result.message = 'Minuten bzw. Sekunden dürfen nicht größer 59 sein!'
+		}
+    } break;
+	case (['alter'].indexOf(field.id) > -1) : {
+      if (field.value == '') {
+        result.valid = false
+        result.message = 'Das Alter muss angegeben werden!'
+      }
+	} break;
+	case (['fluegellaenge'].indexOf(field.id) > -1) : {
+	  if (field.value == '') {
+			result.valid = true
+      }
+		else if (field.value.indexOf(".") == -1) {
+			result.valid = false
+			result.message = 'Flügellänge muss mit Nachkommastelle angegeben werden!'
+		}
+    } break;
+	case (['teilfederlaenge'].indexOf(field.id) > -1) : {
+		if (field.value == '') {
+			result.valid = true
+      }
+		else if (field.value.indexOf(".") == -1) {
+			result.valid = false
+			result.message = 'Teilfederlänge muss mit Nachkommastelle angegeben werden!'
+		}
+    } break;
+	case (['gewicht'].indexOf(field.id) > -1) : {
+		if (field.value != '' && $("#uhrzeit").val() == '') {
+			result.valid = false
+			result.message = 'Die Uhrzeit muss angegeben werden!'
+		}
+		if (field.value == '') {
+			result.valid = true
+        }
+		else if (field.value.indexOf(".") == -1) {
+			result.valid = false
+			result.message = 'Gewicht muss mit Nachkommastelle angegeben werden!'
+		}
+      } break;
+	case (['fundursache'].indexOf(field.id) > -1) : {
+		if (field.value == '' && !$("#fundursache").is(":hidden")) {
+			result.valid = false
+			result.message = 'Fundursache muss angegeben werden!'
+      }
+    } break;
+	case (['fundzustand'].indexOf(field.id) > -1) : {
+		if (field.value == '' && !$("#fundzustand").is(":hidden")) {
+			result.valid = false
+			result.message = 'Fundzustand muss angegeben werden!'
       }
     } break
   }

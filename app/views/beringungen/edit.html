@@ -6,7 +6,7 @@
     value = value.replace(',', '.');
 
     // convert to float type
-    value = parseFloat(value);
+    value = parseFloat(value).toFixed(1);
 
     if (isNaN(value)) {
       // remove text if it is not number
@@ -14,22 +14,32 @@
     }
     else {
       // round to one digit
-      value = value.toFixed(1)
+      //value = value.toFixed(1)
 
       // make always positive
-      value = Math.abs(value);
+      //value = Math.abs(value);
 
-      // make not larger than 5000
+      // make not larger than 20000?
       value = (value > max ? max : value);
 
-      // make not smaller than 1
+      // make not smaller than 0,1?
       value = (value < min ? min : value);
 
-      return value;
+	  return value;
+      //return toNumberString(value);
     }
 
     return value;
   }
+  
+  //To alow automatic e. g. "10.0" or "10" entries (added .0 automatically)
+  function toNumberString(num) { 
+	  if (Number.isInteger(num)) { 
+		return num + ".0"
+	  } else {
+		return num.toString(); 
+	  }
+	}
 </script>
 <h2><span id="beringung_edit_title">Beringung Ändern</span></h2>
 <div id="beringung_edit" class="container">
@@ -86,14 +96,14 @@
     -->
 
     <div class="form-group row">
-      <label class="col-sm-3 col-form-label" for="ringnr">Ringnummer</label>
+      <label class="col-sm-3 col-form-label font-weight-bold" for="ringnr">Ringnummer</label>
       <input class="col-sm-4 form-control" type="text" id="ringnr" aria-describedby="ringnrHelpInline">
       <div class="form-control-feedback" id="ringnrFB"></div>
       <small id="ringnrHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
     </div>
 
     <div class="form-group row">
-      <label class="col-sm-3 col-form-label" for="vogelart">Vogelart</label>
+      <label class="col-sm-3 col-form-label font-weight-bold" for="vogelart">Vogelart</label>
       <select class="col-sm-4 form-control" id="vogelart">
         <option value=""></option>
       </select>
@@ -102,7 +112,7 @@
     </div>
 
     <div class="form-group row"  id="beringung_datepicker">
-      <label class="col-sm-3 col-form-label" for="datum">Datum</label>
+      <label class="col-sm-3 col-form-label font-weight-bold" for="datum">Datum</label>
       <!-- <input type='text' class="form-control"  id="datum" -->
       <input class="col-sm-4 form-control" type='text' id="datum" aria-describedby="datumHelpInline"/>
       <span id="input_pick" class="input-group-addon" style="display:none">
@@ -119,15 +129,15 @@
           <!-- Datum.</small> -->
       <!-- </div> -->
     <div class="form-group row bootstrap-timepicker timepicker" id="beringung_timepicker">
-        <label class="col-sm-3 col-form-label" for="uhrzeit">Uhrzeit</label>
+        <label class="col-sm-3 col-form-label font-weight-bold" for="uhrzeit">Uhrzeit</label>
         <input class="col-sm-4 form-control" type="text" id="uhrzeit"
           aria-describedby="uhrzeitHelpInline">
       <div class="form-control-feedback" id="uhrzeitFB"></div>
-        <small id="uhrzeitHelpInline" class="col-sm-4 align-top form-text text-muted">(Exportiert wird volle Stunde)</small>
+        <small id="uhrzeitHelpInline" class="col-sm-4 align-top form-text text-muted">(HH:MM:SS, geht auch ohne Sekundenangabe)</small>
       </div>
 
     <div class="form-group row">
-      <label class="col-sm-3 col-form-label" for="alter">Alter</label>
+      <label class="col-sm-3 col-form-label font-weight-bold" for="alter">Alter</label>
       <select class="col-sm-4 form-control" id="alter">
         <option value=""></option>
       </select>
@@ -178,7 +188,8 @@
       </div>
     <div class="form-group row">
       <label class="col-sm-3 col-form-label" for="gewicht">Gewicht</label>
-      <input class="col-sm-4 form-control" type="text" id="gewicht" onchange="this.value = setOneNumberDecimal(this.value, 1.0, 20000);">
+      <input class="col-sm-4 form-control" type="text" id="gewicht" onchange="this.value = setOneNumberDecimal(this.value, 0.0, 20000);">
+     <!--<input class="col-sm-4 form-control" type="text" id="gewicht">-->
       <div class="form-control-feedback" id="gewichtFB"></div>
       <small id="gewichtHelpInline" class="col-sm-4 align-top form-text text-muted">g</small>
     </div>
@@ -208,7 +219,7 @@
       <div class="form-control-feedback" id="skz_2FB"></div>
       <small id="skz_2HelpInline" class="col-sm-4 align-top form-text text-muted"></small>
     </div>
-
+	
     <div id="farbring_und_inschrift_div">
       <!--div class="form-group row">
         <label class="col-sm-3 col-form-label" for="farbring"></label>
@@ -251,19 +262,23 @@
       </div>
     </div>
 
-    <div id="fundursache_und_zustand_div" class="form-group row">
-      <label class="col-sm-3 col-form-label" for="fundursache">Fundursache</label>
-      <select class="col-sm-4 form-control" id="fundursache">
-        <option value=""></option>
-      </select>
-      <div class="form-control-feedback" id="fundursacheFB"></div>
-      <small id="fundursacheHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
-      <label class="col-sm-3 col-form-label" for="fundzustand">Fundzustand</label>
-      <select class="col-sm-4 form-control" id="fundzustand">
-        <option value=""></option>
-      </select>
-      <div class="form-control-feedback" id="fundzustandFB"></div>
-      <small id="skz_2HelpInline" class="col-sm-4 align-top form-text text-muted"></small>
+    <div id="fundursache_und_zustand_div">
+      <div class="form-group row">
+		  <label class="col-sm-3 col-form-label font-weight-bold" for="fundursache">Fundursache</label>
+		  <select class="col-sm-4 form-control" id="fundursache">
+			<option value=""></option>
+		  </select>
+		  <div class="form-control-feedback" id="fundursacheFB"></div>
+		  <small id="fundursacheHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
+	  </div>
+	  <div class="form-group row">
+		  <label class="col-sm-3 col-form-label font-weight-bold" for="fundzustand">Fundzustand</label>
+		  <select class="col-sm-4 form-control" id="fundzustand">
+			<option value=""></option>
+		  </select>
+		  <div class="form-control-feedback" id="fundzustandFB"></div>
+		<small id="fundzustandHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
+	</div>
     </div>
 
     <div class="form-group row">

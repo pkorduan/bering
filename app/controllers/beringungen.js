@@ -153,7 +153,7 @@ module.exports.init = function() {
     $('#beringung_edit_form select[id=alter]').append(
       $('<option>', {
         value: item.code,
-        text : item.bezeichnung_de
+        text : item.bezeichnung_de+" ("+item.code+")"
       })
     );
   });
@@ -281,7 +281,7 @@ module.exports.init = function() {
 }
 
 module.exports.searchForm = function() {
-  log('controllers.beringungen.controllers.start');
+  log('controllers.beringungen.searchForm');
 
   $('.sidebar').hide()
   $('#beringungen_menu').show()
@@ -339,6 +339,7 @@ module.exports.list = function(target, filter = []) {
     function(index, v) {
       rows.push({
         id: v.id,
+		zentrale: v.zentrale,
         ringnr: v.ringnr,
         beringernr: v.beringernr,
         datum: v.datum,
@@ -346,7 +347,14 @@ module.exports.list = function(target, filter = []) {
         fundart: v.fundart,
         vogelart: v.vogelart,
         alter: v.alter,
+		geschlecht: v.geschlecht,
         brutstatus: v.brutstatus,
+        fluegellaenge: v.fluegellaenge,
+        teilfederlaenge: v.teilfederlaenge,
+        schnabellaenge: v.schnabellaenge,
+        schnabel_kopflaenge: v.schnabel_kopflaenge,
+		lauf: v.lauf,
+        gewicht: v.gewicht,
         skz_1: v.skz_1,
         skz_2: v.skz_2,
         fundursache: v.fundursache,
@@ -356,6 +364,9 @@ module.exports.list = function(target, filter = []) {
         farbring_reob: v.farbring_reob,
         farbring_reun: v.farbring_reun,
         inschrift: v.inschrift,
+		ortid: v.ortid,
+        beringungsort: v.beringungsort,
+        koordinaten: v.koordinaten,
         bemerkung: v.bemerkung,
         exportiert_am: v.exportiert_am,
         edit: (v.beringernr == window.session.beringernr ? '<a href="#" onclick="window.controllers.beringungen.edit(' + v.id + ')"><i class="fa fa-pencil" aria-hidden="true"></i></a>' : '&nbsp;'),
@@ -407,6 +418,7 @@ module.exports.edit = function(id) {
   $('#beringungen_edit_section').show();
 }
 
+//Mögliches TODO: alle Warnungsmeldungen der Validierung löschen (Bsp.: Noch Meldungen im Fundformular, dan Wechsel auf Beringung)
 module.exports.newBeringung = function(uebernehmen = false) {
   log('controller beringungen.newBerinung uebernehmen:', uebernehmen);
   let beringung = {}
@@ -457,9 +469,14 @@ module.exports.newFund = function(beringung) {
   $('form#beringung_edit_form :input[id=fundart]').val(beringung.fundart)
   $('form#beringung_edit_form :input[id=ringnr]').val(beringung.ringnr).prop('readonly', true)
   $('form#beringung_edit_form :input[id=vogelart]').val(beringung.vogelart)
+  $('form#beringung_edit_form :input[id=fundursache]').val(22)
+  $('form#beringung_edit_form :input[id=fundzustand]').val(6)
 
+  var funddatum = new Date(beringung.datum)
+  var options = {year: "numeric", month: "long", day: "numeric"};
+  
   if (beringung.fundart == 2) {
-    $('#beringung_edit_title').html('Eigener Wiederfund (letzte Daten übernommen)')
+    $('#beringung_edit_title').html('Eigener Wiederfund (letzte Daten übernommen) vom '+funddatum.toLocaleString("de-DE", options)+' '+beringung.uhrzeit.substr(0, 5)+' Uhr')
     $('#beringung_beringernr_alt_div').hide()
   }
   else {
@@ -478,6 +495,9 @@ module.exports.newFund = function(beringung) {
   $('#beringung_speichern_uebernehmen_button').hide()
 
   this.openNewForm()
+  //this.searchForm()
+  //Bei nochmaligem Eintragen eines Funds erscheinen sonst die Felder Fundursache und Zustand nicht
+  $('#fundursache_und_zustand_div').show()
 }
 
 module.exports.date_format = function(date) {
@@ -496,8 +516,14 @@ module.exports.openNewForm = function() {
   $('form#beringung_edit_form :input[id=beringernr]').val(window.session.beringernr);
   $('#beringung_beringername').html(window.session.beringername);
   // aktuellen Zeitstempel setzen
-  $('form#beringung_edit_form :input[id=datum]').val(this.date_format(d));
-  $('form#beringung_edit_form :input[id=uhrzeit]').val(d.toLocaleTimeString());
+  let auto_datum_uhrzeit =  window.models.setting.findByBezeichnung('auto_datum_uhrzeit');
+  log('auto_datum_uhrzeit: ' + auto_datum_uhrzeit.wert);
+  //beringungen = window.models.beringung.findWhere(
+   //(nur_nicht_exportierte_an.wert == 'an' ? filter.concat('exportiert_am IS NULL') : filter).join(' AND ')
+   if (auto_datum_uhrzeit.wert == 'an' ) {
+	  $('form#beringung_edit_form :input[id=datum]').val(this.date_format(d));
+	  $('form#beringung_edit_form :input[id=uhrzeit]').val(d.toLocaleTimeString());
+   }
   // Als insert form markieren
   $('#beringung_speichern_button').val('Insert')
   // Auf view umschalten.
@@ -563,9 +589,27 @@ module.exports.insert = function(evt, uebernehmen = false) {
     log('Alle Eingabenn valide!')
     let kvps = window.models.dbMapper.getFormFieldKVPs('beringung_edit_form')
 
-    kvps['beringungsort'] = window.models.setting.findByBezeichnung('beringungsort').wert
-    kvps['koordinaten'] = window.models.setting.findByBezeichnung('beringungsort_position').wert
-    kvps['zentrale'] = window.models.setting.findByBezeichnung('zentrale').wert
+    //kvps['ortid'] = window.models.setting.findByBezeichnung('beringungsort_id').wert
+    //kvps['beringungsort'] = window.models.setting.findByBezeichnung('beringungsort').wert
+    //kvps['koordinaten'] = window.models.setting.findByBezeichnung('beringungsort_position').wert
+    //kvps['zentrale'] = window.models.setting.findByBezeichnung('zentrale').wert
+	
+	let beringungsort_zwei_nutzen =  window.models.setting.findByBezeichnung('beringungsort_zwei_nutzen').wert
+	
+	log('beringungsort_zwei_nutzen: ' + beringungsort_zwei_nutzen)
+	
+	if (beringungsort_zwei_nutzen == "aus") {
+        kvps['beringungsort'] = window.models.setting.findByBezeichnung('beringungsort').wert
+		kvps['ortid'] = window.models.setting.findByBezeichnung('beringungsort_id').wert
+        kvps['koordinaten'] = window.models.setting.findByBezeichnung('beringungsort_position').wert
+        kvps['zentrale'] = window.models.setting.findByBezeichnung('zentrale').wert
+	}
+	else {
+		kvps['beringungsort'] = window.models.setting.findByBezeichnung('beringungsort_zwei').wert
+		kvps['ortid'] = window.models.setting.findByBezeichnung('beringungsort_zwei_id').wert
+        kvps['koordinaten'] = window.models.setting.findByBezeichnung('beringungsort_position_zwei').wert
+        kvps['zentrale'] = window.models.setting.findByBezeichnung('zentrale_zwei').wert
+	}
 
     window.controllers.start.backupDb()
 
@@ -611,13 +655,16 @@ module.exports.allValid = function() {
         validation = window.models.beringung.validate(field)
         if (!validation.valid) {
           all_valid = false
+		  //log('Feld-Typ: ' + field.type);
           $(field).parent().addClass('has-danger')
           $(field).next().html('&nbsp;&nbsp;&nbsp; ' + validation.message);
           $(field).next().next().html("");
         }
         else {
           if ($(field).parent().hasClass('has-danger')) {
-            $(field).parent().removeClass('has-danger')
+            $(field).parent().removeClass('has-danger');
+			//remove text message as well
+			$(field).next().html("");
           }
         }
       }

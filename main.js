@@ -11,6 +11,9 @@ const BrowserWindow = electron.BrowserWindow
 const dbPath = '//app/db';
 const dbName = 'bering.db';
 
+//Anpassung neue Remote-Version
+require('@electron/remote/main').initialize()
+
 app.setName(config.productName)
 var mainWindow = null
 app.on('ready', function () {
@@ -22,9 +25,13 @@ app.on('ready', function () {
     height: 1500,
     icon: path.join(__dirname, 'assets/icons/png/64x64.png'),
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      contextIsolation: false
     }
   })
+  
+  //Anpassung neue Remote-Version
+  require("@electron/remote/main").enable(mainWindow.webContents)
 
   model.migrateDb(
     app.getAppPath() + dbPath,
@@ -34,7 +41,7 @@ app.on('ready', function () {
   )
 
   // Open the DevTools.
-  //mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   // Enable keyboard shortcuts for Developer Tools on various platforms.
   let platform = os.platform()

@@ -2,17 +2,22 @@
 
 const fs = require('fs')
 const path = require('path')
-const app = require('electron').remote.app
+//const app = require('electron').remote.app
+const remote = require('@electron/remote')
+const { app, dialog } = remote
+//Anpassung neue Remote-Version Ende
 const cheerio = require('cheerio')
 const showdown = require('showdown')
 const SHA256 = require('crypto-js/sha256')
-const dialog = require('electron').remote.dialog
 const debug = true
 
 window.$ = window.jQuery = require('jquery')
 window.Tether = require('tether')
 window.Bootstrap = require('bootstrap')
 window.BootstrapTable = require('bootstrap-table')
+window.TableExport = require('tableexport.jquery.plugin')
+window.XLSX = require('xlsx')
+window.jqueryUI = require('jquery-ui-bundle')
 
 //window.BootstrapDatetimepicker = require('bootstrap-datetimepicker')
 
@@ -32,6 +37,7 @@ window.session = {
 let controllersPath = path.join(app.getAppPath(), 'app', 'controllers')
 window.controllers = {}
 window.controllers.settings = require(path.join(controllersPath, 'settings.js'))
+window.controllers.settingsOrt = require(path.join(controllersPath, 'settings_ort.js'))
 window.controllers.users = require(path.join(controllersPath, 'users.js'))
 window.controllers.help = require(path.join(controllersPath, 'help.js'))
 window.controllers.beringungen = require(path.join(controllersPath, 'beringungen.js'))
