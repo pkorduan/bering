@@ -223,14 +223,15 @@ module.exports.init = function() {
   $('#settings_edit_form .admin_setting_input').on(
     'click',
     function(evt) {
+		log('Klick auf Admin Settings Checkbox')
       $('#settings_edit_form button[id=save_change_functions_button]').show()
     }
   )
-
+  
   $('.setting_link').on(
     'click',
     function (evt) {
-	  //log('Klick auf Settings-Überschrift')
+	  log('Klick auf Settings-Überschrift')
 	  let beringungsort_zwei_nutzen_wert = ($('#settings_edit_form input[name=beringungsort_zwei_nutzen]').is(':checked') ? 'an' : 'aus')
       if ($(evt.target).next().is(':visible')) {
         $(evt.target).next().hide()

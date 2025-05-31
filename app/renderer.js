@@ -39,6 +39,7 @@ window.controllers = {}
 window.controllers.settings = require(path.join(controllersPath, 'settings.js'))
 window.controllers.settingsOrt = require(path.join(controllersPath, 'settings_ort.js'))
 window.controllers.users = require(path.join(controllersPath, 'users.js'))
+window.controllers.attributes = require(path.join(controllersPath, 'attributes.js'))
 window.controllers.help = require(path.join(controllersPath, 'help.js'))
 window.controllers.beringungen = require(path.join(controllersPath, 'beringungen.js'))
 window.controllers.login = require(path.join(controllersPath, 'login.js'))
@@ -54,6 +55,7 @@ window.models = {};
 window.models.beringung = require(path.join(modelsPath, 'beringung.js'))
 window.models.dbMapper = require(path.join(modelsPath, 'db-mapper.js'))
 window.models.user = require(path.join(modelsPath, 'user.js'))
+window.models.attribute = require(path.join(modelsPath, 'attribute.js'))
 window.models.vogelalter = require(path.join(modelsPath, 'vogelalter.js'))
 window.models.vogelarten = require(path.join(modelsPath, 'vogelarten.js'))
 window.models.farbcodes = require(path.join(modelsPath, 'farbcodes.js'))
@@ -100,6 +102,7 @@ $('document').ready(function () {
   window.controllers.help.init();
   window.controllers.settings.init();
   window.controllers.users.init();
+  window.controllers.attributes.init();
   window.controllers.login.init();
   window.controllers.beringungen.init();
   window.controllers.start.init();
