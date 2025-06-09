@@ -4,12 +4,12 @@
 module.exports.init = function() {
   log('controllers.beringungen.init');
 
-  $('#beringung_datepicker input').datepicker({
+  $('#datum_div input').datepicker({
       format: "dd.mm.yyyy",
       todayHighlight: true
   });
 /*
-  $('#beringung_timepicker input').timepicker({
+  $('#uhrzeit_div input').timepicker({
       format: "hh:mm:ss"
   });
 */
@@ -422,6 +422,17 @@ module.exports.edit = function(id) {
 module.exports.newBeringung = function(uebernehmen = false) {
   log('controller beringungen.newBerinung uebernehmen:', uebernehmen);
   let beringung = {}
+  
+  let attributes = window.models.attribute.findWhere()
+  //var indexTest = attributes.findIndex(attribute => attribute.name === 'fundart')
+  //var indexTest = attributes.some(function(item, index) { f = index; return item.name === 'fundart'; });
+  //var testFind = attributes.find(attribute => attribute.name === 'fundart')
+  //var result = $.grep(attributes, function(e){ return e.name === 'fundart'; });
+  //var result = attributes.filter(attribute => attribute.name === 'fundart');
+  //var result = Object.values(attributes).filter(attribute => attribute.name === 'vogelart')
+  //if(indexTest != -1)  log("is in array at " + indexTest)
+  //if (result.length != 0) log(result[0].anzeige)
+  //if (result.length != 0) log(result)
 
   if (uebernehmen) {
     $('#beringung_edit_title').html('Neue Beringung (Daten übernommen)')
@@ -439,19 +450,51 @@ module.exports.newBeringung = function(uebernehmen = false) {
   }
   else {
     $('#beringung_edit_title').html('Neue Beringung')
+	var posArr = []
     $('form#beringung_edit_form :input').each(
       function(i, field) {
+		//log('index: ' + i + ' field: ' + field.id);
+		//Umweg über Object.values nötig, da attributes kein Array sondern ein Objekt ist
+		var result = Object.values(attributes).filter(attribute => attribute.name === field.id)
+		if (result.length != 0) {
+			//log("Anzeigewert aus DB für " + field.id + " ist " + result[0].anzeige)
+			if (result[0].anzeige == 0) $('#'+field.id+'_div').hide()
+			else $('#'+field.id+'_div').show()
+		    //log("Positionswert aus DB für " + field.id + " ist " + result[0].position)
+			//Array mit Positionen der Divs füllen
+			posArr.push({position: result[0].position, divname: field.id+'_div'})
+		}
         $(field).val('')
       }
     )
   }
+  
+  //Array nach Positionen aufsteigend sortieren
+  posArr.sort(function(a, b) {
+    return a.position - b.position;
+  });
+  
+  //Mittels appendTo Divs nach Positionen arrangieren
+  posArr.forEach((element) => {
+	  $('#'+element.divname).appendTo('#beringung_edit_div')
+  });
+
+  //ganz nach oben
+  //$('#fundart_div').prependTo('#beringung_edit_div')
+  //ganz ans Ende, also noch NACH dem Speichern-Button
+  //$('#fundart_div').appendTo('#beringung_edit_div')
+  
+  $('#lauf_div').hide()
 
   $('#beringung_beringernr_alt_div').hide()
   $('#fundursache_und_zustand_div').hide()
   $('#farbring_und_inschrift_div').hide()
   $('form#beringung_edit_form :input[id=fundart]').val(1);
   $('form#beringung_edit_form :input[id=ringnr]').prop('readonly', false).focus()
-  $('#beringung_speichern_uebernehmen_button').show()
+  $('#beringung_speichern_button').show()
+  $('#beringung_speichern_button').appendTo('#beringung_edit_div')
+  $('#beringung_speichern_uebernehmenbutton').show()
+  $('#beringung_speichern_uebernehmen_button').appendTo('#beringung_edit_div')
   this.openNewForm()
 }
 

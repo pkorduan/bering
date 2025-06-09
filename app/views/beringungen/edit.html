@@ -44,7 +44,7 @@
 <h2><span id="beringung_edit_title">Beringung Ändern</span></h2>
 <div id="beringung_edit" class="container">
   <form id="beringung_edit_form">
-    <div class="container-fluid">
+    <div id="beringung_edit_div" class="container-fluid">
       <div id="beringung_id_div" class="form-group row">
         <label class="col-sm-3 col-form-label" for="id">Id</label>
         <input class="col-sm-4 form-control" type="text" id="id" aria-describedby="idHelpInline" readonly>
@@ -57,7 +57,7 @@
         <span id="beringernr_alt" style="margin-top: 5px"></span>
       </div>
 
-      <div class="form-group row">
+      <div class="form-group row" id="beringernr_div">
         <label class="col-sm-3 col-form-label" for="beringernr">Beringernr</label>
         <input class="col-sm-4 form-control" type="text" id="beringernr" aria-describedby="beringerInfo" readonly>
         <!-- <small id="personIdHelpInline" class="col-sm-4 align-top form-text text-muted"> -->
@@ -65,7 +65,7 @@
         <small id="beringerInfo"  class="col-sm-4 align-top form-text text-muted">(<span id="beringung_beringername"></span>)</small>
       </div>
 
-      <div class="form-group row">
+      <div class="form-group row" id="fundart_div">
         <label class="col-sm-3 col-form-label" for="beringernr">Fundart</label>
         <select class="col-sm-4 form-control" type="text" id="fundart" aria-describedby="fundartInfo" disabled>
           <option value="1">Neue Berinung</option>
@@ -95,14 +95,14 @@
       </div>
     -->
 
-    <div class="form-group row">
+    <div class="form-group row" id="ringnr_div">
       <label class="col-sm-3 col-form-label font-weight-bold" for="ringnr">Ringnummer</label>
       <input class="col-sm-4 form-control" type="text" id="ringnr" aria-describedby="ringnrHelpInline">
       <div class="form-control-feedback" id="ringnrFB"></div>
       <small id="ringnrHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
     </div>
 
-    <div class="form-group row">
+    <div class="form-group row" id="vogelart_div">
       <label class="col-sm-3 col-form-label font-weight-bold" for="vogelart">Vogelart</label>
       <select class="col-sm-4 form-control" id="vogelart">
         <option value=""></option>
@@ -111,7 +111,7 @@
       <small id="vogelartHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
     </div>
 
-    <div class="form-group row"  id="beringung_datepicker">
+    <div class="form-group row"  id="datum_div">
       <label class="col-sm-3 col-form-label font-weight-bold" for="datum">Datum</label>
       <!-- <input type='text' class="form-control"  id="datum" -->
       <input class="col-sm-4 form-control" type='text' id="datum" aria-describedby="datumHelpInline"/>
@@ -128,15 +128,22 @@
         <!-- <small id="datumHelpInline" class="col-sm-4 align-top form-text text-muted"> -->
           <!-- Datum.</small> -->
       <!-- </div> -->
-    <div class="form-group row bootstrap-timepicker timepicker" id="beringung_timepicker">
+    <div class="form-group row bootstrap-timepicker timepicker" id="uhrzeit_div">
         <label class="col-sm-3 col-form-label font-weight-bold" for="uhrzeit">Uhrzeit</label>
         <input class="col-sm-4 form-control" type="text" id="uhrzeit"
           aria-describedby="uhrzeitHelpInline">
       <div class="form-control-feedback" id="uhrzeitFB"></div>
         <small id="uhrzeitHelpInline" class="col-sm-4 align-top form-text text-muted">(HH:MM:SS, geht auch ohne Sekundenangabe)</small>
       </div>
+	  
+    <div class="form-group row" id="netznr_div">
+      <label class="col-sm-3 col-form-label" for="netznr">Netznummer</label>
+      <input class="col-sm-4 form-control" type="text" id="netznr" aria-describedby="netznrHelpInline">
+      <div class="form-control-feedback" id="netznrFB"></div>
+      <small id="netznrHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
+    </div>
 
-    <div class="form-group row">
+    <div class="form-group row" id="alter_div">
       <label class="col-sm-3 col-form-label font-weight-bold" for="alter">Alter</label>
       <select class="col-sm-4 form-control" id="alter">
         <option value=""></option>
@@ -145,7 +152,7 @@
       <small id="alterHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
     </div>
 
-    <div class="form-group row">
+    <div class="form-group row" id="geschlecht_div">
       <label class="col-sm-3 col-form-label" for="geschlecht">Geschlecht</label>
       <select class="col-sm-4 form-control" id="geschlecht">
         <option value=""></option>
@@ -156,45 +163,59 @@
       <small id="geschlechtHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
     </div>
 
-    <div class="form-group row">
+    <div class="form-group row" id="fluegellaenge_div">
         <label class="col-sm-3 col-form-label" for="fluegellaenge">Flügellänge</label>
         <input class="col-sm-4 form-control" type="text" id="fluegellaenge" onchange="this.value = setOneNumberDecimal(this.value, 10.0, 2000);">
       <div class="form-control-feedback" id="fluegellaengeFB"></div>
         <small id="fluegellaengeHelpInline" class="col-sm-4 align-top form-text text-muted">mm</small>
       </div>
-      <div class="form-group row">
+      <div class="form-group row" id="teilfederlaenge_div">
         <label class="col-sm-3 col-form-label" for="teilfederlaenge">Teilfederlänge</label>
         <input class="col-sm-4 form-control" type="text" id="teilfederlaenge" onchange="this.value = setOneNumberDecimal(this.value, 1.0, 1000);">
       <div class="form-control-feedback" id="teilfederlaengeFB"></div>
         <small id="teilfederlaengeHelpInline" class="col-sm-4 align-top form-text text-muted">mm</small>
       </div>
-    <div class="form-group row">
+    <div class="form-group row" id="schnabellaenge_div">
         <label class="col-sm-3 col-form-label" for="schnabellaenge">Schnabellänge</label>
         <input class="col-sm-4 form-control" type="text" id="schnabellaenge"  onchange="this.value = setOneNumberDecimal(this.value, 0.1, 1000);">
       <div class="form-control-feedback" id="schnabellaengeFB"></div>
         <small id="schnabellaengeHelpInline" class="col-sm-4 align-top form-text text-muted">mm</small>
       </div>
-      <div class="form-group row">
+      <div class="form-group row" id="schnabel_kopflaenge_div">
         <label class="col-sm-3 col-form-label" for="schnabel_kopflaenge">Schnabel+Kopflänge</label>
         <input class="col-sm-4 form-control" type="text" id="schnabel_kopflaenge" onchange="this.value = setOneNumberDecimal(this.value, 0.2, 2000);">
       <div class="form-control-feedback" id="schnabel_kopflaengeFB"></div>
         <small id="schnabel_kopflaengeHelpInline" class="col-sm-4 align-top form-text text-muted">mm</small>
       </div>
-    <div class="form-group row">
+    <div class="form-group row" id="lauf_div">
         <label class="col-sm-3 col-form-label" for="lauf">Lauf</label>
         <input class="col-sm-4 form-control" type="text" id="lauf" onchange="this.value = setOneNumberDecimal(this.value, 0.5, 2000);">
       <div class="form-control-feedback" id="laufFB"></div>
         <small id="laufHelpInline" class="col-sm-4 align-top form-text text-muted">mm</small>
       </div>
-    <div class="form-group row">
+    <div class="form-group row" id="gewicht_div">
       <label class="col-sm-3 col-form-label" for="gewicht">Gewicht</label>
       <input class="col-sm-4 form-control" type="text" id="gewicht" onchange="this.value = setOneNumberDecimal(this.value, 0.0, 20000);">
      <!--<input class="col-sm-4 form-control" type="text" id="gewicht">-->
       <div class="form-control-feedback" id="gewichtFB"></div>
       <small id="gewichtHelpInline" class="col-sm-4 align-top form-text text-muted">g</small>
     </div>
-
-    <div class="form-group row">
+	
+	<div class="form-group row" id="fett_div">
+      <label class="col-sm-3 col-form-label" for="fett">Fett</label>
+      <input class="col-sm-4 form-control" type="text" id="fett" onchange="this.value = setOneNumberDecimal(this.value, 0.0, 20000);">
+      <div class="form-control-feedback" id="fettFB"></div>
+      <small id="fettHelpInline" class="col-sm-4 align-top form-text text-muted">g</small>
+    </div>
+	
+    <div class="form-group row" id="muskel_div">
+      <label class="col-sm-3 col-form-label" for="muskel">Muskel</label>
+      <input class="col-sm-4 form-control" type="text" id="muskel" onchange="this.value = setOneNumberDecimal(this.value, 0.0, 20000);">
+      <div class="form-control-feedback" id="muskelFB"></div>
+      <small id="muskelHelpInline" class="col-sm-4 align-top form-text text-muted">g</small>
+    </div>
+	
+    <div class="form-group row" id="brutstatus_div">
       <label class="col-sm-3 col-form-label" for="brutstatus">Brutstatus</label>
       <select class="col-sm-4 form-control" id="brutstatus">
         <option value=""></option>
@@ -203,7 +224,7 @@
       <small id="brutstausHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
     </div>
 
-    <div class="form-group row">
+    <div class="form-group row" id="skz_1_div">
       <label class="col-sm-3 col-form-label" for="skz_1">SKZ 1</label>
       <select class="col-sm-4 form-control" id="skz_1">
         <option value=""></option>
@@ -211,7 +232,7 @@
       <div class="form-control-feedback" id="skz_1FB"></div>
         <small id="skz_1HelpInline" class="col-sm-4 align-top form-text text-muted"></small>
       </div>
-    <div class="form-group row">
+    <div class="form-group row" id="skz_2_div">
       <label class="col-sm-3 col-form-label" for="skz_2">SKZ 2</label>
       <select class="col-sm-4 form-control" id="skz_2">
         <option value=""></option>
@@ -281,7 +302,7 @@
 	</div>
     </div>
 
-    <div class="form-group row">
+    <div class="form-group row" id="bemerkung_div">
       <label class="col-sm-3 col-form-label" for="bemerkung">Bemerkung</label>
       <textarea cols="80" rows="5" class="col-sm-4 form-control" id="bemerkung" aria-describedby="bemerkungHelpInline"></textarea>
       <div class="form-control-feedback" id="bemerkungFB"></div>

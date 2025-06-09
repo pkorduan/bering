@@ -38,26 +38,35 @@ module.exports.init = function() {
       evt.data.context.restoreAttributes(evt)
     }
   )
-
 }
 
 module.exports.restoreAttributes = function(evt) {
   log('controllers.attributes.restoreAttributes')
+  $('#settings_edit_form div[id=save_attributanpassungen_help_text]').html("Noch ohne Funktion").show()
 }
 
 module.exports.saveChangedAttributes = function(evt) {
   log('controllers.attributes.saveChangedAttributes');
 
-  var help_text = 'TODO: Prüfen, das Positionen konsistent bleiben und hier dann Fehler ausgeben.'
+  //Help-Text immer erst mal verstecken
+  $('#settings_edit_form div[id=save_attributanpassungen_help_text]').html('').hide()
 
-  if (help_text != '') {
-    $('#settings_edit_form div[id=save_attributanpassungen_help_text]').html(help_text).show()
-  }
-  else {
-    $('#settings_edit_form div[id=save_attributanpassungen_help_text]').html('').hide()
-  }
   let attributes = window.models.attribute.findWhere()
   
+  var posArr = []
+  
+  //Fülle Arry mit Positionen, um Duplikate zu detektieren
+  $.each(
+    attributes,
+    function(index, v) {
+	  posArr.push({position: $('#settings_edit_form input[name=' + v.name + '_pos' + ']').val(), name: v.fullname})
+	}
+  )
+  //https://stackoverflow.com/a/53212154/6532988
+  const lookup = Object.groupBy(posArr, e => e.position)
+  var posDuplArr = posArr.filter(e => lookup[e.position].length > 1)
+
+  //Mit Infos aus posDuplArr-Array die Attribute nochmal durchiterieren
   $.each(
     attributes,
     function(index, v) {
@@ -66,7 +75,16 @@ module.exports.saveChangedAttributes = function(evt) {
 		  //log("Anzeige-Wert für "  + v.fullname + " unterscheidet sich")
 		  window.models.attribute.update({'name' : v.name,'anzeige' : anzeigeAppWert})
 	  }
-	  if (v.position != $('#settings_edit_form input[name=' + v.name + '_pos' + ']').val()) {
+	  if (!$('#settings_edit_form input[name=' + v.name + '_pos' + ']').val()) {
+		  $('#settings_edit_form div[id=save_attributanpassungen_help_text]').html("Position für " + v.fullname + " fehlt").show()
+		  log("Leere Position festgestellt")
+	  }
+	  else if (posDuplArr.length == 2) {
+		  $('#settings_edit_form div[id=save_attributanpassungen_help_text]').html("Position für " + posDuplArr[0].name + " identisch mit " + posDuplArr[1].name).show()
+		  log("Duplkat festgestellt")
+	  }
+	  else if (posDuplArr.length > 2) $('#settings_edit_form div[id=save_attributanpassungen_help_text]').html("Mehr als 2 Attrbute haben dieselbe Position").show()
+	  else if (v.position != $('#settings_edit_form input[name=' + v.name + '_pos' + ']').val()) {
 		  //log("Positions-Wert für "  + v.fullname + " unterscheidet sich")
 		  window.models.attribute.update({'name' : v.name,'position' : $('#settings_edit_form input[name=' + v.name + '_pos' + ']').val()})
 	  }
@@ -94,9 +112,7 @@ module.exports.saveChangedAttributes = function(evt) {
 */
 module.exports.list = function(evt) {
   log('controllers.attributes.list')
-  var testanz = 0
-  var testanzval = (testanz == 1) ? 'checked' :'unchecked'
-  
+ 
   let attributes = window.models.attribute.findWhere(),
       t = $('<table id="attributes-list-table" class="attributes-table">');
 
@@ -104,17 +120,28 @@ module.exports.list = function(evt) {
   $.each(
     attributes,
     function(index, v) {
-      (v.anzeige == 1) ? t.append('<tr>\
-        <td width="20%">' + v.fullname + '</td>\
-		<td><input type="checkbox" class="attributes_input" name="' + v.name + '_an" checked></td>\
-        <td width="10%"><input class="col-sm-4 form-control" type="text" name="' + v.name + '_pos" value="' + v.position + '"></td>\
-      </tr>')
-	  :
-	  t.append('<tr>\
-        <td width="20%">' + v.fullname + '</td>\
-		<td><input type="checkbox" class="attributes_input" name="' + v.name + '_an" unchecked></td>\
-        <td width="10%"><input class="col-sm-4 form-control" type="text" name="' + v.name + '_pos" value="' + v.position + '"></td>\
-      </tr>')
+	  if (v.name === 'beringernr' || v.name === 'ringnr' || v.name === 'vogelart' || v.name === 'alter' ||  v.name === 'datum' ||  v.name === 'uhrzeit') {
+		log('Pflichtelement gefunden')
+		t.append('<tr>\
+          <td width="20%">' + v.fullname + '</td>\
+		  <td><input type="checkbox" class="attributes_input" name="' + v.name + '_an" checked disabled></td>\
+          <td width="10%"><input class="col-sm-4 form-control" type="text" name="' + v.name + '_pos" value="' + v.position + '"></td>\
+        </tr>')
+	  }
+      else if (v.anzeige == 1) {
+	    t.append('<tr>\
+          <td width="20%">' + v.fullname + '</td>\
+		  <td><input type="checkbox" class="attributes_input" name="' + v.name + '_an" checked></td>\
+          <td width="10%"><input class="col-sm-4 form-control" type="text" name="' + v.name + '_pos" value="' + v.position + '"></td>\
+        </tr>')
+	  }
+	  else {
+	    t.append('<tr>\
+          <td width="20%">' + v.fullname + '</td>\
+		  <td><input type="checkbox" class="attributes_input" name="' + v.name + '_an" unchecked></td>\
+          <td width="10%"><input class="col-sm-4 form-control" type="text" name="' + v.name + '_pos" value="' + v.position + '"></td>\
+        </tr>')
+	  }
     }
   )
   t.append('</table>')
