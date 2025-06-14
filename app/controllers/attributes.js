@@ -42,7 +42,30 @@ module.exports.init = function() {
 
 module.exports.restoreAttributes = function(evt) {
   log('controllers.attributes.restoreAttributes')
-  $('#settings_edit_form div[id=save_attributanpassungen_help_text]').html("Noch ohne Funktion").show()
+  //$('#settings_edit_form div[id=save_attributanpassungen_help_text]').html("Noch ohne Funktion").show()
+  
+  let attributes = window.models.attribute.findWhere()
+  
+  $.each(
+    attributes,
+    function(index, v) {
+	  let anzeigeAppWert = ($('#settings_edit_form input[name=' + v.name + '_an' + ']').is(':checked') ? '1' : '0')
+	  //log("Anzeige-Wert für "  + v.fullname + " ist " + v.anzeige + " und Position ist " + v.position)
+	  if (anzeigeAppWert == 0) {
+		  log("Anzeige-Wert für "  + v.fullname + " ist 0!")
+		  window.models.attribute.update({'name' : v.name,'anzeige' : 1})
+		  $('#settings_edit_form input[name=' + v.name + '_an' + ']').is(':checked')
+	  }
+	  if ($('#settings_edit_form input[name=' + v.name + '_pos' + ']').val() != v.defaultpos) {
+		  log("Abweichung Position für " + v.name + " festgestellt")
+		  window.models.attribute.update({'name' : v.name,'position' : v.defaultpos})
+	  }
+	}
+  )
+  $('#attributanpassungen_div').hide()
+  $('#settings_edit_form button[id=save_attributanpassungen_button]').hide()
+  $('#settings_edit_form button[id=restore_attributanpassungen_button]').hide()
+  $('#settings_edit_form div[id=save_attributanpassungen_help_text]').html("Restore erfolgreich").show()
 }
 
 module.exports.saveChangedAttributes = function(evt) {
@@ -77,7 +100,7 @@ module.exports.saveChangedAttributes = function(evt) {
 	  }
 	  if (!$('#settings_edit_form input[name=' + v.name + '_pos' + ']').val()) {
 		  $('#settings_edit_form div[id=save_attributanpassungen_help_text]').html("Position für " + v.fullname + " fehlt").show()
-		  log("Leere Position festgestellt")
+		  //log("Leere Position festgestellt")
 	  }
 	  else if (posDuplArr.length == 2) {
 		  $('#settings_edit_form div[id=save_attributanpassungen_help_text]').html("Position für " + posDuplArr[0].name + " identisch mit " + posDuplArr[1].name).show()
@@ -87,6 +110,7 @@ module.exports.saveChangedAttributes = function(evt) {
 	  else if (v.position != $('#settings_edit_form input[name=' + v.name + '_pos' + ']').val()) {
 		  //log("Positions-Wert für "  + v.fullname + " unterscheidet sich")
 		  window.models.attribute.update({'name' : v.name,'position' : $('#settings_edit_form input[name=' + v.name + '_pos' + ']').val()})
+		  $('#settings_edit_form div[id=save_attributanpassungen_help_text]').html("Speichern erfolgreich").show()
 	  }
 	}
   )
@@ -112,6 +136,8 @@ module.exports.saveChangedAttributes = function(evt) {
 */
 module.exports.list = function(evt) {
   log('controllers.attributes.list')
+ 
+  $('#settings_edit_form div[id=save_attributanpassungen_help_text]').html("").hide()
  
   let attributes = window.models.attribute.findWhere(),
       t = $('<table id="attributes-list-table" class="attributes-table">');
@@ -147,6 +173,7 @@ module.exports.list = function(evt) {
   t.append('</table>')
   $('#attributanpassungen_div').html(t);
   if ($('#attributanpassungen_div').is(":visible")) {
+	  log("attributanpassungen_div ist sichtbar!")
 	  $('#settings_edit_form button[id=save_attributanpassungen_button]').show()
 	  $('#settings_edit_form button[id=restore_attributanpassungen_button]').show()
   }

@@ -484,8 +484,6 @@ module.exports.newBeringung = function(uebernehmen = false) {
   //ganz ans Ende, also noch NACH dem Speichern-Button
   //$('#fundart_div').appendTo('#beringung_edit_div')
   
-  $('#lauf_div').hide()
-
   $('#beringung_beringernr_alt_div').hide()
   $('#fundursache_und_zustand_div').hide()
   $('#farbring_und_inschrift_div').hide()

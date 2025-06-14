@@ -19,6 +19,7 @@
     "cheerio": "^0.22.0",
     "crypto-js": "^3.1.9-1",
     "dbf-parser": "0.0.1",
+	"@electron/remote": "^2.1.2",
     "jquery": "^3.2.1",
 	"jquery-ui-bundle": "^1.12.1-migrate",
 	"jquery-validation": "^1.17.0",
@@ -30,8 +31,7 @@
 	"xlsx": "^0.17.4"
   },
   "devDependencies": {
-    "electron": "^30.0.1",
-    "@electron/remote": "^2.1.2"
+    "electron": "^30.0.1"
   },
   "standard": {
     "globals": [
