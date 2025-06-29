@@ -23,7 +23,8 @@ app.on('ready', function () {
     show: false,
     width: 1600,
     height: 1500,
-    icon: path.join(__dirname, 'assets/icons/png/64x64.png'),
+    //icon: path.join(__dirname, 'assets/icons/png/64x64.png'),
+    icon: path.join(__dirname, 'assets/icons/png/LogoProRing.png'),
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false

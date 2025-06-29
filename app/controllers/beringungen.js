@@ -84,6 +84,28 @@ module.exports.init = function() {
       evt.data.context.list($(evt.target), ["fundart = 1", "beringernr = '" + window.session.beringernr + "'"])
     }
   )
+  
+  log('register click on list_beringungen_aktuelles_jahr_menue_link')
+  $('#list_beringungen_aktuelles_jahr_menue_link').on(
+    'click',
+    {
+      context: this
+    },
+    function(evt) {
+      evt.data.context.list($(evt.target), ["fundart = 1", "datum LIKE '" + new Date().getFullYear() + "%'"])
+    }
+  )
+  
+  log('register click on list_wiederfunde_aktuelles_jahr_menue_link')
+  $('#list_wiederfunde_aktuelles_jahr_menue_link').on(
+    'click',
+    {
+      context: this
+    },
+    function(evt) {
+      evt.data.context.list($(evt.target), ["fundart = 2", "datum LIKE '" + new Date().getFullYear() + "%'"])
+    }
+  )
 
   log('register click on list_meine_wiederfunde_menue_link')
   $('#list_meine_wiederfunde_menue_link').on(
@@ -153,7 +175,8 @@ module.exports.init = function() {
     $('#beringung_edit_form select[id=alter]').append(
       $('<option>', {
         value: item.code,
-        text : item.bezeichnung_de+" ("+item.code+")"
+        //Langenwerder: text : item.bezeichnung_de+" ("+item.code+")"
+        text : item.code+" ("+item.bezeichnung_de+")"
       })
     );
   });
@@ -209,7 +232,42 @@ module.exports.init = function() {
       })
     );
   });
-
+  
+  log('fill select option for beringungsort');
+  $('#beringung_edit_form select[id=beringungsort]').append(
+      $('<option>', {
+        value: window.models.setting.findByBezeichnung('beringungsort_id').wert,
+        text : window.models.setting.findByBezeichnung('beringungsort').wert
+      })
+  );
+  
+  $('#beringung_edit_form select[id=beringungsort]').append(
+      $('<option>', {
+        value: window.models.setting.findByBezeichnung('beringungsort_zwei_id').wert,
+        text : window.models.setting.findByBezeichnung('beringungsort_zwei').wert
+      })
+  );
+  
+  log('fill select option for fett');
+  for (let i = 0; i <= 8; i++) {
+    $('#beringung_edit_form select[id=fett]').append(
+      $('<option>', {
+        value: i,
+        text : i
+      })
+    );
+  };
+  
+  log('fill select option for muskel');
+  for (let i = 0; i <= 3; i++) {
+    $('#beringung_edit_form select[id=muskel]').append(
+      $('<option>', {
+        value: i,
+        text : i
+      })
+    );
+  };
+  
   log('fill select option for skz_1');
   let skz1 = window.models.skz.findWhere('Sonderkennzeichen1')
   log('skz1 %o', skz1)
@@ -639,19 +697,25 @@ module.exports.insert = function(evt, uebernehmen = false) {
 	
 	log('beringungsort_zwei_nutzen: ' + beringungsort_zwei_nutzen)
 	
-	if (beringungsort_zwei_nutzen == "aus") {
-        kvps['beringungsort'] = window.models.setting.findByBezeichnung('beringungsort').wert
+	log('Beringungsort laut Eingabemaske: ' + $('form#beringung_edit_form :input[id=beringungsort]').val())
+	let beringungsort_id = $('form#beringung_edit_form :input[id=beringungsort]').val()
+	
+	if (beringungsort_id == window.models.setting.findByBezeichnung('beringungsort_id').wert) {
+		//log('Beringungsort: ' + window.models.setting.findByBezeichnung('beringungsort').wert)
+		kvps['beringungsort'] = window.models.setting.findByBezeichnung('beringungsort').wert
 		kvps['ortid'] = window.models.setting.findByBezeichnung('beringungsort_id').wert
         kvps['koordinaten'] = window.models.setting.findByBezeichnung('beringungsort_position').wert
         kvps['zentrale'] = window.models.setting.findByBezeichnung('zentrale').wert
 	}
-	else {
+	else if (beringungsort_id == window.models.setting.findByBezeichnung('beringungsort_zwei_id').wert) {
+		//log('Beringungsort: ' + window.models.setting.findByBezeichnung('beringungsort_zwei').wert)
 		kvps['beringungsort'] = window.models.setting.findByBezeichnung('beringungsort_zwei').wert
 		kvps['ortid'] = window.models.setting.findByBezeichnung('beringungsort_zwei_id').wert
         kvps['koordinaten'] = window.models.setting.findByBezeichnung('beringungsort_position_zwei').wert
         kvps['zentrale'] = window.models.setting.findByBezeichnung('zentrale_zwei').wert
 	}
-
+	else log('Fehler bei der Ortswahl')
+	
     window.controllers.start.backupDb()
 
     window.models.beringung.insert(kvps, uebernehmen)

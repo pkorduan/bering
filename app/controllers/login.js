@@ -4,7 +4,7 @@ module.exports.init = function() {
   log('controllers.login.init');
 
   // register event handler - für Langenwerder
-  /*
+
   $('#login_button').on(
     'click',
     {
@@ -18,15 +18,15 @@ module.exports.init = function() {
       );
     }
   )
-  */
-  // Ohne Klick für ProRing
-  
+ 
+  // Ohne Klick für ProRing?
+  /*
   controllers.login.login(
     $('#login_form input[name=loginname]').val(),
     $('#login_form input[name=passwort]').val(),
     $('#login_form input[name=passwort2]').val()
   );
-  
+  */
 }
 
 module.exports.login = function(loginname, passwort, passwort2) {

@@ -143,6 +143,15 @@
         <small id="uhrzeitHelpInline" class="col-sm-4 align-top form-text text-muted">(HH:MM:SS, geht auch ohne Sekundenangabe)</small>
       </div>
 	  
+	<div class="form-group row" id="beringungsort_div">
+      <label class="col-sm-3 col-form-label" for="beringungsort">Beringungsort</label>
+      <select class="col-sm-4 form-control" id="beringungsort">
+        <option value=""></option>
+      </select>
+      <div class="form-control-feedback" id="beringungsortFB"></div>
+      <small id="beringungsortHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
+    </div>
+	  
     <div class="form-group row" id="netznr_div">
       <label class="col-sm-3 col-form-label" for="netznr">Netznummer</label>
       <input class="col-sm-4 form-control" type="text" id="netznr" aria-describedby="netznrHelpInline">
@@ -210,16 +219,20 @@
 	
 	<div class="form-group row" id="fett_div">
       <label class="col-sm-3 col-form-label" for="fett">Fett</label>
-      <input class="col-sm-4 form-control" type="text" id="fett" onchange="this.value = setOneNumberDecimal(this.value, 0.0, 20000);">
+      <select class="col-sm-4 form-control" id="fett">
+        <option value=""></option>
+      </select>
       <div class="form-control-feedback" id="fettFB"></div>
-      <small id="fettHelpInline" class="col-sm-4 align-top form-text text-muted">g</small>
+      <small id="fettHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
     </div>
 	
     <div class="form-group row" id="muskel_div">
       <label class="col-sm-3 col-form-label" for="muskel">Muskel</label>
-      <input class="col-sm-4 form-control" type="text" id="muskel" onchange="this.value = setOneNumberDecimal(this.value, 0.0, 20000);">
+      <select class="col-sm-4 form-control" id="muskel">
+        <option value=""></option>
+      </select>
       <div class="form-control-feedback" id="muskelFB"></div>
-      <small id="muskelHelpInline" class="col-sm-4 align-top form-text text-muted">g</small>
+      <small id="muskelHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
     </div>
 	
     <div class="form-group row" id="brutstatus_div">
