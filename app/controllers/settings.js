@@ -417,10 +417,10 @@ module.exports.info = function(evt) {
 
 module.exports.checkPath = function (pfad) {
   log('Controllers settings.checkPath')
-  // log('Pfad: '+pfad)
+  //log('Pfad: '+pfad)
 
-  const remote = require('electron').remote;
-  const dialog = remote.dialog;
+  const remote = require('@electron/remote')
+  const { app, dialog } = remote
 
   //https://stackoverflow.com/questions/4482686/check-synchronously-if-file-directory-exists-in-node-js
   var fs = require('fs');

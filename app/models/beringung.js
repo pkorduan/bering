@@ -257,9 +257,16 @@ module.exports.validate = function (field) {
 		if (field.value == '') {
 			result.valid = true
       }
+		//ProRing: volle Stunde reichen
+		/*
 		else if (field.value.indexOf(":") == -1 || field.value.substr(-2, 2).indexOf(":") != -1) {
 			result.valid = false
 			result.message = 'Uhrzeit muss mit Minuten angegeben werden!'
+		}
+		*/
+		else if (field.value.indexOf(":") == 3) {
+			result.valid = false
+			result.message = 'Stundenangabe darf nicht dreistellig sein!'
 		}
 		else if (field.value.substr(-2, 2) >59) {
 			result.valid = false

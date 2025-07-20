@@ -501,7 +501,7 @@ module.exports.newBeringung = function(uebernehmen = false) {
           $(field).val($(field).val().replace(/\d+$/, function(n) { return ++n }))
         }
         else {
-          if ($.inArray(field.id, ['vogelart', 'alter', 'beringungsart']) == -1) $(field).val('')
+          if ($.inArray(field.id, ['vogelart', 'beringerkrzl', 'beringungsart', 'datum', 'uhrzeit']) == -1) $(field).val('')
         }
       }
     )
@@ -715,6 +715,12 @@ module.exports.insert = function(evt, uebernehmen = false) {
         kvps['zentrale'] = window.models.setting.findByBezeichnung('zentrale_zwei').wert
 	}
 	else log('Fehler bei der Ortswahl')
+	
+	log('Uhrzeit laut Eingabemaske: ' + $('form#beringung_edit_form :input[id=uhrzeit]').val())
+	let uhrzeit = $('form#beringung_edit_form :input[id=uhrzeit]').val()
+	
+	if (uhrzeit.length == 1) kvps['uhrzeit'] = '0' + uhrzeit + ':00:00'
+	else if (uhrzeit.length == 2) kvps['uhrzeit'] = uhrzeit + ':00:00'
 	
     window.controllers.start.backupDb()
 
