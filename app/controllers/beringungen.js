@@ -4,6 +4,13 @@
 module.exports.init = function() {
   log('controllers.beringungen.init');
 
+  $('#settings_edit_form input[name=ringnr]').on(
+    'keyup',
+    function() {
+      this.value = this.value.toUpperCase();
+    }
+  )
+
   $('#datum_div input').datepicker({
       format: "dd.mm.yyyy",
       todayHighlight: true
@@ -476,7 +483,7 @@ module.exports.edit = function(id) {
   $('#beringungen_edit_section').show();
 }
 
-//Mögliches TODO: alle Warnungsmeldungen der Validierung löschen (Bsp.: Noch Meldungen im Fundformular, dan Wechsel auf Beringung)
+//Mögliches TODO: alle Warnungsmeldungen der Validierung löschen (Bsp.: Noch Meldungen im Fundformular, dann Wechsel auf Beringung)
 module.exports.newBeringung = function(uebernehmen = false) {
   log('controller beringungen.newBerinung uebernehmen:', uebernehmen);
   let beringung = {}
@@ -549,8 +556,9 @@ module.exports.newBeringung = function(uebernehmen = false) {
   $('form#beringung_edit_form :input[id=ringnr]').prop('readonly', false).focus()
   $('#beringung_speichern_button').show()
   $('#beringung_speichern_button').appendTo('#beringung_edit_div')
-  $('#beringung_speichern_uebernehmenbutton').show()
+  $('#beringung_speichern_uebernehmen_button').show()
   $('#beringung_speichern_uebernehmen_button').appendTo('#beringung_edit_div')
+  
   this.openNewForm()
 }
 
@@ -564,10 +572,52 @@ module.exports.newFund = function(beringung) {
     }
   )
 
-  // Fundart, Vogelart und Ringnr setzen
-  $('form#beringung_edit_form :input[id=fundart]').val(beringung.fundart)
-  $('form#beringung_edit_form :input[id=ringnr]').val(beringung.ringnr).prop('readonly', true)
-  $('form#beringung_edit_form :input[id=vogelart]').val(beringung.vogelart)
+  let attributes = window.models.attribute.findWhere()
+  
+  var posArr = []
+    $('form#beringung_edit_form :input').each(
+      function(i, field) {
+		//log('index: ' + i + ' field: ' + field.id);
+		//Umweg über Object.values nötig, da attributes kein Array sondern ein Objekt ist
+		var result = Object.values(attributes).filter(attribute => attribute.name === field.id)
+		if (result.length != 0) {
+			log("Anzeigewert aus DB für " + field.id + " ist " + result[0].anzeige)
+			//Prüfe zusätzlich, ob im Objekt beringung für den jeweiligen Key ein Wert hinterlegt ist, z. B. für Geschlecht, falls dort F oder M in dr Datenbank steht sollte das Feld auch im Formular auftauchen
+			if (result[0].anzeige == 0 && beringung[field.id] == "") $('#'+field.id+'_div').hide()
+			//Zeige das Feld und auch den Inhalt an
+			else {
+				$('#'+field.id+'_div').show()
+				
+				if (beringung[field.id]) {
+					log('Fülle das Attr. '+field.id+' mit dem Wert '+beringung[field.id])
+					$('form#beringung_edit_form :input[id='+field.id+']').val(beringung[field.id])
+				}
+			}
+		    //log("Positionswert aus DB für " + field.id + " ist " + result[0].position)
+			//Array mit Positionen der Divs füllen
+			posArr.push({position: result[0].position, divname: field.id+'_div'})
+		}
+        //$(field).val('')
+      }
+    )
+  
+  //Array nach Positionen aufsteigend sortieren
+  posArr.sort(function(a, b) {
+    return a.position - b.position;
+  });
+  
+  //Mittels appendTo Divs nach Positionen arrangieren
+  posArr.forEach((element) => {
+	  $('#'+element.divname).appendTo('#beringung_edit_div')
+  });
+  
+  
+  // Fundart, Vogelart und Ringnr setzen, wird oben bereits germacht
+  //$('form#beringung_edit_form :input[id=fundart]').val(beringung.fundart)
+  //$('form#beringung_edit_form :input[id=ringnr]').val(beringung.ringnr).prop('readonly', true)
+  //$('form#beringung_edit_form :input[id=vogelart]').val(beringung.vogelart)
+  
+  $('form#beringung_edit_form :input[id=ringnr]').prop('readonly', true)
   $('form#beringung_edit_form :input[id=fundursache]').val(22)
   $('form#beringung_edit_form :input[id=fundzustand]').val(6)
 
@@ -590,6 +640,8 @@ module.exports.newFund = function(beringung) {
     }
   }
 
+    $('#beringung_speichern_button').appendTo('#beringung_edit_div')
+	
   // Übernehmenbutton ausblenden
   $('#beringung_speichern_uebernehmen_button').hide()
 
@@ -606,6 +658,7 @@ module.exports.date_format = function(date) {
 }
 
 module.exports.openNewForm = function() {
+  //log('openNewForm() Anfang')
   let d = new Date()
 
   // id verstecken
@@ -629,7 +682,8 @@ module.exports.openNewForm = function() {
   $('section').hide();
   $('#beringungen_edit_section').show();
   // nach oben Scrollen
-  $(window).scrollTop(0)
+  $(window).scrollTop(0)  
+  //log('openNewForm() Ende')
 }
 
 module.exports.delete = function(id) {

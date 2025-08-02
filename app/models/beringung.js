@@ -253,6 +253,12 @@ module.exports.validate = function (field) {
         result.message = 'Die Vogelart muss angegeben werden!'
       }
 	} break;
+	case (['beringungsort'].indexOf(field.id) > -1) : {
+      if (field.value == '') {
+        result.valid = false
+        result.message = 'Der Beringungsort muss angegeben werden!'
+      }
+	} break;
 	case (['uhrzeit'].indexOf(field.id) > -1) : {
 		if (field.value == '') {
 			result.valid = true
