@@ -9,7 +9,7 @@ Peter Korduan und Christian Seip
 GDI-Service Rostock (gdi-service.de)
 
 ## Features
-- Ein Formular zur Erfassung von Daten zur Berinung von Vögeln.
+- Ein Formular zur Erfassung von Daten zur Beringung von Vögeln.
 - Funktion zum Suchen von bereits erfassten Beringungen.
 - Unterscheidung zwischen Neu-, Wieder- und Fremdfunden.
 - Export in Daten pro Beringer für das BERIHID Programm.
