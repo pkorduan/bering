@@ -153,7 +153,7 @@ module.exports.rpad = function (value, length = value.length, fillChar = ' ') {
 module.exports.export = function(filter = []) {
   log('controllers.exports.export filter: ' + JSON.stringify(filter));//ex.: '["fundart = 1","berihiddversion = 4"]'
   let fundart = filter[0].slice(-1),
-      select = "id, beringernr, zentrale, ringnr, bemerkung, vogelart, datum, uhrzeit, geschlecht, \"alter\", printf(\"%.1f\", fluegellaenge) AS fluegellaenge, printf(\"%.1f\", teilfederlaenge) AS teilfederlaenge, printf(\"%.1f\", schnabellaenge) AS schnabellaenge, printf(\"%.1f\", schnabel_kopflaenge) AS schnabel_kopflaenge, printf(\"%.1f\", lauf) AS lauf, printf(\"%.1f\", gewicht) AS gewicht, brutstatus, ortid, beringungsort, koordinaten, skz_1, skz_2, farbring_liun, farbring_liob, farbring_reun, farbring_reob, inschrift, fundart, fundzustand, fundursache, exportiert_am",
+      select = "id, beringernr, zentrale, ringnr, bemerkung, vogelart, datum, uhrzeit, geschlecht, \"alter\", printf(\"%.1f\", fluegellaenge) AS fluegellaenge, printf(\"%.1f\", teilfederlaenge) AS teilfederlaenge, printf(\"%.1f\", schnabellaenge) AS schnabellaenge, printf(\"%.1f\", schnabel_kopflaenge) AS schnabel_kopflaenge, printf(\"%.1f\", lauf) AS lauf, printf(\"%.1f\", gewicht) AS gewicht, brutstatus, ortid, beringungsort, koordinaten, skz_1, skz_2, farbring_liun, farbring_liob, farbring_reun, farbring_reob, inschrift, fundart, fundzustand, fundursache, exportiert_am, fett, muskel, netznr",
       //eigentlich wollte ich mit splice(-1) das letzte Element entfernen (also 'berihiddversion = 4' z. B.), aber Ergebnis ist dann dieses entfernte Element, deshalb nun splice(0,1), das entfernt zwar im Prinzip, das Element, das ich brauche, aber da das dann das Ergebnis ist, mit dem weitergearbeitet wird, funktioniert es -> weiterer Vorteil: es bleibt dann nur "berihiddversion = 4" im filter-Array
 	  where = filter.splice(0,1).concat(
         "beringernr = '" + window.session.beringernr + "'",
@@ -243,13 +243,16 @@ module.exports.export = function(filter = []) {
           )
         } break;
 		case '14': {
-			//log('Klich OK für Fundart 1 und berihidd-Version 4');
+			log('Klick OK für Fundart 1 und berihidd-Version 4');
 			file_name = 'B'
 			file_name_ext = 'SD4'
             lines = $.map(
             beringungen,
             (function(beringung) {
               if (beringung.gewicht == 0) beringung.gewicht = "0.0";
+              if (!beringung.fett) beringung.fett = "-";
+              if (!beringung.muskel) beringung.muskel = "-";
+              if (!beringung.netznr) beringung.netznr = "--";
 			  var ringnr = String(beringung.ringnr);
 			  var serie = ringnr.substring(0,2).toUpperCase();
 			  var ringnrOhneSerie = ringnr.substring(2, ringnr.length);
@@ -280,7 +283,7 @@ module.exports.export = function(filter = []) {
                 this.rpad(' ', 2) + // Richtung
                 this.rpad(beringung.koordinaten, 15) +
                 this.rpad(' ', 1) + // Genau
-                this.rpad(beringung.bemerkung, 60) +
+                this.rpad(beringung.bemerkung.substring(0,47)+';F:'+beringung.fett+',M:'+beringung.muskel+',N:'+beringung.netznr, 60) +
                 this.rpad(' ', 3) + // Prog
                 this.rpad(' ', 2) + // Zeile
                 this.rpad(' ', 3) + // Blatt
@@ -381,7 +384,7 @@ module.exports.export = function(filter = []) {
 			  )
 		  }
 		  else {
-			  //log('Klich OK für Fundart 2 (oder 3) und berihidd-Version 4');
+			  //log('Klick OK für Fundart 2 (oder 3) und berihidd-Version 4');
 			  if (fundart == '2') file_name = 'W';
 			  else file_name = 'F';
 			  file_name_ext = 'SD4'
@@ -389,6 +392,9 @@ module.exports.export = function(filter = []) {
 				beringungen,
 				(function(beringung) {
 				  if (beringung.gewicht == 0) beringung.gewicht = "0.0";
+				  if (!beringung.fett) beringung.fett = "-";
+                  if (!beringung.muskel) beringung.muskel = "-";
+                  if (!beringung.netznr) beringung.netznr = "--";
 				  var ringnr = String(beringung.ringnr);
 				  var serie = ringnr.substring(0,2).toUpperCase();
 				  var ringnrOhneSerie = ringnr.substring(2, ringnr.length);
@@ -447,10 +453,10 @@ module.exports.export = function(filter = []) {
 					this.rpad(' ', 1) + // KJB
 					this.rpad(' ', 4) + // Programm - lt. Spezifikation nur 3, aber beringernr muss eins weiter nach hinten
 					this.lpad(beringung.beringernr, 4) +
-					this.rpad(beringung.bemerkung, 30) +
+					this.rpad(beringung.bemerkung, 30) + //BEMERKUNG1
 					//'\u00f4' + // Korrzeich - nicht mehr nötig?
 					//this.rpad(' ', 499) // Freifeld - nicht in Spezifikation, soll aber lt. Fr. Kreutzer rein - auch nicht mehr nötig?
-					this.rpad(' ', 30) + //BEMERKUNG2 -> beringung.bemerkung2 - TODO da neu in BERIHIDD 4
+					this.rpad(';F:'+beringung.fett+',M:'+beringung.muskel+',N:'+beringung.netznr, 30) + //BEMERKUNG2 -> beringung.bemerkung2 - TODO da neu in BERIHIDD 4
 					this.rpad(' ', 30) + //BEMERKUNG3 -> beringung.bemerkung3 - TODO da neu in BERIHIDD 4
 					this.rpad(' ', 2) + //SKFARBE -> beringung.skfarbe - TODO da neu in BERIHIDD 4
 					this.rpad(' ', 2) + //SKFARBE1 -> beringung.skfarbe1 - TODO da neu in BERIHIDD 4

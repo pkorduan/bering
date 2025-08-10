@@ -104,7 +104,7 @@
 
     <div class="form-group row" id="ringnr_div">
       <label class="col-sm-3 col-form-label font-weight-bold" for="ringnr">Ringnummer</label>
-      <input class="col-sm-4 form-control" type="text" id="ringnr" onchange="this.value = this.value.toUpperCase();" aria-describedby="beringerInfo" aria-describedby="ringnrHelpInline">
+      <input class="col-sm-4 form-control" type="text" id="ringnr" onchange="this.value = this.value.toUpperCase();" maxlength="9" aria-describedby="beringerInfo" aria-describedby="ringnrHelpInline">
       <div class="form-control-feedback" id="ringnrFB"></div>
       <small id="ringnrHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
     </div>
@@ -154,7 +154,7 @@
 	  
     <div class="form-group row" id="netznr_div">
       <label class="col-sm-3 col-form-label" for="netznr">Netznummer</label>
-      <input class="col-sm-4 form-control" type="text" id="netznr" aria-describedby="netznrHelpInline">
+      <input class="col-sm-4 form-control" type="text" id="netznr" maxlength="2" aria-describedby="netznrHelpInline">
       <div class="form-control-feedback" id="netznrFB"></div>
       <small id="netznrHelpInline" class="col-sm-4 align-top form-text text-muted"></small>
     </div>

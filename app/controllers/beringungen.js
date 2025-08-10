@@ -4,13 +4,6 @@
 module.exports.init = function() {
   log('controllers.beringungen.init');
 
-  $('#settings_edit_form input[name=ringnr]').on(
-    'keyup',
-    function() {
-      this.value = this.value.toUpperCase();
-    }
-  )
-
   $('#datum_div input').datepicker({
       format: "dd.mm.yyyy",
       todayHighlight: true
@@ -243,14 +236,14 @@ module.exports.init = function() {
   log('fill select option for beringungsort');
   $('#beringung_edit_form select[id=beringungsort]').append(
       $('<option>', {
-        value: window.models.setting.findByBezeichnung('beringungsort_id').wert,
+        value: window.models.setting.findByBezeichnung('beringungsort').wert,
         text : window.models.setting.findByBezeichnung('beringungsort').wert
       })
   );
   
   $('#beringung_edit_form select[id=beringungsort]').append(
       $('<option>', {
-        value: window.models.setting.findByBezeichnung('beringungsort_zwei_id').wert,
+        value: window.models.setting.findByBezeichnung('beringungsort_zwei').wert,
         text : window.models.setting.findByBezeichnung('beringungsort_zwei').wert
       })
   );
@@ -507,14 +500,20 @@ module.exports.newBeringung = function(uebernehmen = false) {
           // increment the number at the end of the string by 1
           $(field).val($(field).val().replace(/\d+$/, function(n) { return ++n }))
         }
+		else if (field.id == 'fundart') {
+          // setze Fundart beim Übernehmen auf "1" (Neue Beringung)
+          $(field).val(1)
+        }
         else {
-          if ($.inArray(field.id, ['vogelart', 'beringerkrzl', 'beringungsart', 'datum', 'uhrzeit']) == -1) $(field).val('')
+          if ($.inArray(field.id, ['vogelart', 'beringerkrzl', 'datum', 'uhrzeit', 'beringungsort', 'netznr', 'beringernr']) == -1) $(field).val('')
         }
       }
     )
   }
   else {
     $('#beringung_edit_title').html('Neue Beringung')
+	log('>>>>>>>Versuche Focus')
+	$('form#beringung_edit_form :input[id=vogelart]').focus()
 	var posArr = []
     $('form#beringung_edit_form :input').each(
       function(i, field) {
@@ -548,6 +547,8 @@ module.exports.newBeringung = function(uebernehmen = false) {
   //$('#fundart_div').prependTo('#beringung_edit_div')
   //ganz ans Ende, also noch NACH dem Speichern-Button
   //$('#fundart_div').appendTo('#beringung_edit_div')
+  //$('#fundart_div').show()
+  
   
   $('#beringung_beringernr_alt_div').hide()
   $('#fundursache_und_zustand_div').hide()
@@ -581,14 +582,14 @@ module.exports.newFund = function(beringung) {
 		//Umweg über Object.values nötig, da attributes kein Array sondern ein Objekt ist
 		var result = Object.values(attributes).filter(attribute => attribute.name === field.id)
 		if (result.length != 0) {
-			log("Anzeigewert aus DB für " + field.id + " ist " + result[0].anzeige)
+			log("Anzeigewert aus DB für " + field.id + " ist " + result[0].anzeige + ' und Inhalt ist: ' + beringung[field.id])
 			//Prüfe zusätzlich, ob im Objekt beringung für den jeweiligen Key ein Wert hinterlegt ist, z. B. für Geschlecht, falls dort F oder M in dr Datenbank steht sollte das Feld auch im Formular auftauchen
-			if (result[0].anzeige == 0 && beringung[field.id] == "") $('#'+field.id+'_div').hide()
+			if (result[0].anzeige == 0 && !beringung[field.id]) $('#'+field.id+'_div').hide()
 			//Zeige das Feld und auch den Inhalt an
 			else {
+				log('Zeige '+field.id+' an')
 				$('#'+field.id+'_div').show()
-				
-				if (beringung[field.id]) {
+				if (beringung[field.id] && $.inArray(field.id, ['fett', 'muskel', 'datum', 'uhrzeit', 'netznr', 'fluegellaenge', 'teilfederlaenge', 'gewicht', 'bemerkung']) == -1) {
 					log('Fülle das Attr. '+field.id+' mit dem Wert '+beringung[field.id])
 					$('form#beringung_edit_form :input[id='+field.id+']').val(beringung[field.id])
 				}
@@ -741,11 +742,22 @@ module.exports.insert = function(evt, uebernehmen = false) {
   if (this.allValid()) {
     log('Alle Eingabenn valide!')
     let kvps = window.models.dbMapper.getFormFieldKVPs('beringung_edit_form')
+	
+	//log('Beringungsort laut Eingabemaske: ' + $('form#beringung_edit_form :input[id=beringungsort]').val())
+	//log('Beringungsort in den Einstellungen: ' + window.models.setting.findByBezeichnung('beringungsort').wert)
+	if ($('form#beringung_edit_form :input[id=beringungsort]').val() == window.models.setting.findByBezeichnung('beringungsort').wert)
+	   {
+		   //log('>>>>Erster Berigungsort')
+		   kvps['ortid'] = window.models.setting.findByBezeichnung('beringungsort_id').wert
+	   }
+	else kvps['ortid'] = window.models.setting.findByBezeichnung('beringungsort_zwei_id').wert
 
-    //kvps['ortid'] = window.models.setting.findByBezeichnung('beringungsort_id').wert
-    //kvps['beringungsort'] = window.models.setting.findByBezeichnung('beringungsort').wert
-    //kvps['koordinaten'] = window.models.setting.findByBezeichnung('beringungsort_position').wert
-    //kvps['zentrale'] = window.models.setting.findByBezeichnung('zentrale').wert
+    /*
+    kvps['ortid'] = window.models.setting.findByBezeichnung('beringungsort_id').wert
+    kvps['beringungsort'] = window.models.setting.findByBezeichnung('beringungsort').wert
+    kvps['koordinaten'] = window.models.setting.findByBezeichnung('beringungsort_position').wert
+    kvps['zentrale'] = window.models.setting.findByBezeichnung('zentrale').wert
+	
 	
 	let beringungsort_zwei_nutzen =  window.models.setting.findByBezeichnung('beringungsort_zwei_nutzen').wert
 	
@@ -769,6 +781,7 @@ module.exports.insert = function(evt, uebernehmen = false) {
         kvps['zentrale'] = window.models.setting.findByBezeichnung('zentrale_zwei').wert
 	}
 	else log('Fehler bei der Ortswahl')
+	*/
 	
 	log('Uhrzeit laut Eingabemaske: ' + $('form#beringung_edit_form :input[id=uhrzeit]').val())
 	let uhrzeit = $('form#beringung_edit_form :input[id=uhrzeit]').val()

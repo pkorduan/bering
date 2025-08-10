@@ -110,7 +110,7 @@ module.exports.saveChangedAttributes = function(evt) {
 	  else if (posDuplArr.length > 2) $('#settings_edit_form div[id=save_attributanpassungen_help_text]').html("Mehr als 2 Attrbute haben dieselbe Position").show()
 	  else if (v.position != $('#settings_edit_form input[name=' + v.name + '_pos' + ']').val()) {
 		  //log("Positions-Wert für "  + v.fullname + " unterscheidet sich")
-		  log('vor window.models.attribute.update')
+		  //log('vor window.models.attribute.update')
 		  window.models.attribute.update({'name' : v.name,'position' : $('#settings_edit_form input[name=' + v.name + '_pos' + ']').val()})
 		  $('#settings_edit_form div[id=save_attributanpassungen_help_text]').html("Speichern erfolgreich").show()
 	  }
