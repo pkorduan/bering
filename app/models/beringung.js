@@ -1,6 +1,12 @@
 // model Beringung
 'use strict'
 
+function time_format(time_val) {
+   let regEx = /^([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])?$/;
+   //console.log(time_val);
+   return regEx.test(time_val);
+};
+
 module.exports.findWhere = function (select = '*', where = '', group = '', order = '`datum`, `uhrzeit` DESC', limit = '') {
   log('Model Beringung.findWhere: ' + where)
   let db = SQL.dbOpen(window.model.db),
@@ -261,23 +267,42 @@ module.exports.validate = function (field) {
 	} break;
 	case (['uhrzeit'].indexOf(field.id) > -1) : {
 		if (field.value == '') {
-			result.valid = true
-      }
+			//result.valid = true
+			result.valid = false
+			result.message = 'Die Uhrzeit muss angegeben werden!'
+        }
+		else if (!time_format(field.value) || field.value.substr(field.value.length - 1) == ':') {
+			result.valid = false
+			result.message = 'Uhrzeit fehlerhaft!'
+		}
 		//ProRing: volle Stunde reichen
 		/*
 		else if (field.value.indexOf(":") == -1 || field.value.substr(-2, 2).indexOf(":") != -1) {
 			result.valid = false
 			result.message = 'Uhrzeit muss mit Minuten angegeben werden!'
 		}
-		*/
+		
+		else if (field.value.substr(field.value.length - 1) == ':') {
+			result.valid = false
+			result.message = 'Uhrzeit fehlerhaft (endet mit Doppelpunkt)!'
+		}
+		else if (field.value.length == 4 || field.value.length == 7) {
+			result.valid = false
+			result.message = 'Uhrzeit fehlerhaft!'
+		}
 		else if (field.value.indexOf(":") == 3) {
 			result.valid = false
 			result.message = 'Stundenangabe darf nicht dreistellig sein!'
+		}
+		else if (field.value.substr(0, 2) >23) {
+			result.valid = false
+			result.message = 'Stunden dürfen nicht größer 23 sein!'
 		}
 		else if (field.value.substr(-2, 2) >59) {
 			result.valid = false
 			result.message = 'Minuten bzw. Sekunden dürfen nicht größer 59 sein!'
 		}
+		*/
     } break;
 	case (['alter'].indexOf(field.id) > -1) : {
       if (field.value == '') {

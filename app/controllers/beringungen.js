@@ -738,6 +738,19 @@ module.exports.insert = function(evt, uebernehmen = false) {
       callback
 
   this.formatDateToEn()
+  
+  //bearbeite die Uhrzeit, damit sie danach per RegEx validiert werden kann (und ermögliche damit eine verkürzte Eingabe von z. b. nur Stunde, nur Stunden und Minuten usw.)
+  //log('>>>>Uhrzeit laut Eingabemaske: ' + $('form#beringung_edit_form :input[id=uhrzeit]').val())
+  let uhrzeit = $('form#beringung_edit_form :input[id=uhrzeit]').val()
+	
+  if (uhrzeit.length == 1) uhrzeit = '0' + uhrzeit + ':00:00'
+  else if (uhrzeit.length == 2) uhrzeit = uhrzeit + ':00:00'
+  else if (uhrzeit.length == 5) uhrzeit = uhrzeit + ':00'
+	
+  //log('>>>>Uhrzeit bearbeitet: ' + uhrzeit)
+  
+  $('form#beringung_edit_form :input[id=uhrzeit]').val(uhrzeit)
+
 
   if (this.allValid()) {
     log('Alle Eingabenn valide!')
@@ -749,8 +762,14 @@ module.exports.insert = function(evt, uebernehmen = false) {
 	   {
 		   //log('>>>>Erster Berigungsort')
 		   kvps['ortid'] = window.models.setting.findByBezeichnung('beringungsort_id').wert
+		   kvps['koordinaten'] = window.models.setting.findByBezeichnung('beringungsort_position').wert
+    	   kvps['zentrale'] = window.models.setting.findByBezeichnung('zentrale').wert
 	   }
-	else kvps['ortid'] = window.models.setting.findByBezeichnung('beringungsort_zwei_id').wert
+	else {
+		kvps['ortid'] = window.models.setting.findByBezeichnung('beringungsort_zwei_id').wert
+		kvps['koordinaten'] = window.models.setting.findByBezeichnung('beringungsort_position_zwei').wert
+        kvps['zentrale'] = window.models.setting.findByBezeichnung('zentrale_zwei').wert
+	}
 
     /*
     kvps['ortid'] = window.models.setting.findByBezeichnung('beringungsort_id').wert
@@ -782,12 +801,6 @@ module.exports.insert = function(evt, uebernehmen = false) {
 	}
 	else log('Fehler bei der Ortswahl')
 	*/
-	
-	log('Uhrzeit laut Eingabemaske: ' + $('form#beringung_edit_form :input[id=uhrzeit]').val())
-	let uhrzeit = $('form#beringung_edit_form :input[id=uhrzeit]').val()
-	
-	if (uhrzeit.length == 1) kvps['uhrzeit'] = '0' + uhrzeit + ':00:00'
-	else if (uhrzeit.length == 2) kvps['uhrzeit'] = uhrzeit + ':00:00'
 	
     window.controllers.start.backupDb()
 
