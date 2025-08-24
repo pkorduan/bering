@@ -25,6 +25,9 @@ module.exports.init = function() {
       $('.menue-selected').removeClass('menue-selected')
       $(evt.target).parent().addClass('menue-selected')
       evt.data.context.newBeringung()
+	  //$('#list_all_beringungen_menue_link').focus()
+	  //$('#beringung_edit_form :input[id=netznr]').focus();
+	  $('#beringung_edit_form :input[id=vogelart]').first().focus()
     }
   )
 
@@ -512,8 +515,6 @@ module.exports.newBeringung = function(uebernehmen = false) {
   }
   else {
     $('#beringung_edit_title').html('Neue Beringung')
-	log('>>>>>>>Versuche Focus')
-	$('form#beringung_edit_form :input[id=vogelart]').focus()
 	var posArr = []
     $('form#beringung_edit_form :input').each(
       function(i, field) {
@@ -554,7 +555,7 @@ module.exports.newBeringung = function(uebernehmen = false) {
   $('#fundursache_und_zustand_div').hide()
   $('#farbring_und_inschrift_div').hide()
   $('form#beringung_edit_form :input[id=fundart]').val(1);
-  $('form#beringung_edit_form :input[id=ringnr]').prop('readonly', false).focus()
+  $('form#beringung_edit_form :input[id=ringnr]').prop('readonly', true)
   $('#beringung_speichern_button').show()
   $('#beringung_speichern_button').appendTo('#beringung_edit_div')
   $('#beringung_speichern_uebernehmen_button').show()
